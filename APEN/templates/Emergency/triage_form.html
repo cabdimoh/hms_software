@@ -1,0 +1,1940 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block modal %}
+{% block styledata %}
+<style>
+    .mt-100{margin-top: 100px}
+    .multselect{
+        background: #00B4DB;
+        background: -webkit-linear-gradient(to right, #0083B0, #00B4DB);
+        background: linear-gradient(to right, #0083B0, #00B4DB);
+        color: #514B64;
+       width:100%;
+    }
+</style>
+
+{% endblock styledata %}
+
+
+
+<div class="modal fade" id="PrescriptionModal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myExtraLargeModalLabel">Add Prescription</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+           
+                     <form id="PrescriptionForm">
+                        {% csrf_token %}
+                        <div class="row">
+                            <input class="form-control" type="hidden"  id="AppointmentID">
+                            <div id="show_item">
+                                <div class="row" id="row1">
+                                    <div class="col-md-2">
+                                        <div class="mb-3">
+                                            <label class="form-label">Medicine Category</label>
+                                            <select class="form-select" name="MedicineCategory1" id="MedicineCategory1">
+                                                <option selected value="">Select Category</option>
+                                                {% for pharmacy_med_cat in pharmacy_med_category%}
+                                                <option value="{{pharmacy_med_cat.id}}">{{pharmacy_med_cat.medicine_cat_name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>                                                       
+                                    </div>
+    
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label class="form-label">Medicine</label>
+                                            <select class="form-select" name="Medicine1" id="Medicine1">
+                                                <option selected value="">Select Medicine</option>
+
+                                            </select>
+                                        </div>                                                       
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="mb-3">
+                                            <label class="form-label">Frequency(1</label>
+                                            <input type="text" class="form-control" id="Dose1" placeholder="1 X">
+                                        </div>                                                       
+                                    </div>
+                                    
+                                    <div class="col-md-1">
+                                        <div class="mb-3">
+                                            <label class="form-label">x  2)</label>
+                                            <input type="text" class="form-control" id="DoseInterval1" placeholder="2">
+                                        </div>                                                       
+                                    </div>
+                                 
+                                    <div class="col-md-2">
+                                        <div class="mb-3">
+                                            <label class="form-label">Route/Instructions</label>
+                                            <input type="text" class="form-control" id="DoseDuration1" placeholder="Oral After Meal">
+                                        </div>                                                       
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <div class="mb-3">
+                                            <label class="form-label">Qty</label>
+                                            <input type="number" class="form-control" name="Qty1" id="Qty1">
+                                            
+                                        </div>                                                       
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <div class="mb-3">
+                                            <label class="form-label">In Stock</label>
+                                            <div class="div" id="available_qty1">
+                                                <input type="number" class="form-control"  disabled>
+                                            </div>
+                                            
+                                            
+                                            <input type="hidden" id="hidden_available_qty1">
+
+                                        </div>                                                       
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <div class="mb-3">
+                                            <label class="form-label">Add </label>
+                                            <button type="button" class="btn btn-primary add_item_btn" >
+                                                <i class="las la-plus"></i> 
+                                            </button>
+                                        </div>                                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="PatientVillage" class="form-label">Instructions</label>
+                            <textarea class="form-control" id="Instructions" autocomplete="off" placeholder="Add Comment ...."></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+                            <button type="button" id="btn_submit" class="btn btn-primary ">Save changes</button>
+                        </div>
+                       
+                    </form>
+                       
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="DiagnosisModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myExtraLargeModalLabel">Add Diagnosis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="DiagnosisForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <h5 class="font-size-14 mb-3">Laboratory</h5>
+                                        <input class="form-control" type="hidden"  id="AppointmentID">
+                                        <div id="show_lab">
+                                            <div class="row" id="row1">
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Sample Type</label>
+                                                        <select class="form-select"  id="Sample1">
+                                                            <option value="">Select Sample Type</option>
+                                                            <option value="Blood">Blood</option>
+                                                            <option value="Urine">Urine</option>
+                                                            <option value="Stool">Stool</option>
+                                                        </select>
+                                                    </div>                                                       
+                                                </div>
+                                            
+                                                <div class="col-md-3 if-blood1 d-none blood1">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Group Name</label>
+
+                                                        <select class="form-select"  id="Group1">
+                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4  ">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Test Name</label>
+                                                        <select class="form-select" id="labTest1" multiple>
+                                                            
+                                                    
+                                                        </select>
+                                                    </div>                                                       
+                                                </div>
+                                                <div class="col-lg-1">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Add More</label>
+                                                        <button type="button" class="btn btn-primary add_lab_btn" >
+                                                            <i class="las la-plus"></i>
+                                                        </button>
+                                                    </div>                                                       
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <h5 class="font-size-14 mb-3">Radiology</h5>
+                                        <input class="form-control" type="hidden"  id="AppointmentID">
+                                        <div id="show_radio">
+                                            <div class="row" id="row1">
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Radiology Exam Category</label>
+                                                        <select class="form-select" id="radiologyCategory1">
+                                                            <option selected value="">Select</option>
+                                                            {% for category in examcategory%}
+                                                            <option value="{{category.id}}">{{category.CategoryName}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>                                                       
+                                                </div>
+                
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Radiology Exam Name</label>
+                                                        <select class="form-select " id="radiology1" multiple >
+                                                            
+                                                        </select>
+                                                    </div>                                                       
+                                                </div>
+                                            
+                                            
+                                                <div class="col-lg-1">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Add More</label>
+                                                        <button type="button" class="btn btn-primary add_radio_btn" >
+                                                            <i class="las la-plus"></i>
+                                                        </button>
+                                                    </div>                                                       
+                                                </div>
+                                            </div>
+                                        
+                                        </div>
+                                        
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-6 col-sm-12">
+                        <div class="mb-3 text-end">
+                            <button  type='button'  data-bs-dismiss="modal" class="btn-danger btn">Cancel</button>
+                            <button  type='button' id="emergency_diagnosis_btn_submit" class="btn-primary btn">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade " id="medicationsModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myExtraLargeModalLabel">Add Medicine Dose</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="medicationsform"> 
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div>
+                               
+                                <div class="mb-3">
+                                    <label class="form-label" for="default-input">Date</label>
+                                    <input class="form-control" type="date" id="med_date" placeholder="Dose">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Medicines</label>
+                                    <select class="form-select" id="medicine">
+                                        <option value="">Select Medicine</option>
+                                       {% for med in medications_list%}
+                                        <option value='{{med.id}}'>{{med.MedicineName.Medicine_name.Medicine_name}}</option>
+                                        {%endfor%}
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="mt-3 mt-lg-0">
+                                
+                                <div class="mb-3">
+                                    <label class="form-label" for="default-input">Time</label>
+                                    <input class="form-control" type="time" id="med_time" placeholder="Dose">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="default-input">Dose</label>
+                                    <input class="form-control" type="text" id="med_dose" placeholder="Dose">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="default-input">Remarks</label>
+                            <textarea class="form-control" id="Remarks" placeholder="Remarks...."></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <button type="button" data-bs-dismiss="modal" class="btn btn-danger waves-effect waves-light">Back</button>
+                            <button type="button" id="medications_btn" class="btn btn-primary waves-effect waves-light">Save</button>
+                        </div>
+                        <div class="col-lg-8">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade " id="assignbedroom" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myExtraLargeModalLabel">Assign Bed</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="medicationsform"> 
+                    <div class="row">
+                        <div class="mb-3">
+                            <label class="form-label">Departments</label>
+                            <select class="form-select" id="departments">
+                                <option value="">Select Department</option>
+                                {% for depart in departments%}
+                                <option value='{{depart.id}}'>{{depart.department_name}}</option>
+                                {%endfor%}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Room No</label>
+                            <select class="form-select" id="room">
+                                
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Bed No</label>
+                            <select class="form-select" id="bed">
+                              
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="default-input">Date</label>
+                            <input type="datetime-local" class="form-control" id="bed_date">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <button type="button" data-bs-dismiss="modal" class="btn btn-danger waves-effect waves-light">Back</button>
+                            <button type="button" id="submit_bed" class="btn btn-primary waves-effect waves-light">Save</button>
+                        </div>
+                        <div class="col-lg-8">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade " id="dischargeModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myExtraLargeModalLabel">Add Discharge</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="dischargeform"> 
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label" for="default-input">Discharge Date</label>
+                                <input class="form-control" type="datetime-local" id="discharge_date" placeholder="Dose">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Discharge Status</label>
+                                <select class="form-select" id="dischargeStatus">
+                                    <option value="">Select Status</option>
+                                    <option value="Normal">Normal</option>
+                                    <option value="Admitted">Admitted</option>
+                                    <option value="Death">Death</option>
+                                    <option value="Referrel">Referrel</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="for-admission d-none">
+                        <div class="row admission">
+                            <div class="col-lg-6">
+                                <div>
+                                    <div class="mb-3">
+                                        <label for="PatientFirstName" class="form-label">Admission Date</label>
+                                        <input class="form-control" type="date" id="admission_date" autocomplete="off">
+                                    </div>
+                                         
+                                </div>
+                            </div>
+        
+                            <div class="col-lg-6">
+                                <div class="mt-3 mt-lg-0">
+                                    <div class="mb-3">
+                                        <label for="PatientMiddleName" class="form-label">Type of bed</label>
+                                        <select class="form-select" id="bedType">
+                                            <option value="">Select Type</option>
+                                            <option value="icu">Intensive Care Unit</option>
+                                            <option value="inpatient">Regular Inpatient Unit</option>
+                                         
+                                        </select>
+                                    </div>
+                                
+                                   
+                                </div>
+                            </div>
+                     
+                            <div class="mb-3">
+                                <label for="PatientMiddleName" class="form-label">Priority level</label>
+                                <select class="form-select" id="patient_priority">
+                                    <option value="">Select Priority</option>
+                                    <option value="Emergency">Emergent</option>
+                                    <option value="Urgent">Urgent</option>
+                                    <option value="nonUrgent">Non-Urgent</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="default-input">Admission Reason</label>
+                                <textarea class="form-control" id="admission_reason" placeholder="Admission Reason...."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="default-input">Note</label>
+                                <textarea class="form-control" id="admission_note" placeholder="Note...."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="for-normal-referel-death d-none">
+                        <div class="row normal-referel-death">
+                           
+                            <div class="mb-3">
+                                <label class="form-label" for="default-input">Diagnosis</label>
+                                <textarea class="form-control" id="diagnosis_result" placeholder="Diagnosis...."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="default-input">Operations</label>
+                                <textarea class="form-control" id="surgery_operations" placeholder="Operations...."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="default-input">Note</label>
+                                <textarea class="form-control" id="discharge_note" placeholder="Note...."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="for-referrel d-none">
+                        <div class="row referrell">
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label for="PatientFirstName" class="form-label">Referrel Date</label>
+                                    <input class="form-control" type="date" id="referel_date" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label for="PatientFirstName" class="form-label">Hospital Name</label>
+                                    <input class="form-control" type="text" id="hospital_name" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="PatientFirstName" class="form-label">Referrel Reason</label>
+                                <input class="form-control" type="text" id="referel_reason" autocomplete="off">
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="for-death d-none">
+                        <div class="row death">
+                            <div class="col-lg-6">
+
+                                <div class="mb-3">
+                                    <label for="PatientFirstName" class="form-label">Death Date</label>
+                                    <input class="form-control" type="date" id="death_date" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label for="PatientFirstName" class="form-label">Death Reason</label>
+                                    <input class="form-control" type="text" id="death_reason" autocomplete="off">
+                                </div>
+                            </div>
+                         
+                        </div>
+                       
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <button type="button" data-bs-dismiss="modal" class="btn btn-danger waves-effect waves-light">Back</button>
+                            <button type="button" id="submit_discharge" class="btn btn-primary waves-effect waves-light">Save</button>
+                        </div>
+                        <div class="col-lg-8">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}
+{% block content %}
+
+
+        <div class="profile-foreground position-relative mx-n4 mt-n4 ">
+            <div class="profile-wid-bg">
+                <img src="{% static 'assets/images/pp1.jpg' %}" alt="" class="profile-wid-img " />
+            </div>
+        </div>
+        <div class="pt-4 mb-4 mb-lg-3 pb-lg-4 profile-wrapper">
+            <div class="row g-4">
+                <div class="col-auto">
+                    <div class="avatar-lg">
+                        {% if Emergency_visit.Patient.PatientGender == "Female"%}
+                        <img src="{% static 'assets/images/femalehijabipat.jpg' %}" alt="user-img" class="img-thumbnail rounded-circle" />
+                        {%else%}
+                        <img src="{% static 'assets/images/malepatient.jpg' %}" alt="user-img" class="img-thumbnail rounded-circle" />
+                        {%endif%}
+                    </div>
+                </div>
+                <!--end col-->
+               <div class="col">
+                    <div class="p-2">
+                        <h3 class="text-white mb-1">{{ Emergency_visit.Patient.get_fullName}}</h3>
+                        <!-- <p class="text-white-75 mb-1">queue No: {{Appointment.queue_number}}</p> -->
+                         <div class="hstack text-white-50 gap-1">
+                            {% if  Emergency_visit.Patient.PatientVillage %}
+
+                            <div class="me-2"><i class="ri-map-pin-user-line me-1 text-white-75 fs-16 align-middle"></i>
+                                {{ Emergency_visit.Patient.PatientVillage}},
+                                {{ Emergency_visit.Patient.PatientDistrict}}, Mogadishu</div>
+                            {%endif%}
+                        </div> 
+                    </div>
+                </div>
+               
+                <div class="col-12 col-lg-auto order-last order-lg-0">
+                    <div class="row text text-white-50 text-center">
+                        <div class="col-lg-12">
+                            <div class="flex-shrink-0">
+                                {% if Emergency_visit.Status   == "in-queue" %}
+
+                                <div class="col-sm-auto order-1 order-sm-2">
+                                   
+                                    <div class="d-flex align-items-start justify-content-end gap-2">    
+                                        <div class="dropdown  dropdown_btn">
+                                            <a href="javascript:void(0);" class='btn btn-sm btn-{% if Emergency_visit.Status == "in-queue" %}light {% elif Emergency_visit.Status  == "in-treatment" %}success {% else %}danger {% endif %}'   fs-12 data-bs-toggle="dropdown"><i class='{% if Emergency_visit.Status == "in-queue" %} ri-loader-2-line align-bottom me-1{% elif Emergency_visit.Status  == "in-treatment" %}ri-check-double-line align-bottom me-1 {% else %}ri-close-line align-bottom me-1 {% endif %}' ></i>{{Emergency_visit.Status }} </a>
+                                            
+                                            <ul class="dropdown-menu dropdown-menu-end approval_list">
+        
+                                            {% if Emergency_visit.Status   == "in-queue"%}
+                                                <li><a class="dropdown-item btn  "  id="approve">Approve</a></li>
+                                                <li><a class="dropdown-item btn "  id="reject">Cancel</a></li>                              
+                                                {% elif  Emergency_visit.Status  == "in-treatment" %}
+                                                <li><a class="dropdown-item btn "  id="reject">Cancel</a></li> 
+                                                {% else %}                                   
+                                                <li><a class="dropdown-item btn "  id="approve">Approve</a></li>
+                                            {% endif %} 
+                                            </ul>
+                                        </div>
+                                    </div>
+            
+                                </div>
+                                {%endif%}
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+           
+            <!--end row-->
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div>
+                    <!-- Tab panes -->
+                    <div class="row">
+                        <div class="col-xxl-3">
+                          
+                            <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                
+                                <div class="card shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-3">Triage Form</h5>
+                                        <hr>
+                                        <a class="nav-link mb-2 active" id="v-pills-home-tab" data-bs-toggle="pill" href="#personalInfo" role="tab" aria-controls="v-pills-home" aria-selected="true">Personal Info</a>
+                                        <a class="nav-link mb-2" id="v-pills-profile-tab" data-bs-toggle="pill" href="#triageform" role="tab" aria-controls="v-pills-profile" aria-selected="false">Triage Form</a>
+                                    </div><!-- end card body -->
+                             
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-3">Diagnostic Tests</h5>
+                                        <hr>
+                                            <a class="nav-link mb-2 " id="v-pills-home-tab" data-bs-toggle="pill" href="#diagnosis" role="tab" aria-controls="v-pills-home" aria-selected="true">Diagnosis</a>
+                                            <a class="nav-link mb-2" id="v-pills-profile-tab" data-bs-toggle="pill" href="#prescriptionss" role="tab" aria-controls="v-pills-profile" aria-selected="false">Prescriptions</a>
+                                    </div><!-- end card body -->
+                                    
+                              
+                             
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-3">Short Stays</h5>
+                                        <hr>
+                                            <a class="nav-link mb-2 " id="v-pills-home-tab" data-bs-toggle="pill" href="#assignbed" role="tab" aria-controls="v-pills-home" aria-selected="true">Assign Bed</a>
+                                            <a class="nav-link mb-2" id="v-pills-profile-tab" data-bs-toggle="pill" href="#medications" role="tab" aria-controls="v-pills-profile" aria-selected="false">Medication</a>
+                                            <a class="nav-link mb-2" id="v-pills-profile-tab" data-bs-toggle="pill" href="#discharge" role="tab" aria-controls="v-pills-profile" aria-selected="false">Discharge</a>
+                                            
+                                            
+
+                                    </div><!-- end card body -->
+                                </div><!-- end card -->
+                            </div>
+                               
+                        </div>
+                        <!--end col-->
+                        <div class="col-xxl-9">
+                    
+                            <div class="tab-content text-muted mt-4 mt-md-0" id="v-pills-tabContent">
+                                <div class="tab-pane fade show active" id="personalInfo" role="tabpanel" aria-labelledby="personalInfo">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header align-items-center d-flex">
+                                                    <h4 class="card-title mb-0  me-2">Personal Information</h4>
+                                                    <div class="flex-shrink-0 ms-auto">
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="card-body"> 
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div>
+                                                                <div class="mb-3">
+                                                                    <label for="PatientFirstName" class="form-label">Patient FirstName</label>
+                                                                    <input class="form-control" type="text" id="PatientFirstName" style="background-color: white;" disabled Value="{{Emergency_visit.Patient.PatientFirstName}}" autocomplete="off">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="PatientLastName" class="form-label">Patient LastName</label>
+                                                                    <input class="form-control" type="text" id="PatientLastName" style="background-color: white;" disabled Value="{{Emergency_visit.Patient.PatientLastName}}" autocomplete="off">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="PatientAge" class="form-label">Patient Age</label>
+                                                                    <input class="form-control" type="Number"  id="PatientAge" style="background-color: white;" disabled Value="{{Emergency_visit.Patient.PatientAge}}" autocomplete="off">
+                                                                </div>
+                                                            
+                                                                <div class="mb-3">
+                                                                    <label for="PatientVillage" class="form-label">Patient Village</label>
+                                                                    <input class="form-control" type="text" id="PatientVillage" style="background-color: white;" disabled Value="{{Emergency_visit.Patient.PatientVillage}}" autocomplete="off">
+                                                                </div>
+                                                                
+                                                                <div class="mb-3">
+                                                                    <label for="PatientVillage" class="form-label">Emergency Contact Name</label>
+                                                                    <input class="form-control" type="text" id="PatientVillage" style="background-color: white;" disabled Value="{{Emergency_visit.EmergencyName}}" autocomplete="off">
+                                                                </div>              
+                                                            </div>
+                                                        </div>
+                                    
+                                                        <div class="col-lg-6">
+                                                            <div class="mt-3 mt-lg-0">
+                                                                <div class="mb-3">
+                                                                    <label for="PatientMiddleName" class="form-label">Patient Middle Name</label>
+                                                                    <input class="form-control" type="text" id="PatientMiddleName" style="background-color: white;" disabled Value="{{Emergency_visit.Patient.PatientMiddleName}}" autocomplete="off">
+                                                                </div>
+                                                            
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Patient Gender</label>
+                                                                    <select class="form-select" id="PatientGender">
+                                                                        <option value="{{gender}}" selected>{{Emergency_visit.Patient.PatientGender}}</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="PatientMobileNo" class="form-label">Patient Mobile Number</label>
+                                                                    <input class="form-control" type="number" id="PatientMobileNo" style="background-color: white;" disabled Value="{{Emergency_visit.Patient.PatientMobileNo}}" autocomplete="off">
+                                                                </div>
+                                                                
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Patient District</label>
+                                                                    <select class="form-select" id="PatientDistrict">
+                                                                        <option value="{{Emergency_visit.Patient.PatientDistrict}}" style="background-color: white;" disabled selected>{{Emergency_visit.Patient.PatientDistrict}}</option>
+                                    
+                                                                    </select>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="PatientVillage" class="form-label">Emergency Contact Number</label>
+                                                                    <input class="form-control" type="text" id="PatientVillage" style="background-color: white;" disabled Value="{{Emergency_visit.EmergencyNumber}}" autocomplete="off">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if emergency_triage or Isdischarged %}
+                                <div class="tab-pane fade" id="triageform" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                    <div class="card">
+                                        <div class="card-header align-items-center d-flex">
+                                            <h4 class="card-title mb-0  me-2">Triage Form</h4>
+                                            <div class="flex-shrink-0 ms-auto">
+                                               
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <table  id="LabTable" class="table table-sm table-bordered align-middle mb-0">
+                                                <thead> 
+                                                    <tr>
+                                                        
+                                                        
+                                                        <th>Triage DateTime</th>
+                                                        <th>Doctor </th>
+                                                        <th>Triage Category</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        
+                                                        <td>{{emergency_triage.Triage_dateTime}}</td>
+                                                   
+                                                    <td>   {{emergency_triage.Doctor.get_full_name}} </td>
+                                                    <td>  {% if emergency_triage.TriageCategory == "Immediate" %} 
+                                                        <div class = "badge text-bg-danger" >{{emergency_triage.TriageCategory}}
+                                                        {% elif emergency_triage.TriageCategory == "Emergent" %} 
+                                                        <div class = "badge text-bg-warning" >{{emergency_triage.TriageCategory}} </div> 
+                                                            {% elif emergency_triage.TriageCategory == "Urgent" %} 
+                                                            <div class = "badge text-bg-info" >{{emergency_triage.TriageCategory}} </div> 
+                                                        {% elif emergency_triage.TriageCategory == "nonUrgent" %} 
+                                                        <div class = "badge text-bg-secondary" >{{emergency_triage.TriageCategory}} </div> 
+                                                        {%endif%}
+                                                    </td>
+                                                    </tr>
+                                                </tbody>
+                                                </tbody>
+                                            </table>
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="row mt-4">
+                                                        <div class="col-lg-6">
+                                                            <h6 class="fw-semibold text-uppercase mb-3">Chief Complaint</h6>
+                                                            <ul class="text-muted vstack gap-2 mb-4">
+                                                                {% for chiefcomplaint in chiefComplaint %}
+                                                                <li>{{chiefcomplaint}}</li>
+                                                                {%endfor%}
+                                                            </ul>
+                                                            <h6 class="fw-semibold text-uppercase mb-3"> Allergies</h6>
+                                                            <ul class="text-muted vstack gap-2 mb-4">
+                                                                {% for allergy in allergic %}
+                                                                <li>{{allergy}}</li>
+                                                                {%endfor%}
+                                                            </ul>
+                                                            <h6 class="fw-semibold text-uppercase mb-3"> Current Medication</h6>
+                                                            <ul class="text-muted vstack gap-2 mb-4">
+                                                                {% for medical in CurrentMedications %}
+                                                                <li>{{medical}}</li>
+                                                                {%endfor%}
+                                                            </ul>
+                                                            <h6 class="fw-semibold text-uppercase mb-3"> Nurse Assessment</h6>
+                                                            <ul class="text-muted vstack gap-2 mb-4">
+                                                                {% for assess in Assessment %}
+                                                                <li>{{assess}}</li>
+                                                                {%endfor%}
+                                                            </ul>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <h6 class="fw-semibold text-uppercase mb-3">Vital Signs</h6>
+                                                            <ul class="text-muted vstack gap-2 mb-4">
+                                                                <li>Blood Pressure: {{Vitalsigns.0}}</li>
+                                                                <li>Heart Beat: {{Vitalsigns.1}}</li>
+                                                                <li>Respiratory Rate: {{Vitalsigns.2}}</li>
+                                                                <li>Temperature: {{Vitalsigns.3}}</li>
+                                                            </ul>
+                                                            
+                                                            <h6 class="fw-semibold text-uppercase mb-3">Medical History</h6>
+                                                            <ul class="text-muted vstack gap-2 mb-4">
+                                                                {% for history in PastMedicalHistory %}
+                                                                <li>{{history}}</li>
+                                                                {%endfor%}
+                                                            </ul>
+                                                            <h6 class="fw-semibold text-uppercase mb-3">Family Medical History</h6>
+                                                            <ul class="text-muted vstack gap-2 mb-4">
+                                                                {% for familyhistory in FamilyMedicalHistory %}
+                                                                <li>{{familyhistory}}</li>
+                                                                {%endfor%}
+                                                            </ul>
+                                                            <h6 class="fw-semibold text-uppercase mb-3">Comment</h6>
+                                                            <ul class="text-muted vstack gap-2 mb-4">
+                                                                <li>{{emergency_triage.Comment}}</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            
+                                        </div><!-- end card body -->
+                                    </div>
+                                </div>
+                                {%else%}
+                                <div class="tab-pane fade" id="triageform" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                    <div class="card">
+                                        <div class="card-header align-items-center d-flex">
+                                            <h4 class="card-title mb-0  me-2">Triage Form</h4>
+                                            <div class="flex-shrink-0 ms-auto">
+                                                <ul class="nav justify-content-end nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" data-bs-toggle="tab" href="#chiefComplaint" role="tab">
+                                                            Chief Complaint
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link " data-bs-toggle="tab" href="#VitalSigns" role="tab">
+                                                            Vital Signs
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link " data-bs-toggle="tab" href="#AllergicnMedication" role="tab">
+                                                            Allergies & Medication
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" data-bs-toggle="tab" href="#history" role="tab">
+                                                             History
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" data-bs-toggle="tab" href="#NurseAssessment" role="tab">
+                                                            Nurse Assessment
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" data-bs-toggle="tab" href="#final" role="tab">
+                                                            Final
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="tab-content text-muted">
+                                                <div class="tab-pane active" id="chiefComplaint" role="tabpanel">
+                                                    <div class="profile-timeline">
+                                                        <div class="accordion accordion-flush" id="todayExample">
+
+                                                            <div id="show_complaint">
+                                                                <div class="row" id="row1">
+                                                                    <div class="col-lg-11 mb-3">
+                                                                        <label for="PatientFirstName" class="form-label">Chief Complaint:</label>
+                                                                        <input type="text" class="form-control" id="cheifComplaint1" placeholder="Add Chief Complaint..... " autocomplete="off">
+                                                                    </div>
+                                                                    <div class=" col-lg-1 mb-3">
+                                                                        <label class="form-label">Add More</label>
+                                                                        <button type="button" class="btn btn-primary add_complaint" >
+                                                                            <i class="las la-plus"></i> 
+                                                                        </button>
+                                                                    </div>                                                       
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--end accordion-->
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="tab-pane" id="VitalSigns" role="tabpanel">
+                                                    <div class="profile-timeline">
+                                                        <div class="accordion accordion-flush" id="monthlyExample">
+                                                            <div class="mb-3">
+                                                                <label for="PatientLastName" class="form-label">Blood pressure</label>
+                                                                <input class="form-control" type="text" id="bloodPressure" placeholder="Blood Pressure mmHg" autocomplete="off">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="PatientLastName" class="form-label">Heart rate</label>
+                                                                <input class="form-control" type="text" id="HeartRate" placeholder="Heart rate beats per minute" autocomplete="off">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="PatientLastName" class="form-label">Respiratory rate</label>
+                                                                <input class="form-control" type="text" id="RespiratoryRate" placeholder="Respiratory rate breaths per minute" autocomplete="off">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="PatientLastName" class="form-label">Temperature</label>
+                                                                <input class="form-control" type="text" id="Temperature" placeholder="Blood Pressure Fahrenheit" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <!--end accordion-->
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="tab-pane " id="AllergicnMedication" role="tabpanel">
+                                                    <div class="profile-timeline">
+                                                        <div class="accordion accordion-flush" id="todayExample">
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <div id="show_allergies">
+                                                                        <div class="row" id="row1">
+                                                                            <div class="col-lg-10 mb-3">
+                                                                                <label for="PatientFirstName" class="form-label">Any Allergies</label>
+                                                                                <input type="text" class="form-control" id="Allergies1" placeholder="Add Allergies..... " autocomplete="off">
+                                                                            </div>
+                                                                            <div class=" col-lg-1 mb-3">
+                                                                                <label class="form-label">Add</label>
+                                                                                <button type="button" class="btn btn-primary add_allergies" >
+                                                                                    <i class="las la-plus"></i> 
+                                                                                </button>
+                                                                            </div>   
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <div id="show_medications">
+                                                                        <div class="row" id="row1">
+                                                                            <div class="col-lg-10 ">
+                                                                                <div class="mb-3">
+                                                                                    <label for="PatientFirstName" class="form-label">Current Medications</label>
+                                                                                    <input type="text" class="form-control" id="Medications1" placeholder="Add Current Medications..... " autocomplete="off">
+                                                                                </div>
+                                                                            
+                                                                            </div>
+                                                                            <div class=" col-lg-1">
+                                                                                <div class="mb-3">
+                                                                                    <label class="form-label">Add</label>
+                                                                                    <button type="button" class="btn btn-primary add_medications" >
+                                                                                        <i class="las la-plus"></i> 
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>   
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                                                                
+                                                            </div>
+                                                        </div>
+                                                        <!--end accordion-->
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="tab-pane" id="history" role="tabpanel">
+                                                    <div class="profile-timeline">
+                                                        <div class="accordion accordion-flush" id="monthlyExample">
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <div id="show_medical_history">
+                                                                        <div class="row" id="row1">
+                                                                            <div class="col-lg-10 mb-3">
+                                                                                <label for="PatientFirstName" class="form-label">Medical history</label>
+                                                                                <input type="text" class="form-control" id="pastHistory1" placeholder="Add Medical History.... " autocomplete="off">
+                                                                            </div>
+                                                                            <div class=" col-lg-1 mb-3">
+                                                                                <label class="form-label">Add </label>
+                                                                                <button type="button" class="btn btn-primary add_history" >
+                                                                                    <i class="las la-plus"></i> 
+                                                                                </button>
+                                                                            </div>    
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <div id="show_family_history">
+                                                                        <div class="row" id="row1">
+                                                                            <div class="col-lg-10 mb-3">
+                                                                                <label for="PatientFirstName" class="form-label">Family Medical history</label>
+                                                                                <input type="text" class="form-control" id="familyHistory1" placeholder="Add Family Medical History..... " autocomplete="off">
+                                                                            </div>
+                                                                            <div class=" col-lg-1 mb-3">
+                                                                                <label class="form-label">Add </label>
+                                                                                <button type="button" class="btn btn-primary add_family_history" >
+                                                                                    <i class="las la-plus"></i> 
+                                                                                </button>
+                                                                            </div>      
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                                                                
+                                                            </div>
+                                                        </div>
+                                                        <!--end accordion-->
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane" id="NurseAssessment" role="tabpanel">
+                                                    <div class="profile-timeline">
+                                                        <div class="accordion accordion-flush" id="monthlyExample">
+                                                            <div id="show_assessment">
+                                                                <div class="row" id="row1">
+                                                                    <div class="col-lg-11 mb-3">
+                                                                        <label for="PatientFirstName" class="form-label">Assessment</label>
+                                                                        <input type="text" class="form-control" id="NurseAssessment1" placeholder="Add Nurse Assessment.... " autocomplete="off">
+                                                                    </div>
+                                                                    <div class=" col-lg-1 mb-3">
+                                                                        <label class="form-label">Add More</label>
+                                                                        <button type="button" class="btn btn-primary add_Assessment" >
+                                                                            <i class="las la-plus"></i> 
+                                                                        </button>
+                                                                    </div>                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--end accordion-->
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane" id="final" role="tabpanel">
+                                                    <div class="profile-timeline">
+                                                        <div class="accordion accordion-flush" id="monthlyExample">
+                                                            <div class="mb-3">
+                                                                <label for="PatientVillage" class="form-label">Date and time of Triage</label>
+                                                                <input class="form-control" type="datetime-local" id="triageDate" autocomplete="off">
+                                                            </div>
+                                                            <div class=" mb-3">
+                                                                <label for="PatientVillage" class="form-label">Triage Category</label>
+                                                                <select class="form-select" id="triageCategory">
+                                                                    <option value="" selected>Select</option>
+                                                                    <option value="Immediate" >Immediate</option>
+                                                                    <option value="Emergent" >Emergent</option>
+                                                                    <option value="Urgent" >Urgent</option>
+                                                                    <option value="nonUrgent" >Non-Urgent</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="PatientVillage" class="form-label">Doctor Consultation Required</label>
+                                                                <select class="form-select" id="IsDoctorRequired">
+                                                                    <option value="" selected>Select</option>
+                                                                    <option value="Yes" >Yes</option>
+                                                                    <option value="No" >No</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="is-doctor d-none ">
+                                                                <div class="row doctors">
+                                                                    <div class="mb-3">
+                                                                        <label for="PatientVillage" class="form-label">Doctor</label>
+                                                                        <select class="form-select" id="Doctor">
+                                                                            <option value="" selected>Select a Doctor</option>
+                                            
+                                                                            {% for doctor in Doctors %}
+                                                                            <option value="{{doctor.id}}">{{doctor.get_full_name}}</option>
+                                                                            {% endfor %}
+                                            
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="PatientVillage" class="form-label">Comment</label>
+                                                                <textarea class="form-control" id="Comments" autocomplete="off" placeholder="Add Comment ...."></textarea>
+                                                            </div>
+                                                            {% if not Isdischarged %}
+                                                            <div class="col-lg-12 col-md-6 col-sm-12">
+                                                                <div class="mb-3 text-end">
+                                                                <button  type='button'  data-bs-dismiss="modal" class="btn-danger btn">Cancel</button>
+                                                                <button  type='button' id="submit_triage_form" class="btn-primary btn">Save</button>
+                                                                </div>
+                                                            </div>
+
+                                                            {%endif%}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- end card body -->
+                                    </div>
+                                </div>
+                                {%endif%}
+                                <div class="tab-pane fade" id="diagnosis" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                                    <div class="card">
+                               
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-4">
+                                                <h5 class="card-title flex-grow-1 mb-0">Diagnosis
+                                                </h5>
+                                                <div class="flex-shrink-0">
+                                                    {% if not Isdischarged %}
+                                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" id="add_diagnosis" data-bs-target="#DiagnosisModal"><i class="bx bx-plus me-1"></i>Add Diagnosis</a>
+                                                    {%endif%}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6" >
+                                                    <div class="card">
+                                                    <div class="card-header">
+                                                        <h5 class="card-title mb-0">Laboratory</h5>
+                                                    </div>
+                                        
+                                                    <div class="card-body table-responsive">
+                                                        <table  id="LabTable" class="table table-borderless align-middle mb-0">
+                                                            <thead class="table-light"> 
+                                                                <tr>
+                                                                    <th>Order No</th>
+                                                                    <th>Order Date</th>
+                                                                    <th>Status</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {%if ordered_laboratorities%}
+                                                                {%for ordered in ordered_laboratorities%}
+                                                                 <tr>
+                                                                    <td>{{ordered.TestOrderNumber}}</td>
+                                                                    <td>{{ordered.Order_date}}</td>
+                                                                    <td> 
+                                                                        {% if ordered.Status == "Pending" %}
+                                                                        <span class="badge bg-danger" >{{ordered.Status}}</span>
+                                                                        {% else %}
+                                                                        <span class="badge bg-success" >{{ordered.Status}}</span>
+                                                                        {%endif%}
+                                                                    </td>
+                                                                     
+                                                                    <td>
+                                                                        <button type="button" class=" btn btn-sm btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#ViewLabTests{{ordered.id}}"><i class="las la-eye"></i> </button>
+                                                                        <div class="modal fade view-modal" tabindex="-1" id="ViewLabTests{{ordered.id}}" role="dialog" id="#" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                                                            <div class="modal-dialog modal-lg">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header">
+                                                                                        <h5 class="modal-title" id="myLargeModalLabel"> Lab Request Letter{{ordered.id}}</h5>
+                                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                    </div>
+                                                                                    <div class="modal-body">
+                                                                                        <div class="card-body">
+                                                                                            
+                                                                                            <div class="table-responsive">
+                                                                                                <table  class="table table-sm table-bordered">
+                                                                                                    <form id="labresult">
+                                                                                                        <thead>
+                                                                                                            <tr>
+                                                                                                                <th class="text-dark fw-medium">Patient Full Name</th>
+                                                                                                                <td><input type="text" id="order_id" value="{{Emergency_visit.Patient.get_fullName}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                                <th class="text-dark fw-medium">Visit No</th>
+                                                                                                                <td><input type="text" id="order_id" value="{{Emergency_visit.AppointmentNumber}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                <th class="text-dark fw-medium">Patient Gender</th>
+                                                                                                                <td><input type="text" id="order_id" value="{{Emergency_visit.Patient.PatientGender}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                                <th class="text-dark fw-medium">Visit  Date</th>
+                                                                                                                <td><input type="text" id="order_id" value="{{Emergency_visit.VisitDateTime}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                                
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                <th class="text-dark fw-medium">Patient Age</th>
+                                                                                                                <td><input type="text" id="order_id" value="{{Emergency_visit.Patient.PatientAge}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                                <th class="text-dark fw-medium">Doctor</th>
+                                                                                                                <td><input type="text" id="order_id" value="{{Emergency_visit.emergencytriage_set.first.Doctor.get_full_name}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                                
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                
+                                                                                                                <th class="text-dark fw-medium">Patient MobileNo</th>
+                                                                                                                <td><input type="text" id="order_id" value="{{Emergency_visit.Patient.PatientMobileNo}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                                <th class="text-dark fw-medium">Patient Address</th>
+                                                                                                                <td><input type="text" id="order_id" value="{{Emergency_visit.Patient.PatientVillage}}, {{Appointment.Patient.PatientDistrict}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                            
+                                                                                                            </tr>
+                                                                            
+                                                                                                        </thead>
+                                                                                                </table>
+                                                                                            </div>
+                                                                                            
+                                                                                            {%if ordered.Status == "Approved" %}
+                                                                                            <div class="table-responsive">
+                                                                                                {% if ordered.labtestresult_set.first.lab_blood_results_set.first %}
+                                                                                                <h6 style="text-align:center;"><u><i>Blood Result</i></u></h6>
+                                                                                                {%for unique in unique_group_list%}
+                                                                                                <table  id="PrescriptionTable"  class="table table-sm m-0 table-bordered">
+                                                                                                    <caption style="caption-side: top;font-size: 14px;padding: 1px;margin-bottom: 0em;font-weight: 600;margin-top:3px">{{unique.GroupName}} Lab</caption>
+        
+                                                                                                    <thead>
+                                                                                                        <tr>
+                                                                                                            <th >Test Number</th>
+                                                                                                            <th >Test Name</th>
+                                                                                                            <th >Report Value</th>
+                                                                                                            <th >Flag</th>
+                                                                                                          
+                                                                                                            <th>Normal Range</th>
+                                                                                                            <th>Test Unit</th>
+                                                                                                        </tr>
+                                                                                                    </thead>
+                                                                                                    <tbody>
+        
+                                                                                                      
+                                                                                                        {%for unique_subgroup in unique_subgroup_list%}
+                                                                                                        {% if unique.id == unique_subgroup.Group.id%}
+                                                                                                            <tr>
+                                                                                                                <td  colspan='8'><span style="font-weight:600;">{{unique_subgroup.SubGroupName}}</span> </td>
+                                                                                                            </tr> 
+                                                                                                        {% for lab_result in lab_blood_result_list%}
+                                                                                                        {% if lab_result.labTest_result.LabTestOrder.id == ordered.id%}
+                                                                                                        {%if lab_result.TestID.Group.id == unique.id%}
+                                                                                                        {%if lab_result.TestID.SubGroup.id == unique_subgroup.id%}
+                                                                                                            <tr>
+                                                                                                                <td>{{lab_result.TestID.TestID.TestNumber}}</td>
+                                                                                                                {% comment %} <td>{{lab_result.TestID.Category.CategoryName}}</td> {% endcomment %}
+                                                                                                                <td>{{lab_result.TestID.TestID.TestName}}</td>
+                                                                                                                <td>{{lab_result.ResultValue}}</td>
+                                                                                                                <td>{{lab_result.flag}}</td>
+                                                                                                                <td>{{lab_result.TestID.NormalRange}}</td>
+                                                                                                                <td>{{lab_result.TestID.TestUnit}}</td>
+                                                                                                                
+                                                                                                            </tr>
+                                                                                                        {%endif%}
+                                                                                                        {%endif%}
+                                                                                                        {%endif%}
+                                                                                                        {%endfor%}
+                                                                                                        {%endif%}
+                                                                                                        {%endfor%}
+                    
+                                                                                                    </tbody>
+                                                                                                </table>
+                                                                                                {%endfor%}
+                                                                                                {%endif%}
+                                                                                            </div>
+                                                                                            <div class="table-responsive">
+                                                                                               <br>
+        
+                                                                                                {% if ordered.labtestresult_set.first.lab_examinationparameters_results_set.first %}
+                                                                                                <h6 style="text-align:center;"><u><i>Urine Result</i></u></h6>
+        
+                                                                                                {%for unique_param in unique_result_parameter_list%}
+                                                                                                
+                                                                                                <table  id="PrescriptionTable"  class="table table-sm m-0 table-bordered">
+        
+                                                                                                    {%if unique_param.labexaminationparameters_set.first.Type != "-" and unique_param.SampleType == "Urine"%}
+        
+                                                                                                    <caption style="caption-side: top;font-size: 14px;padding: 1px;margin-bottom: 0em;font-weight: 600;margin-top:3px"><span style="color:black;font:12px;">Test name:</span>   {{unique_param.TestName}} </caption>
+        
+                                                                                                    <thead>
+                                                                                                        <tr>
+                                                                                                            <th >Parameter Name</th>
+                                                                                                            <th >Report Value</th>
+                                                                                                        </tr>
+                                                                                                    </thead>
+                                                                                                    <tbody>
+                                                                                                      
+                                                                                                        {%for type in unique_types%}
+                                                                                                        {% if type != "-" %}
+                                                                                                        <tr>
+                                                                                                            <td  colspan='8'><span style="font-weight:600;">{{type}} Examination</span> </td>
+                                                                                                        </tr>
+                                                                                                        {% for lab_result in lab_parameter_result_list%}
+                                                                                                        {% if lab_result.labTest_result.LabTestOrder.id == ordered.id%}
+                                                                                                        {%if unique_param.TestName == lab_result.TestID.TestName%}
+        
+                                                                                                        {% if lab_result.Parameter.Type == type %}
+                                                                                                      
+                                                                                                        <tr>
+                                                                                                            <td>{{lab_result.Parameter.ParameterName}}</td>
+                                                                                                            <td>{{lab_result.ResultValue}}</td>
+                                                                                                        </tr>
+                                                                                                        {%endif%}
+                                                                                                        {%endif%}
+                                                                                                        {%endif%}
+        
+                                                                                                        {%endfor%}
+                                                                                                        {%endif%}
+                    
+                                                                                                        {%endfor%}
+                                                                                                        
+                                                                                                    </tbody>
+                                                                                                    {%elif unique_param.labexaminationparameters_set.first.Type == "-" and unique_param.SampleType == "Urine"%}
+                                                                                                    {% for lab_result in lab_parameter_result_list%}
+                                                                                                    {%if unique_param.TestName == lab_result.TestID.TestName and unique_param.SampleType == "Urine"%}
+                                                                                                    {% if lab_result.labTest_result.LabTestOrder.id == ordered.id%}
+                                                                                                    <caption style="caption-side: top;font-size: 14px;padding: 1px;margin-bottom: 0em;font-weight: 600;margin-top:3px"><span style="color:black;font:12px;">Test name:</span>   {{unique_param.TestName}} </caption>
+        
+                                                                                                    <thead>
+                                                                                                        <tr>
+                                                                                                            <th> #ID</th>
+                                                                                                            <th >Test Name</th>
+                                                                                                            <th >Report Value</th>
+                                                                                                        
+                                                                                                        </tr>
+                                                                                                    </thead>
+                                                                                                    <tbody>
+                                                                                                       
+                    
+                                                                                                        <tr>
+                                                                                                            <td>{{unique_param.TestNumber}}</td>
+                                                                                                            <td>{{lab_result.TestID.TestName}}</td>
+                                                                                                            <td>{{lab_result.ResultValue}}</td>
+                    
+                                                                                                        </tr>
+                                                                                                        {%endif%}
+                                                                                                        {%endif%}
+                                                                                                        {%endfor%}
+                                                                                                    </tbody>
+                                                                                                    {%endif%}
+                                                                                                </table>
+                                                                                                {%endfor%}
+                                                                                                {%endif%}
+                                                                                                <br>
+                                                                                                {% if ordered.labtestresult_set.first.lab_examinationparameters_results_set.first %}
+                                                                                                <h6 style="text-align:center;"><u><i>Stool Result</i></u></h6>
+        
+                                                                                                {%for unique_param in unique_result_parameter_list%}
+        
+                                                                                                <table  id="PrescriptionTable"  class="table table-sm m-0 table-bordered">
+        
+                                                                                                        {%if unique_param.labexaminationparameters_set.first.Type != "-" and  unique_param.SampleType == "Stool"%}
+                                                                                                        <caption style="caption-side: top;font-size: 14px;padding: 1px;margin-bottom: 0em;font-weight: 600;margin-top:3px"><span style="color:black;font: 12px;">Test name:</span>   {{unique_param.TestName}} </caption>
+        
+                                                                                                        <thead>
+                                                                                                            <tr>
+                                                                                                                <th >Parameter Name</th>
+                                                                                                                <th >Report Value</th>
+                                                                                                            </tr>
+                                                                                                        </thead>
+                                                                                                         <tbody>
+                                                                                                      
+                                                                                                        {%for type in unique_types%}
+                                                                                                        {% if type != "-" %}
+                                                                                                        <tr>
+                                                                                                            <td  colspan='8'><span style="font-weight:600;">{{type}} Examination</span> </td>
+                                                                                                        </tr>
+                                                                                                        {% for lab_result in lab_parameter_result_list%}
+                                                                                                        {% if lab_result.labTest_result.LabTestOrder.id == ordered.id%}
+                                                                                                        {%if unique_param.TestName == lab_result.TestID.TestName%}
+        
+                                                                                                        {% if lab_result.Parameter.Type == type %}
+                                                                                                      
+                                                                                                        <tr>
+                                                                                                            <td>{{lab_result.Parameter.ParameterName}}</td>
+                                                                                                            <td>{{lab_result.ResultValue}}</td>
+                                                                                                        </tr>
+                                                                                                        {%endif%}
+                                                                                                        {%endif%}
+                                                                                                        {%endif%}
+        
+                                                                                                        {%endfor%}
+                                                                                                        {%endif%}
+                    
+                                                                                                        {%endfor%}
+                                                                                                        
+                                                                                                    </tbody>
+                                                                                                    {%elif unique_param.labexaminationparameters_set.first.Type == "-" and  unique_param.SampleType == "Stool"%}
+                                                                                                    <caption style="caption-side: top;font-size: 14px;padding: 1px;margin-bottom: 0em;font-weight: 600;margin-top:3px"><span style="color:black;font: 12px;">Test name:</span>   {{unique_param.TestName}} </caption>
+        
+                                                                                                    <thead>
+                                                                                                        <tr>
+                                                                                                            <th> #ID</th>
+                                                                                                            <th >Test Name</th>
+                                                                                                            <th >Report Value</th>
+                                                                                                        
+                                                                                                        </tr>
+                                                                                                    </thead>
+                                                                                                    <tbody>
+                                                                                                        {% for lab_result in lab_parameter_result_list%}
+                                                                                                        {%if unique_param.TestName == lab_result.TestID.TestName%}
+                                                                                                        {% if lab_result.labTest_result.LabTestOrder.id == ordered.id%}
+                    
+                                                                                                        <tr>
+                                                                                                            <td>{{unique_param.TestNumber}}</td>
+                                                                                                            <td>{{lab_result.TestID.TestName}}</td>
+                                                                                                            <td>{{lab_result.ResultValue}}</td>
+                    
+                                                                                                        </tr>
+                                                                                                        {%endif%}
+                                                                                                        {%endif%}
+                                                                                                        {%endfor%}
+                                                                                                    </tbody>
+                                                                                                    {%endif%}
+                                                                                                </table>
+                                                                                                {%endfor%}
+                                                                                                {%endif%}
+                                                                                            </div>
+                                                                                            {%else%}
+                                                                                            <h5 style="text-align: center;"><u ><i>Lab Requests</i></u></h5>
+                                                                                            <div class="table-responsive">
+                                                                                                
+                                                                                                <table  id="PrescriptionTable"  class="table table-sm m-0 table-bordered">
+                                                                                                    <thead>
+                                                                                                        <tr>
+                                                                                                            <th >Test Number</th>
+                                                                                                            <th >Sample Type</th>
+                                                                                                            <th >Test Type</th>
+                                                                                                            <th >Test Name</th>
+                                                                                                           
+                                                                                                        </tr>
+                                                                                                    </thead>
+                                                                                                    <tbody>
+                                                                                                        {% if ordered.Status == "Pending" %}
+                    
+                                                                                                        {%for ordered_lab_test in ordered_lab_tests_list%}
+                                                                                                       
+                                                                                                        {% if ordered_lab_test.LabTestOrder.id == ordered.id%}
+                                                                                                        <tr>
+                    
+                                                                                                            <td>{{ordered_lab_test.Test.TestNumber}}</td>
+                                                                                                            <td>{{ordered_lab_test.Test.SampleType}}</td>
+                                                                                                            {% if ordered_lab_test.Test.SampleType == "Blood"%}
+                                                                                                            {%for lab_blood in lab_blood_list%}
+                                                                                                            {% if ordered_lab_test.Test.id  == lab_blood.TestID.id%}
+                                                                                                            <td>{{lab_blood.Group.GroupName}}</td>
+                                                                                                            {%endif%}
+                                                                                                            {%endfor%} 
+                                                                                                            {%endif%}
+                                                                                                            {%if ordered_lab_test.Test.SampleType == "Urine" or ordered_lab_test.Test.SampleType == "Stool" %}
+                                                                                                            <td>{{ordered_lab_test.Test.SampleType}}</td>
+                                                                                                            {%endif%}
+                    
+                                                                                                            <td>{{ordered_lab_test.Test.TestName}}</td> 
+                                                                                                        </tr>
+                                                                                                        {%endif%}
+                                                                                                        {%endfor%}
+                                                                                                        {%endif%}
+                                                                                                    </tbody>
+                                                                                                </table>
+                                                                                            </div>
+                                                                                            {%endif%}
+                                                                                            {%if ordered.Status == "Approved" %}
+                                                                                            {% for lab in lab_result%}
+                                                                                            {% if lab.LabTestOrder.id == ordered.id%}
+                                                                                            {%if lab.Comment%}
+                                                                                            <div class="table-responsive">
+                                                                                                <table class="table table-sm m-0 table-borderless">
+                                                                                                    <thead>
+                                                                                                        <tr>
+                                                                                                            <th >Comments</th>
+                                                                                                        </tr>
+                                                                                                    </thead>
+                                                                                                    
+                                                                                                    <tbody >  
+                                                                                                        <td style="background-color:white;">  <span >{{lab.Comment}}</span></td>
+                                                                                                    </tbody>
+                                                                                                </table>
+                                                                        
+                                                                                            </div>
+                                                                                            {%endif%}
+                                                                                            {%endif%}
+                                                                                            {%endfor%}
+                                                                                            {%endif%}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div><!-- /.modal-content -->
+                                                                            </div><!-- /.modal-dialog -->
+                                                                        </div><!-- /.modal -->
+                                                                        <a id="editBtnDiagnosis" rowid = {{ordered.id}} >   
+                                                                           
+                                                                    </td>
+                                                                 </tr>
+                                                                 {%endfor%}
+                                                                 {%else%}
+                                                                 <tr>
+                                                                     <td class='text-center' colspan='5'>No lab tests has been ordered for this patient.</td>
+                                                                 </tr>
+                                                                 {%endif%}
+                                                             </tbody>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-lg-6">
+                                                    <div class="card">
+                                                    <div class="card-header">
+                                                        <h5 class="card-title mb-0">Radiology</h5>
+                                                    </div>
+                                        
+                                                    <div class="card-body table-responsive">
+                                                        <table  id="LabTable" class="table table-borderless align-middle mb-0">
+                                                            <thead class="table-light">
+                                                                <tr>
+                                                                    <th>Order No</th>
+                                                                    <th>Order Date</th>
+                                                                    <th>Status</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {% if ordered_radio%}
+                                                                {% for ordered in ordered_radio%}
+                                                                <tr>
+                                                                    <td>{{ordered.RadiologyOrderNumber}}</td>
+                                                                    <td>{{ordered.Order_date}}</td>
+                                                                    <td>{{ordered.Status}}</td>
+                                                                    <td>
+                                                                        <button type="button" class="btn btn-sm btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#ViewRadioResults{{ordered.id}}"><i class="las la-eye"></i> </button>
+                                                                        <div class="modal fade view-modal" tabindex="-1" id="ViewRadioResults{{ordered.id}}" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" id="#" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                                                            <div class="modal-dialog modal-lg">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header">
+                                                                                        <h5 class="modal-title" id="myLargeModalLabel">View Radiology Exams</h5>
+                                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                    </div>
+                                                                                    <div class="modal-body">                                                                                   
+                                                                                            <br>
+                                                                                            {% if ordered.Status == "Pending" %}
+                                                                                            <div class="table-responsive">
+                                                                                                <table  class="table table-sm table-bordered">
+                                                                                                    <form id="labresult">
+                                                                    
+                                                                                                        <thead>
+                                                                                                            <tr>
+                                                                                                                <th class="text-dark fw-medium">Patient Full Name</th>
+                                                                                                                <td><input type="text" id="order_id" value="{{Emergency_visit.Patient.get_fullName}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                                <th class="text-dark fw-medium">Visit No</th>
+                                                                                                                <td><input type="text" id="order_id" value="{{Emergency_visit.AppointmentNumber}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                <th class="text-dark fw-medium">Patient Gender</th>
+                                                                                                                <td><input type="text" id="order_id" value="{{Emergency_visit.Patient.PatientGender}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                                <th class="text-dark fw-medium">Visit  Date</th>
+                                                                                                                <td><input type="text" id="order_id" value="{{Emergency_visit.VisitDateTime}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                                
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                <th class="text-dark fw-medium">Patient Age</th>
+                                                                                                                <td><input type="text" id="order_id" value="{{Emergency_visit.Patient.PatientAge}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                                <th class="text-dark fw-medium">Doctor</th>
+                                                                                                                <td><input type="text" id="order_id" value="{{Emergency_visit.emergencytriage_set.first.Doctor.get_full_name}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                                
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                
+                                                                                                                <th class="text-dark fw-medium">Patient MobileNo</th>
+                                                                                                                <td><input type="text" id="order_id" value="{{Emergency_visit.Patient.PatientMobileNo}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                                <th class="text-dark fw-medium">Patient Address</th>
+                                                                                                                <td><input type="text" id="order_id" value="{{Emergency_visit.Patient.PatientVillage}}, {{Appointment.Patient.PatientDistrict}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                            
+                                                                                                            </tr>
+                                                                            
+                                                                                                        </thead>
+                                                                                                </table>
+                                                                                            </div>
+                                                                                            <h4 style="text-align:center;font-style:italic"> <u>Radiology Request</u></h4>
+                                                                                            <div class="table-responsive">
+                                                                                                <table  id="PrescriptionTable"  class="table table-sm m-0 table-bordered">
+                                                                                                    <thead>
+                                                                                                        <tr>
+                                                                                                            <th >Exam Ref</th>
+                                                                                                            <th >Exam Category</th>
+                                                                                                            <th >Exam Name</th>
+                                                                                                            
+                                                                                                          
+                                                                                                        </tr>
+                                                                                                    </thead>
+                                                                                                    <tbody>
+                                                                                                       
+                                                                                                       {%for ordered_radio in radiology_exams%}
+                                                                                                       {% if ordered_radio.RadiologyOrder.id == ordered.id%}
+                                                                                                        <tr>
+                                                                                                            <td>{{ordered_radio.RadiologyExam.ExamNumber}}</td>
+                                                                                                            <td>{{ordered_radio.RadiologyExam.Category.CategoryName}}</td>
+                                                                                                            <td>{{ordered_radio.RadiologyExam.ExamName}}</td>
+                                                                                                        </tr>
+                                                                                                        {%endif%}
+                                                                                                        {%endfor%}
+                                                                                                       
+                                                                                                    </tbody>
+                                                                                                </table>
+                                                                                            </div>
+                                                                                            {%else%}
+                                                                                            {%for radio in radio_result%}
+                                                                                            {%for radio_details in radio_result_details_list%}
+                                                                                            {%if radio.id == radio_details.Radiology_Result.id%}
+                                                                                            {% if radio_details.Radiology_Result.RadiologyOrder.id == ordered.id%}
+                                                                                            <div class="flex-shrink-0 mt-sm-0 mt-3 mb-3">
+                                                                                                <h6><span >Patient Full Name: </span><span class="text-muted fw-normal">{{Appointment.Patient.get_fullName}}</span></h6>
+                                                                                                <h6><span >Doctor: </span><span class="text-muted fw-normal">{{Appointment.Doctor.get_full_name}}</span></h6>
+                                                                                                <h6><span >Patient Age: </span><span class="text-muted fw-normal">{{Appointment.Patient.PatientAge}}</span></h6>
+                                                                                                <h6><span >Radiology Name:</span><span class="text-muted fw-normal">{{radio_details.RadiologyExam.ExamName}}</span></h6>
+                                                                                            </div>
+                                                                                            <h6 class="fw-semibold text-uppercase mb-1">Findings</h6>
+                                                                                            <p class="text-muted">{{radio_details.Findings}} </p>
+                                                                                            <h6 class="fw-semibold text-uppercase mb-1">Impressions</h6>
+                                                                                            <p class="text-muted">{{radio_details.Impressions}} </p>
+                                                                                            <h6 class="fw-semibold text-uppercase mb-1">Recommendations</h6>
+                                                                                            <p class="text-muted">{{radio_details.Recommendations}} </p>
+                                                                                            <h6 class="fw-semibold text-uppercase mb-1">Comments</h6>
+                                                                                            <p class="text-muted">{{radio_details.Comments}} </p>
+                                                                                            <div class="row d-flex justify-content-between">
+                                                                                                <div class="col-lg-9">
+                                                                                                </div>
+                                                                                                <div class="col-lg-3">
+                                                                                                    <div class="py-2 text-center">
+                                                                                                    <a href="{{radio_details.Result_Files.url}}" class="fw-medium btn btn-sm bg-success" target="_blank">View & Print</a>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+           
+                                                                                            {%endif%}
+                                                                                            {%endif%}
+                                                                                            {%endfor%}
+                                                                                            {%endfor%}
+                                                                                            {%endif%}
+                                                                                           
+                                                                                    </div>
+                                                                                </div><!-- /.modal-content -->
+                                                                            </div><!-- /.modal-dialog -->
+                                                                        </div><!-- /.modal -->
+                                                                        
+                                                                        {% comment %} <button type="button" class=" btn-success">
+                                                                            <i class="las la-edit"></i> 
+                                                                        </button>
+                                                                        <button type="button" class=" btn-danger">
+                                                                            <i class="las la-trash"></i> 
+                                                                        </button> {% endcomment %}
+                                                                    </td>
+                                                                </tr>
+                                                                {%endfor%}
+                                                                {%else%}
+                                                                <tr>
+                                                                    <td class='text-center' colspan='5'>No Radiology Exam has been ordered for this patient.</td>
+                                                                </tr>
+                                                                {%endif%}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="prescriptionss" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-4">
+                                                <h5 class="card-title flex-grow-1 mb-0">prescriptions</h5>
+                                                <div class="flex-shrink-0">
+                                                    {% if not Isdischarged %}
+                                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#PrescriptionModal"><i class="bx bx-plus me-1"></i>Add Prescription</a>
+                                                    {%endif%}
+                                                </div>
+                                            </div>
+                                            <div class="acitivity-timeline">
+                                                <table class="table table-borderless align-middle mb-0">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Prescription No</th>
+                                                            <th>Prescription Date</th>
+                                                            <th>Doctor</th>
+                                                            <th>Status</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% if Prescriped_medicines %}
+                                                        {% for medicine in Prescriped_medicines %}
+                                                        <tr>
+                                                            <td> {{medicine.PrescriptionNo}}</td>
+                                                            <td> {{medicine.Prescription_Date}}</td>
+                                                            <td> {{medicine.Visit.emergencytriage_set.first.Doctor.get_full_name}}</td>
+                                                            {% if medicine.Status == "pending" %}
+                                                            <td> <span class="badge bg-danger"> {{medicine.Status}} </span></td>
+                                                            {%else%}
+                                                            <td> <span class="badge bg-primary"> {{medicine.Status}} </span></td>
+                                                            {%endif%}
+                                                            <td>
+                                                                <button type="button" class="btn btn-sm btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#ViewPrescription{{medicine.id}}"><i class="las la-eye"></i> </button>
+                                                                <div class="modal fade view-modal" tabindex="-1" id="ViewPrescription{{medicine.id}}" role="dialog" id="#" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-lg">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="myLargeModalLabel"> Prescription letter</h5>
+                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                
+                                                                                <div class="table-rep-plugin">
+                                                                                    <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                                                                        <table id="tech-companies-1" class="table table-bordered table-sm ">
+                                                                                            <form id="labresult">
+                                                            
+                                                                                                <thead>
+                                                                                                    <tr>
+                                                                                                        <th class="text-dark fw-medium">Patient Full Name</th>
+                                                                                                        <td><input type="text" id="order_id" value="{{Emergency_visit.Patient.get_fullName}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                        <th class="text-dark fw-medium">Visit No</th>
+                                                                                                        <td><input type="text" id="order_id" value="{{Emergency_visit.AppointmentNumber}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                    </tr>
+                                                                                                    <tr>
+                                                                                                        <th class="text-dark fw-medium">Patient Gender</th>
+                                                                                                        <td><input type="text" id="order_id" value="{{Emergency_visit.Patient.PatientGender}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                        <th class="text-dark fw-medium">Visit  Date</th>
+                                                                                                        <td><input type="text" id="order_id" value="{{Emergency_visit.VisitDateTime}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                        
+                                                                                                    </tr>
+                                                                                                    <tr>
+                                                                                                        <th class="text-dark fw-medium">Patient Age</th>
+                                                                                                        <td><input type="text" id="order_id" value="{{Emergency_visit.Patient.PatientAge}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                        <th class="text-dark fw-medium">Doctor</th>
+                                                                                                        <td><input type="text" id="order_id" value="{{Emergency_visit.emergencytriage_set.first.Doctor.get_full_name}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                        
+                                                                                                    </tr>
+                                                                                                    <tr>
+                                                                                                        
+                                                                                                        <th class="text-dark fw-medium">Patient MobileNo</th>
+                                                                                                        <td><input type="text" id="order_id" value="{{Emergency_visit.Patient.PatientMobileNo}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                        <th class="text-dark fw-medium">Patient Address</th>
+                                                                                                        <td><input type="text" id="order_id" value="{{Emergency_visit.Patient.PatientVillage}}, {{Appointment.Patient.PatientDistrict}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                                                                                    
+                                                                                                    </tr>
+                                                                    
+                                                                                                </thead>
+                                                                                        </table>
+                                                                                    </div>
+                                                            
+                                                                                </div>
+                                                                                
+                                                                                <div class="table-responsive">
+                                                                                    <table  id="PrescriptionTable" class="table table-borderless  ">
+                                                                                        <thead>
+                                                                                            <tr>
+                                                                                                <th class="">Medicine Name</th>
+                                                                                                <th class="">Quantity</th>
+                                                                                                <th class="">Dose</th>
+                                                                                                <th class="">Dose Interval</th>
+                                                                                                <th class="">Dose Duration</th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                            {% if Prescriped_medicines %}
+                                                                                            {% for prescripe_medicine in Prescriped_medicines %}
+                                                                                            {% if prescripe_medicine.id == medicine.id %}
+                                                                                            {%for prescriped_medicine in prescripe_medicine.medicineprescriptiondetials_set.all %}
+                                                                                            <tr>
+                                                                                                <td>{{prescriped_medicine.MedicineName.Medicine_name.Medicine_name}}</td>
+                                                                                                <td>{{prescriped_medicine.Quantity}}</td>
+                                                                                                <td>{{prescriped_medicine.Dose}}</td>
+                                                                                                <td>{{prescriped_medicine.DoseInterval}}</td>
+                                                                                                <td>{{prescriped_medicine.DoseDuration}}</td>
+                                                                                            </tr>
+                                                                                            {%endfor%}
+                                                                                            {%endif%}
+                                                                                            {%endfor%}
+                                                                                            {% endif %}    
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                                <div class="table-responsive">
+                                                                                    <table class="table table-sm table-borderless">
+                                                                                        <thead>
+                                                                                            <tr>
+                                                                                                <th >Instructions</th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        
+                                                                                        <tbody >  
+                                                                                            <td style="background-color:white;">  <span >{{medicine.instructions}}</span></td>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                            
+                                                                                </div>
+                                                                            </div>
+                                                                        </div><!-- /.modal-content -->
+                                                                    </div><!-- /.modal-dialog -->
+                                                                </div><!-- /.modal -->
+                                                              
+                                                                {% comment %} <a id="editbuttonPrescription" rowid = {{Appointment.id}} >
+                                                                <button type="button" class="btn btn-sm btn-success">
+                                                                    <i class="las la-prescription"></i> 
+                                                                </button></a> {% endcomment %}
+                                                            </td>
+                                                           
+                                                        </tr>
+                                                        {%endfor%}
+                                                        {%else%}
+                                                        <tr>
+                                                            <td class='text-center' colspan='5'>No Medicine has been prescriped for this patient.</td>
+                                                        </tr>
+                                                        {%endif%}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!--end card-body-->
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="assignbed" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-4">
+                                                <h5 class="card-title flex-grow-1 mb-0">Bed History</h5>
+                                                <div class="flex-shrink-0">
+                                                    {% if not Isdischarged %}
+                                                    {%if AssignedBed%}
+                                                   
+                                                   
+
+                                                    {%else%}
+                                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#assignbedroom"><i class="bx bx-plus me-1"></i>Assign Bed</a>
+
+                                                    {%endif%}
+                                                    {%endif%}
+                                                </div>
+                                            </div>
+                                            <div class="acitivity-timeline">
+                                                <table class="table table-borderless align-middle mb-0">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Room Number</th>
+                                                            <th>Bed Number</th>
+                                                            <th>Arrival Date</th>
+                                                            <th>Discharge Dtae</th>
+                                                            <th>Action</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {%if AssignedBed%}
+
+                                                        {%for AssignBed in AssignedBed%}
+
+                                                        <tr>
+                                                            <td> {{AssignBed.Room.Room_NO}}</td>
+                                                            <td> {{AssignBed.Bed.BedNO}} </td>
+                                                            <td> {{AssignBed.FromDate}}</td>
+                                                            <td>{% if AssignBed.ToDate%} {{AssignBed.ToDate}}{%else%} -{%endif%}</td>
+                                                            <td> view</td>
+                                                            
+                                                        </tr>
+                                                      
+                                                        {%endfor%}
+                                                        {%else%}
+                                                        <tr>
+                                                            <td class='text-center' colspan='5'>No Bed has been assignd for this patient</td>
+                                                        </tr>
+                                                        {%endif%}
+                                                        <!-- <tr>
+                                                            <td class='text-center' colspan='5'>No Medicine has been prescriped for this patient.</td>
+                                                        </tr> -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!--end card-body-->
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="medications" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-4">
+                                                <h5 class="card-title flex-grow-1 mb-0">Medications</h5>
+                                                <div class="flex-shrink-0">
+                                                    {% if not Isdischarged %}
+                                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#medicationsModal"><i class="bx bx-plus me-1"></i>Add MedicineDose</a>
+                                                    {%endif%}
+                                                </div>
+                                            </div>
+                                            <div class="acitivity-timeline">
+                                                <table class="table table-borderless align-middle mb-0">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Medicine Name</th>
+                                                            <th>Dose</th>
+                                                            <th>Date</th>
+                                                            <th>Time</th>
+                                                            <th>Remarks</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {%if medications%}
+                                                       {% for medicine in medications%}
+                                                        <tr>
+                                                            <td> {{medicine.Medication_name.MedicineName.Medicine_name.Medicine_name}}</td>
+                                                            <td> {{medicine.Medication_dose}} </td>
+                                                            <td> {{medicine.Medication_date}}</td>
+                                                            <td> {{medicine.Medicition_time}}</td>
+                                                            <td> {{medicine.Medicition_Remarks}}</td>
+                                                            <td> view</td>
+                                                            
+                                                        </tr>
+                                                       
+                                                        {%endfor%}
+                                                        {%else%}
+                                                        <tr>
+                                                            <td class='text-center' colspan='5'>No Medicine has been prescriped for this patient.</td>
+                                                        </tr>
+                                                        {%endif%}
+                                                        <!--  -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!--end card-body-->
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="discharge" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-4">
+                                                <h5 class="card-title flex-grow-1 mb-0">Discharge</h5>
+                                                <div class="flex-shrink-0">
+                                                    {% if not Isdischarged %}
+                                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#dischargeModal"><i class="bx bx-plus me-1"></i>Add Discharge</a>
+                                                    {%endif%}
+                                                </div>
+                                            </div>
+                                            <div class="acitivity-timeline">
+                                                <table class="table table-borderless align-middle mb-0">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Discharge ID</th>
+                                                            <th>Discharge Date</th>
+                                                            <th>Discharge Status</th>
+                                                            
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% if Isdischarged %}
+                                                        <tr>
+                                                            <td> {{Isdischarged.id}}</td>
+                                                            <td> {{Emergency_visit.DischargeDateTime}}</td>
+                                                            <td> {{Isdischarged.dischargeStatus}}</td>
+                                                         
+                                                            <td> view</td>
+                                                            
+                                                        </tr>
+                                                    {%else%}
+                                                        <tr>
+                                                            <td class='text-center' colspan='5'>This patient is yet to be discharged.</td>
+                                                        </tr>
+                                                    {%endif%}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!--end card-body-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
+                </div>
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
+
+  
+{% endblock  %}
+
+
+{% block scripts %}
+<script>
+    var emergency_visit_id = '{{id}}'
+ </script>
+<script src='{% static "scripts/APEN/Emeergency/triageForm.js" %}'></script>
+
+{% endblock scripts %}

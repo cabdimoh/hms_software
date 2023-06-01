@@ -1,0 +1,485 @@
+{% extends "base/print_base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block cssStyle %}
+<style>
+    body{
+        
+        -webkit-print-color-adjust: exact;
+        margin-bottom:20px;
+        color: rgb(15, 15, 15);
+      
+       }
+
+      .box{
+          margin-top: 20px;
+          border: 1px solid #000;
+          padding:15px;
+      }
+
+    
+      .page-break{
+        page-break-before: always;
+      }
+
+  
+   
+    
+</style>
+{% endblock %}
+
+{% block printData %}
+
+<div class="container-fluid rows-print-as-pages">   
+  <div class="row">
+    {% if isError == False %}
+
+
+
+
+    
+    <div class="w-100">
+      {% if basic_info %}
+        
+  <!-- Basic info -->
+      <h6 class="  bg-primary text-white p-2 rounded-end">Basic Info     
+      </h6>
+      <table class="table mt-3 table-borderless">
+        <tbody class="">
+          <tr>
+            <th class=" fw-bold">Name:</th>
+            <td>{{basic_info.get_full_name}}</td>      
+            <th class=" fw-bold">mother Name:</th>
+            <td>{{basic_info.mother_name}}</td>     
+            
+          </tr>
+
+          <tr>
+            <th class=" fw-bold">Job title:</th>
+            <td>{{basic_info.job_type.name}}</td> 
+            <th class=" fw-bold">phone:</th>
+            <td>{{basic_info.phone}}</td>      
+            <th class=" fw-bold">Address:</th>
+            <td>{{basic_info.address}}</td>     
+            
+          </tr>
+
+
+          <tr>
+            <th class=" fw-bold">Gender:</th>
+            <td>{{basic_info.gender}}</td>      
+            <th class=" fw-bold">marital:</th>
+            <td>{{basic_info.marital}}</td>    
+            <th class=" fw-bold">Date of birth:</th>
+            <td>{{basic_info.dob}}</td>  
+           
+          </tr>
+          
+        </tbody>
+      
+      </table>
+      {% endif %}
+
+
+
+
+<!-- job details -->
+
+
+
+   
+        
+{% if  jobs_details %}
+<div>
+    {% for item in jobs_details %}
+    {% if item.employee_type == "General-Director" %}
+    <h6 class="  bg-primary text-white p-2 rounded-end">Job Details     
+    </h6>
+    <table class="table table-borderless mt-3">
+      <thead class=" p-2">
+        <tr>
+          <th>Position</th>
+          <th>job title</th>
+        
+        </tr>
+      </thead>
+      <tbody class="">
+          <tr>
+            <td>{{item.employee_type}}</td>
+            <td>{{item.job_type.name}}</td>           
+          </tr>
+      </tbody>
+    </table>
+    <h6 class="my-2  bg-primary text-white p-2 rounded-end">Employee Salary       
+    </h6>
+    <table class="table table-borderless">
+      <thead class=" p-2 ">
+        <tr>
+          <th>Salary Type</th>
+          <th>Base salary  </th>
+          <th>Allowance </th>
+          <th>Net Pay</th>
+        
+        </tr>
+      </thead>
+      <tbody class="">
+      
+        <tr>
+          <td>{{item.salary.name}}</td>
+          <td>{{item.salary.base_salary}}</td>
+          <td>{{item.salary.fixed_allow}}</td>
+          <td>{{item.base_pay}}</td>
+        
+        </tr>
+      
+
+         
+      </tbody>
+
+    </table >
+
+
+   
+    {% elif item.employee_type == "Director-Secretory" %}
+    <h6 class="my-2  bg-primary text-white p-2 rounded-end">Director Secretory     
+    </h6>
+   
+    <table class="table  table-borderless mt-3">
+      <thead class=" ">
+        <tr>
+          <th>Position</th>
+          <th>job title</th>
+         
+        </tr>
+      </thead>
+      <tbody class="">
+          <tr>
+            <td>{{item.employee_type}}</td>
+            <td>{{item.job_type.name}}</td>
+          
+          </tr>
+      </tbody>
+    </table>
+
+    <h6 class="my-2  bg-primary text-white p-2 rounded-end">Employee Salary       
+    </h6>
+   
+    <table class="table table-borderless ">
+      <thead class="  ">
+        <tr>
+          <th>Salary Type</th>
+          <th>Base salary  </th>
+          <th>Allowance </th>
+          <th>Net Pay</th>
+        
+        </tr>
+      </thead>
+      <tbody class="">
+      
+        <tr>
+          <td>{{item.salary.name}}</td>
+          <td>{{item.salary.base_salary}}</td>
+          <td>{{item.salary.fixed_allow}}</td>
+          <td>{{item.base_pay}}</td>
+        
+        </tr>
+      
+
+         
+      </tbody>
+
+    </table >
+
+   
+
+    {% elif item.employee_type == "Department-Head" %}
+
+    <h6 class="my-1 bg-primary text-white p-2 rounded-end ">Job Detail  
+    </h6>
+
+    <table class="table table-borderless mt-3">
+            <thead class=" ">
+              <tr>
+                <th>Position</th>
+                <th>job title</th>
+                <th>Department Name</th>
+               
+              </tr>
+            </thead>
+            <tbody class="">
+                <tr>
+                  <td>{{item.employee_type}}</td>
+                  <td>{{item.job_type.name}}</td>
+                  <td>{{item.department_all.department_name}}</td>
+               
+                </tr>
+            </tbody>
+          </table>
+
+           <h6 class="my-2 bg-primary text-white p-2 rounded-end ">Employee Salary       
+          </h6>
+         
+          <table class="table  table-borderless">
+            <thead class="  ">
+              <tr>
+                <th>Salary Type</th>
+                <th>Base salary  </th>
+                <th>Allowance </th>
+                <th>Net Pay</th>
+              
+              </tr>
+            </thead>
+            <tbody class="">
+            
+              <tr>
+                <td>{{item.salary.name}}</td>
+                <td>{{item.salary.base_salary}}</td>
+                <td>{{item.salary.fixed_allow}}</td>
+                <td>{{item.base_pay}}</td>
+              
+              </tr>
+            
+
+               
+            </tbody>
+
+          </table >
+
+    
+   
+
+    {% elif item.employee_type == "Section-Head" %}
+    <h6 class="my-2 bg-primary p-2 border-end text-white">Job Details      
+    </h6>
+    <table class="table table-borderless mt-3">
+      <thead class=" ">
+        <tr>
+          <th>Position</th>
+          <th>job title</th>
+          <th>Department Name</th>
+          <th>Section Name</th>
+        </tr>
+      </thead>
+      <tbody class="">
+          <tr>
+            <td>{{item.employee_type}}</td>
+            <td>{{item.job_type.name}}</td>
+            <td>{{item.department_all.department_name}}</td>
+            <td>{{item.depar_section.department_sections}}</td>
+          </tr>
+      </tbody>
+    </table>
+
+    <h6 class="my-2  bg-primary p-2 border-end text-white">Employee Salary       
+    </h6>
+   
+    <table class="table table-borderless">
+      <thead class="  ">
+        <tr>
+          <th>Salary Type</th>
+          <th>Base salary  </th>
+          <th>Allowance </th>
+          <th>Net Pay</th>
+        
+        </tr>
+      </thead>
+      <tbody class="">
+      
+        <tr>
+          <td>{{item.salary.name}}</td>
+          <td>{{item.salary.base_salary}}</td>
+          <td>{{item.salary.fixed_allow}}</td>
+          <td>{{item.base_pay}}</td>
+        
+        </tr>
+      
+
+         
+      </tbody>
+
+    </table >
+
+   
+
+    {% elif item.employee_type == "Employee" %}
+    <h6 class="my-2 bg-primary p-2 rounded-end text-white "> Job details     
+    </h6>
+    <table class="table table-borderless mt-3">
+      <thead class="">
+        <tr>
+          <th>Position</th>
+          <th>job title</th>
+          <th>Department Name</th>
+          <th>Section Name</th>
+        </tr>
+      </thead>
+      <tbody class="">
+          <tr>
+            <td>{{item.employee_type}}</td>
+            <td>{{item.job_type.name}}</td>
+            <td>{{item.department_all.department_name}}</td>
+            <td>{{item.depar_section.department_sections}}</td>
+          </tr>
+      </tbody>
+    </table>
+
+    <h6 class="my-2  bg-primary p-2 rounded-end text-white ">Employee Salary       
+    </h6>
+   
+    <table class="table table-borderless">
+      <thead class=" ">
+        <tr>
+          <th>Salary Type</th>
+          <th>Base salary  </th>
+          <th>Allowance </th>
+          <th>Net Pay</th>
+        
+        </tr>
+      </thead>
+      <tbody class="">
+      
+        <tr>
+          <td>{{item.salary.name}}</td>
+          <td>{{item.salary.base_salary}}</td>
+          <td>{{item.salary.fixed_allow}}</td>
+          <td>{{item.base_pay}}</td>        
+        </tr>
+      
+
+         
+      </tbody>
+
+    </table>
+
+
+
+    {%else%}
+        <tr>
+            <td><p><b class="fw-bold text-black">No Job Available</span></p></td>
+        </tr>
+    {% endif %}        
+    {% endfor %}
+    {% endif %}
+  </div>
+  <!--end row-->
+
+
+        <!-- Qualifications -->
+        {% if qualification %}
+        <div>
+        
+  
+          <h6 class="  bg-primary text-white p-2 rounded-end">Qualification
+          </h6>
+          <table class="table mt-3 table-borderless">
+            <tbody class="">
+              {% for item in qualification %}
+    
+              <tr>
+                <th class=" fw-bold">Qualifications name:</th>
+                <td>{{item.name}}</td>      
+                <th class=" fw-bold">Specialization name:</th>
+                <td>{{item.Specialization}}</td>    
+                
+               
+              </tr>
+              {% endfor %}
+            </tbody>
+          
+          </table>
+        </div>
+        {% endif %}
+
+
+        {% if experiences %}
+        <div>
+        
+  
+          <h6 class="   text-white bg-primary p-2 rounded-end" >Experience
+            <!-- <h6 class="   text-white p-2 rounded-end" style="background-color: rgba(18, 131, 206, 0.2);">Experience -->
+          </h6>
+          <table class="table mt-3 table-borderless">
+            <tbody class="">
+              {% for item in experiences %}
+    
+              <tr>
+                <th class=" fw-bold">Experience name:</th>
+                <td>{{item.name}}</td>      
+                <th class=" fw-bold">Place:</th>
+                <td>{{item.place}}</td>    
+                
+               
+              </tr>
+              <tr>
+                <th class=" fw-bold">start date</th>
+                <td>{{item.start}}</td>      
+                <th class=" fw-bold">End date:</th>
+                <td>{{item.end}}</td>    
+                
+               
+              </tr>
+              {% endfor %}
+            </tbody>
+          
+          </table>
+        </div>
+        {% endif %}
+
+
+        
+        {% if Accounts %}
+        <div class="">
+          <h6 class="   text-white bg-primary p-2 rounded-end" >Employee Account
+         
+          </h6>
+          <table class="table mt-3 table-borderless">
+            <tbody class="">
+              {% for item in Accounts %}    
+              <tr>
+                <th class=" fw-bold">Bank Name :</th>
+                <td>{{item.banks}}</td>      
+                <th class=" fw-bold">Account Number:</th>
+                <td>{{item.account_number}}</td>  
+              </tr>
+            
+              {% endfor %}
+            </tbody>
+          
+          </table>
+        </div>
+        {% endif %}
+  
+        .
+        <div class="container ms-2 mt-2 d-flex justify-content-between fixed-bottom ">
+          <div class="mt-5">User: {{request.user.username}}</div>
+          <div><p class="mt-5">Signiture: _____________________________________</p></div>
+        </div>
+  {% else %}
+      <div class="row">
+          <div class="col-lg-12">
+              <h3> {{message}}</h3>
+          </div>
+          </div>
+      {%endif%}
+       
+  </div>  
+  </div>
+{% endblock %}
+{% block scriptsJS %}
+
+
+<script>
+  
+  const id = '{{pk}}'
+
+  console.log(id, 'ayan wada')
+
+  {% if isError == False %}
+    window.print();  
+    window.onafterprint = function () {
+      window.location.replace("/hrm/employee_detail/"+id);      
+    }
+    {%endif%}
+</script> 
+{% endblock %}

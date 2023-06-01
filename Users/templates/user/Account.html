@@ -1,0 +1,391 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block modal %}
+<div class="modal fade ProfilePicture" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-top">
+        <div class="modal-content">
+        
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle"> <span class="text-primary">Change Profile Picture</span> </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form action="">
+                     {% csrf_token %}
+              <div class="row">
+
+                <div class="text-center">
+
+                    <div class="position-relative d-inline-block mb-3">
+                        <div class="avatar-xl p-1">
+                            <div class="avatar-title bg-light ">
+                                <img src="{% static 'assets/images/users/user-dummy-img.jpg' %}"  id="lead-img"  class="avatar-lg rounded img-fluid " />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <h5 class="fs-13 mt-3">Lead Image</h5> -->
+                </div>
+                <div class="col-lg-12 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Upload Profile</label>
+                        <input class="form-control" type="text"  hidden disabled id="pictureIDs">
+                        <input class="form-control " type="file" id="lead-image-input" type="file" accept="image/png, image/gif, image/jpeg">
+                     
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                       
+                       <button  type='button' data-bs-dismiss="modal" class="btn-danger btn">Cancel</button>
+                       <button  type='button' id="update_profile_picture" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+     
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade EditUserData_modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-top">
+        <div class="modal-content">
+        
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle"> <span class="text-primary">Change Profile Picture</span> </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form action="">
+                     {% csrf_token %}
+                     <div class="row">
+                    
+                    
+                                
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="example-text-input" class="form-label">username</label>                            
+        
+                                <input class="form-control" type="text"   id="user_username" value="{{request.user.username}}">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="mb-3">
+                                    <label for="example-text-input" class="form-label">first Name</label>
+                                    <input class="form-control" type="text"  id="user_firstname" value="{{request.user.first_name}}">
+                             
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            
+                                <div class="mb-3">
+                                    <label for="example-text-input" class="form-label">Last Name</label>
+                                    <input class="form-control" type="text"  id="user_lastname" value="{{request.user.last_name}}" >
+                            
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            
+                            <div class="mb-3">
+                                <label for="example-text-input" class="form-label">Gender</label>
+                                <input class="form-control" type="text"  id="user_gender" value="{{request.user.gender}}">
+                        
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-6 col-sm-12">
+                            
+                        <div class="mb-3">
+                            <label for="example-text-input" class="form-label">Email</label>
+                            <input class="form-control" type="text"  id="user_email" value="{{request.user.email}}">
+                    
+                    </div>
+                </div>  
+
+            <div class="col-lg-12 col-md-12 col-sm-12 mb-4 mt-3 text-end" >
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-soft-primary h-25"  id="CurrentUser" >Save changes</button>   
+            </div>
+              
+        </div>
+
+                    
+
+                       
+                    
+
+
+
+                            
+
+
+
+
+                    
+
+                    
+
+
+        
+                      </div>
+            </form>
+            </div>
+     
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{%endblock%}
+{% block content %}
+ {% csrf_token %}
+
+
+
+ <div class="position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg profile-setting-img">
+        <img src="{% static 'assets/images/profile-bg.jpg' %}" class="profile-wid-img" alt="">
+        <div class="overlay-content">
+            <div class="text-end p-3">
+                <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+                    <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
+                    <label for="profile-foreground-img-file-input" class="profile-photo-edit btn btn-light">
+                        <i class="ri-image-edit-line align-bottom me-1"></i> Change Cover
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+<div class="row">
+    <div class="col-xxl-3">
+        <div class="card mt-n5">
+            <div class="card-body p-4">
+                <div class="text-center">
+                    <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                        {% if request.user.avatar.url == None %}
+                        <img src="{% static 'assets/images/users/avatar-9.jpg' %}" class="rounded-circle avatar-xlg img-thumbnail user-profile-image img-fluid" alt="user-profile-image">
+                       
+                        {% else %}
+                        <img src="{{request.user.avatar.url}}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+                        {% endif %}
+
+                     
+                        <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
+                            <input id="img_picture_id" type="file" class="profile-img-file-input"  >
+                            <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
+                                <span class="avatar-title rounded-circle bg-light text-body">
+                                    <i class="ri-camera-fill" id="change_profile_picture" class="avatar-lg rounded img-fluid"></i>                                    
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <h5 class="fs-16 mb-1">{{request.user.first_name}} {{request.user.last_name}}</h5>
+                    <p class="text-muted mb-0">{{request.user.getUserType}}</p>
+                   
+                </div>
+            </div>
+        </div>
+        <!--end card-->
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Info</h5>
+                <div class="table-responsive">
+                    <table class="table table-borderless mb-0">
+                        <tbody>
+                            <tr>
+                                <th class="ps-0" scope="row">Full Name :</th>
+                                <td class="text-muted">{{request.user.get_full_name}}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Mobile :</th>
+                                <td class="text-muted">{{request.user.phone}}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">E-mail :</th>
+                                <td class="text-muted">{{request.user.email}}</td>
+                            </tr>
+
+                            <tr>
+                                <th class="ps-0" scope="row">Joining Date</th>
+                                <td class="text-muted">{{request.user.beutifyData}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- end card body -->
+        </div><!-- end card -->
+
+        <!--end card-->
+    </div>
+    <!--end col-->
+    <div class="col-xxl-9">
+        <div class="card mt-xxl-n5">
+            <div class="col-xxl-12">
+             
+                <div class="card">
+                    <div class="card-body">
+                  
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#home1" role="tab" aria-selected="false" tabindex="-1">
+                                    Info
+                                </a>
+                            </li>
+                           
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link " data-bs-toggle="tab" href="#settings1" role="tab" aria-selected="true">
+                                    Settings
+                                </a>
+                            </li>
+                            
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content text-muted">
+                            <div class="tab-pane active show" id="home1" role="tabpanel">
+                                <div class="card-body table-responsive d-f">
+                                   
+                                    <form action="" id='employee_form'>
+                                        {%csrf_token%}
+                                  <div class="row">
+                    
+                    
+                                
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="mb-3">
+                                            <label for="example-text-input" class="form-label">username</label>        
+                                            <input class="form-control" type="text"  id="d_username" value="{{request.user.username}}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-3">
+                                                <label for="example-text-input" class="form-label">first Name</label>
+                                                <input class="form-control" type="text" value="{{request.user.first_name}}" id="d_firstname" disabled>
+                                         
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        
+                                            <div class="mb-3">
+                                                <label for="example-text-input" class="form-label">Last Name</label>
+                                                <input class="form-control" type="text"  id="d_last_name" value="{{request.user.last_name}}" disabled>
+                                        
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        
+                                        <div class="mb-3">
+                                            <label for="example-text-input" class="form-label">Gender</label>
+                                            <input class="form-control" type="text" value="{{request.user.gender}}" id="d_gender" disabled>
+                                    
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                        
+                                    <div class="mb-3">
+                                        <label for="example-text-input" class="form-label">Email</label>
+                                        <input class="form-control" type="text" value="{{request.user.email}}"  id="d_email" disabled>
+                                
+                                </div>
+                            </div>  
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                        
+                                <div class="mb-3">
+                                    <label for="example-text-input" class="form-label">User Type</label>
+                                    <input class="form-control" type="text"  id="d_usertype" value="{{request.user.getUserType}}" disabled>
+                            
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 mb-4 mt-3 text-end" >
+                            <div class="mb-3">
+                                <button class="btn btn-soft-primary h-25"  id="edituserdata">Edit User</button>   
+                        </div>
+                          
+                    </div>
+   
+                                
+
+                                   
+                                
+
+           
+
+                                        
+
+
+
+
+                                
+
+                                
+         
+            
+                    
+                                  </div>
+                                </form>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane " id="settings1" role="tabpanel">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3">Change Password</h5>
+                                    <div class="row">
+                                        <form action="" method="POST">
+                                            {% csrf_token %}
+                                            <div class="cor-lg-12 mt-3">
+                                                <div>
+                                                    <label for="basiInput" class="form-label"> Current Password</label>
+                                                    <input type="password" class="form-control" id="CurrentPassword" placeholder="Current password">
+                                                </div>
+                                            </div>
+                                            <div class="cor-lg-12  mt-3">
+                                                <div>
+                                                    <label for="basiInput" class="form-label">New Password</label>
+                                                    <input type="password" class="form-control" id="newPassword" placeholder="New password">
+                                                </div>
+                                            </div>
+                                            <div class="cor-lg-12  mt-3">
+                                                <div>
+                                                    <label for="basiInput" class="form-label"> Confirm Password</label>
+                                                    <input type="password" class="form-control" id="CormfirmPassword" placeholder="Confirm password">
+                                                </div>
+                                            </div>
+                                            <div class="cor-lg-12  mt-3">
+                                                <div>
+                                                    
+                                                    <button type="submit" class="btn btn-primary" id="btn_submit">Change</button>
+                                                </div>
+                                            </div>
+                                        
+                                        </form>
+                    
+                                    </div>
+                    
+                                </div>
+
+                            </div>
+                        </div>
+                    </div><!-- end card-body -->
+                </div>
+                <!-- end card -->
+            </div>
+
+
+        </div>
+    </div>
+    <!--end col-->
+</div>
+ 
+    {% endblock content %}
+{% block scripts %}
+<script src={% static "scripts/users/userEdit.js" %}></script>
+
+{% endblock scripts %}

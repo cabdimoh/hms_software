@@ -1,0 +1,1804 @@
+{% extends 'base/index.html' %}
+
+{% load static %}
+{% block modal %}
+{% block styledata %}
+<style>
+    .mt-100{margin-top: 100px}
+    .multselect{
+        background: #00B4DB;
+        background: -webkit-linear-gradient(to right, #0083B0, #00B4DB);
+        background: linear-gradient(to right, #0083B0, #00B4DB);
+        color: #514B64;
+       width:100%;
+    }
+</style>
+
+{% endblock styledata %}
+
+
+<div class="modal fade" id="PrescriptionModal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myExtraLargeModalLabel">Add Prescription</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+           
+                    <form id="PrescriptionForm">
+                        {% csrf_token %}
+                        <div class="row">
+                            <input class="form-control" type="hidden"  id="AppointmentID">
+                            <div id="show_item">
+                                <div class="row" id="row1">
+                                    <div class="col-md-2">
+                                        <div class="mb-3">
+                                            <label class="form-label">Medicine Category</label>
+                                            <select class="form-select" name="MedicineCategory1" id="MedicineCategory1">
+                                                <option selected value="">Select Category</option>
+                                                {% for pharmacy_med_cat in pharmacy_med_category%}
+                                                <option value="{{pharmacy_med_cat.id}}">{{pharmacy_med_cat.medicine_cat_name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>                                                       
+                                    </div>
+    
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label class="form-label">Medicine</label>
+                                            <select class="form-select" name="Medicine1" id="Medicine1">
+                                                <option selected value="">Select Medicine</option>
+
+                                            </select>
+                                        </div>                                                       
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="mb-3">
+                                            <label class="form-label">Frequency(1</label>
+                                            <input type="text" class="form-control" id="Dose1" placeholder="1 X">
+                                        </div>                                                       
+                                    </div>
+                                    
+                                    <div class="col-md-1">
+                                        <div class="mb-3">
+                                            <label class="form-label">x  2)</label>
+                                            <input type="text" class="form-control" id="DoseInterval1" placeholder="2">
+                                        </div>                                                       
+                                    </div>
+                                 
+                                    <div class="col-md-2">
+                                        <div class="mb-3">
+                                            <label class="form-label">Route/Instructions</label>
+                                            <input type="text" class="form-control" id="DoseDuration1" placeholder="Oral After Meal">
+                                        </div>                                                       
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <div class="mb-3">
+                                            <label class="form-label">Qty</label>
+                                            <input type="number" class="form-control" name="Qty1" id="Qty1">
+                                            
+                                        </div>                                                       
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <div class="mb-3">
+                                            <label class="form-label">In Stock</label>
+                                            <div class="div" id="available_qty1">
+                                                <input type="number" class="form-control"  disabled>
+                                            </div>
+                                            
+                                            
+                                            <input type="hidden" id="hidden_available_qty1">
+
+                                        </div>                                                       
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <div class="mb-3">
+                                            <label class="form-label">Add </label>
+                                            <button type="button" class="btn btn-primary add_item_btn" >
+                                                <i class="las la-plus"></i> 
+                                            </button>
+                                        </div>                                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="PatientVillage" class="form-label">Instructions</label>
+                            <textarea class="form-control" id="Instructions" autocomplete="off" placeholder="Add Comment ...."></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+                            <button type="button" id="btn_submit" class="btn btn-primary ">Save changes</button>
+                        </div>
+                       
+                    </form>
+                      
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="DiagnosisModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myExtraLargeModalLabel">Add Diagnosis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="DiagnosisForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <h5 class="font-size-14 mb-3">Laboratory</h5>
+                                        <input class="form-control" type="hidden"  id="AppointmentID">
+                                        <div id="show_lab">
+                                            <div class="row" id="row1">
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Sample Type</label>
+                                                        <select class="form-select"  id="Sample1">
+                                                            <option value="">Select Sample Type</option>
+                                                            <option value="Blood">Blood</option>
+                                                            <option value="Urine">Urine</option>
+                                                            <option value="Stool">Stool</option>
+                                                        </select>
+                                                    </div>                                                       
+                                                </div>
+                                            
+                                                <div class="col-md-3 if-blood1 d-none blood1">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Group Name</label>
+
+                                                        <select class="form-select"  id="Group1">
+                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4  ">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Test Name</label>
+                                                        <select class="form-select" id="labTest1" multiple>
+                                                            
+                                                    
+                                                        </select>
+                                                    </div>                                                       
+                                                </div>
+                                                <div class="col-lg-1">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Add </label>
+                                                        <button type="button" class="btn btn-primary add_lab_btn" >
+                                                            <i class="las la-plus"></i> 
+                                                        </button>
+                                                    </div>                                                       
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <h5 class="font-size-14 mb-3">Radiology</h5>
+                                        <input class="form-control" type="hidden"  id="AppointmentID">
+                                        <div id="show_radio">
+                                            <div class="row" id="row1">
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Radiology Exam Category</label>
+                                                        <select class="form-select" id="radiologyCategory1">
+                                                            <option selected value="">Select</option>
+                                                            {% for category in examcategory%}
+                                                            <option value="{{category.id}}">{{category.CategoryName}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>                                                       
+                                                </div>
+                
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Radiology Exam Name</label>
+                                                        <select class="form-select " id="radiology1" multiple >
+                                                            
+                                                        </select>
+                                                    </div>                                                       
+                                                </div>
+                                            
+                                            
+                                                <div class="col-lg-1">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Add More</label>
+                                                        <button type="button" class="btn btn-primary add_radio_btn" >
+                                                            <i class="las la-plus"></i> 
+                                                        </button>
+                                                    </div>                                                       
+                                                </div>
+                                            </div>
+                                        
+                                        </div>
+                                        
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-6 col-sm-12">
+                        <div class="mb-3 text-end">
+                            <button  type='button'  data-bs-dismiss="modal" class="btn-danger btn">Cancel</button>
+                            <button  type='button' id="diagnosis_btn_submit" class="btn-primary btn">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade " id="operationModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myExtraLargeModalLabel">Add Operation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="operationForm"> 
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div>
+                                <div class="mb-3">
+                                    <!-- hidden id-->
+                                    <input class="form-control" type="hidden" id="OperationID" placeholder="description">
+                                    <label class="form-label">Operation Category</label>
+                                    <select class="form-select" id="OperationCategory">
+                                        <option value="">Select cat</option>
+                                        {% for op_category in OperationCategories %}
+                                        <option value='{{op_category.id}}'>{{op_category.CategoryName}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="default-input">Operation Date</label>
+                                    <input class="form-control" type="date" id="OperationDate" placeholder="description">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="mt-3 mt-lg-0">
+                                <div class="mb-3">
+                                    <label class="form-label"> Select Operations</label>
+                                    <select class="form-select" id="Operation">
+                                       
+                                    </select>
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <button type="button" data-bs-dismiss="modal" class="btn btn-danger waves-effect waves-light">Back</button>
+                            <button type="button" id="operation_btn" class="btn btn-primary waves-effect waves-light">Save</button>
+                        </div>
+                        <div class="col-lg-8">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="emergencyPatient" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myExtraLargeModalLabel">Add Emergency Patient</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+           
+                <div class="card-body">
+                    <form id="admission_order">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div>
+                                    <input class="form-control" type="hidden"  id="hidden_btn" >
+                                    <div class="mb-3">
+                                        <label for="PatientFirstName" class="form-label">Appointment Number</label>
+                                        <input class="form-control" type="text" id="appointmentNumber" value="{{Appointment.AppointmentNumber}}" autocomplete="off" disabled> 
+                                    </div>
+                                         
+                                </div>
+                            </div>
+        
+                            <div class="col-lg-6">
+                                <div class="mt-3 mt-lg-0">
+                                    <div class="mb-3">
+                                        <label for="PatientMiddleName" class="form-label">Patient FullName</label>
+                                        <input class="form-control" type="text" id="PatientFullName" value="{{Appointment.Patient.get_fullName}}" autocomplete="off" disabled>
+                                    </div>
+                                
+                                   
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div>
+                                    <div class="mb-3">
+                                        <label for="PatientFirstName" class="form-label">Admission Date</label>
+                                        <input class="form-control" type="date" id="admission_date" autocomplete="off">
+                                    </div>
+                                         
+                                </div>
+                            </div>
+        
+                            <div class="col-lg-6">
+                                <div class="mt-3 mt-lg-0">
+                                    <div class="mb-3">
+                                        <label for="PatientMiddleName" class="form-label">Type of bed</label>
+                                        <select class="form-select" id="bedType">
+                                            <option value="">Select Type</option>
+                                            <option value="icu">Intensive Care Unit</option>
+                                            <option value="inpatient">Regular Inpatient Unit</option>
+                                         
+                                        </select>
+                                    </div>
+                                
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="PatientMiddleName" class="form-label">Type of bed</label>
+                            <select class="form-select" id="patient_priority">
+                                <option value="">Select Priority</option>
+                                <option value="Emergency">Emergent</option>
+                                <option value="Urgent">Urgent</option>
+                                <option value="nonUrgent">Non-Urgent</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="default-input">Admission Reason</label>
+                            <textarea class="form-control" id="admission_reason" placeholder="Admission Reason...."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="default-input">Note</label>
+                            <textarea class="form-control" id="admission_note" placeholder="Note...."></textarea>
+                        </div>
+                        <div class="col-lg-12 col-md-6 col-sm-12">
+                            <div class="mb-3 text-end">
+                            <button  type='button'  data-bs-dismiss="modal" class="btn-danger btn">Cancel</button>
+                            <button  type='button' id="submit_order_admission" class="btn-primary btn">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                      
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{% endblock %}
+{% block content %}
+
+
+        <div class="profile-foreground position-relative mx-n4 mt-n4 ">
+            <div class="profile-wid-bg">
+                <img src="{% static 'assets/images/pp1.jpg' %}" alt="" class="profile-wid-img " />
+            </div>
+        </div>
+        <div class="pt-4 mb-4 mb-lg-3 pb-lg-4 profile-wrapper">
+            <div class="row g-4">
+                <div class="col-auto">
+                    <div class="avatar-lg">
+                        {% if Appointment.Patient.PatientGender == "Female"%}
+                        <img src="{% static 'assets/images/femalehijabipat.jpg' %}" alt="user-img" class="img-thumbnail rounded-circle" />
+                        {%else%}
+                        <img src="{% static 'assets/images/malepatient.jpg' %}" alt="user-img" class="img-thumbnail rounded-circle" />
+                        {%endif%}
+                    </div>
+                </div>
+                <!--end col-->
+               <div class="col">
+                    <div class="p-2">
+                        <h3 class="text-white mb-1">{{Appointment.Patient.get_fullName}}</h3>
+                        <p class="text-white-75 mb-1">queue No: {{Appointment.queue_number}}</p>
+                         <div class="hstack text-white-50 gap-1">
+                            <div class="me-2"><i class="ri-map-pin-user-line me-1 text-white-75 fs-16 align-middle"></i>{{Appointment.Patient.PatientVillage}},
+                                {{Appointment.Patient.PatientDistrict}}, Mogadishu</div>
+                            
+                        </div> 
+                    </div>
+                </div>
+                
+            </div>
+            <!--end row-->
+            
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div>
+                    <div class="d-flex profile-wrapper">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-pills animation-nav  gap-2 gap-lg-3 flex-grow-1" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link fs-14 active" data-bs-toggle="tab" href="#overview-tab" role="tab">
+                                    <i class="ri-airplay-fill d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block btn btn-soft-light">Overview</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link fs-14" data-bs-toggle="tab" href="#Prescription" role="tab">
+                                    <i class="las la-prescription d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block btn btn-soft-light">Prescription</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link fs-14" data-bs-toggle="tab" href="#Investigation" role="tab">
+                                    <i class="las la-microscope px-1 d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block btn btn-soft-light">Lab Investigation</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link fs-14" data-bs-toggle="tab" href="#operation" role="tab">
+                                    <i class="bx bx-knife d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block btn btn-soft-light">Operations</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link fs-14" data-bs-toggle="tab" href="#Treatmenthistory" role="tab">
+                                    <i class="ri-folder-4-line d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block btn btn-soft-light">Treatment History</span>
+                                </a>
+                            </li>
+                        </ul>                            
+
+                        <div class="flex-shrink-0 ">
+                            {% if Appointment.Status   != "Cancelled" %}
+                            <a href="#" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#emergencyPatient"><i class="bx bx-plus me-1"></i>Admit Patient</a>
+                            {%endif%}
+                        </div>
+                       
+                    </div>
+                    <!-- Tab panes -->
+                    <div class="tab-content pt-4 text-muted">
+                        <div class="tab-pane active" id="overview-tab" role="tabpanel">
+                            <div class="row">
+                                <div class="col-xxl-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-0">
+                                                <div class="flex-grow-1">
+                                                    <h5 class="card-title mb-0">Info</h5>
+                                                </div>
+                                                {% if perms.APEN.Approve_appointment %}
+                                                <div class="flex-shrink-0">
+                            
+                                                    <div class="col-sm-auto order-1 order-sm-2">
+                                                       
+                                                        <div class="d-flex align-items-start justify-content-end gap-2">    
+                        
+                                   
+                                                                <div class="dropdown  dropdown_btn">
+                                                                  <a href="javascript:void(0);" class='btn btn-sm btn-soft-{% if Appointment.Status == "Pending" %}primary {% elif Appointment.Status  == "Approved" %}success {% else %}danger {% endif %}'   fs-12 data-bs-toggle="dropdown"><i class='{% if Appointment.Status == "Pending" %} ri-loader-2-line align-bottom me-1{% elif Appointment.Status  == "Approved" %}ri-check-double-line align-bottom me-1 {% else %}ri-close-line align-bottom me-1 {% endif %}' ></i>{{Appointment.Status }} </a>
+                                                                   
+                                                                    <ul class="dropdown-menu dropdown-menu-end approval_list">
+                                
+                                                                    {% if Appointment.Status   == "Pending" %}
+                                                                        <li><a class="dropdown-item btn  "  id="approve">Approve</a></li>
+                                                                        <li><a class="dropdown-item btn "  id="reject">Cancel</a></li>                              
+                                                                        {% elif  Appointment.Status  == "Approved" %}
+                                                                        <li><a class="dropdown-item btn "  id="reject">Cancel</a></li> 
+                                                                        {% else %}                                   
+                                                                        <li><a class="dropdown-item btn "  id="approve">Approve</a></li>
+                                                                    {% endif %} 
+                                                                    
+                                                                       
+                                                                    </ul>
+                                                                </div>
+                                
+                                
+                                                        </div>
+                                
+                                                    </div>
+                                                </div>
+                                                {%endif%}
+                                            </div>
+                                            <hr>
+                                            <div class="table-responsive">
+                                                <table class="table table-borderless mb-0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row"> Full Name :</th>
+                                                            <td class="text-muted">{{Appointment.Patient.get_fullName}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Appointment No :</th>
+                                                            <td class="text-muted">{{Appointment.AppointmentNumber}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Age :</th>
+                                                            <td class="text-muted">{{Appointment.Patient.PatientAge}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Gender :</th>
+                                                            <td class="text-muted">{{Appointment.Patient.PatientGender}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">MobileNo :</th>
+                                                            <td class="text-muted">+{{Appointment.Patient.PatientMobileNo}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Appoint Date :</th>
+                                                            <td class="text-muted">{{Appointment.AppointmentDate}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Doctor :</th>
+                                                            <td class="text-muted">Dr. {{Appointment.Doctor.get_full_name}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Speciality</th>
+                                                            <td class="text-muted">{{Appointment.jobtypes.name}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Address</th>
+                                                            <td class="text-muted">{{Appointment.Patient.PatientVillage}}, {{Appointment.Patient.PatientDistrict}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div><!-- end card body -->
+                                    </div><!-- end card -->
+                                </div>
+                                <!--end col-->
+                                <div class="col-xxl-9">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header align-items-center d-flex">
+                                                    <h4 class="card-title mb-0  me-2">Overview</h4>
+                                                    <div class="flex-shrink-0 ms-auto">
+                                                        <ul class="nav justify-content-end nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+                                                            <li class="nav-item">
+                                                                <a class="nav-link active" data-bs-toggle="tab" href="#prescriptions" role="tab">
+                                                                    Prescribtions
+                                                                </a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" data-bs-toggle="tab" href="#lab" role="tab">
+                                                                     Lab Investigation
+                                                                </a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" data-bs-toggle="tab" href="#radio" role="tab">
+                                                                     Radiology Investigation
+                                                                </a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" data-bs-toggle="tab" href="#operations" role="tab">
+                                                                    Operations
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="tab-content text-muted">
+                                                        <div class="tab-pane active" id="prescriptions" role="tabpanel">
+                                                            <div class="profile-timeline">
+                                                                <div class="accordion accordion-flush" id="todayExample">
+                                                                    <table class="table table-borderless align-middle mb-0">
+                                                                        <thead class="table-light">
+                                                                            <tr>
+                                                                                <th class="">Medicine Category</th>
+                                                                                <th class="">Medicine Name</th>
+                                                                                <th class="">Quantity</th>
+                                                                                <th class="">Dose</th>
+                                                                                <th class="">Dose Interval</th>
+                                                                                <th class="">Dose Duration</th>
+                                                                                <th class="">Prescription Date</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            {% if Prescriped_medicine_details %}
+                                                                            {% for medicine in Prescriped_medicine_details%}
+                                                                            <tr>
+                                                                                <td>{{medicine.MedicineName.Medicine_categories.medicine_cat_name}}</td>
+                                                                                <td>{{medicine.MedicineName.Medicine_name}}</td>
+                                                                                <td>{{medicine.Quantity}}</td>
+                                                                                <td>{{medicine.Dose}}</td>
+                                                                                <td>{{medicine.DoseInterval}}</td>
+                                                                                <td>{{medicine.DoseDuration}}</td>
+                                                                                <td>{{medicine.PrescriptionNo.Prescription_Date}}</td>
+                                                                            </tr>
+                                                                            {%endfor%}
+                                                                            {%else%}
+                                                                            <tr>
+                                                                                <td class='text-center' colspan='7'>No Medicine has been prescriped for this patient.</td>
+                                                                            </tr>
+                                                                            {%endif%}
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <!--end accordion-->
+                                                            </div>
+                                                        </div>
+                                                        <div class="tab-pane" id="lab" role="tabpanel">
+                                                            <div class="profile-timeline">
+                                                                <div class="accordion accordion-flush" id="weeklyExample">
+                                                                    <table class="table table-borderless align-middle mb-0">
+                                                                        <thead class="table-light">
+                                                                            <tr>
+                                                                                <th>Order No</th>
+                                                                                <th>Order Date</th>
+                                                                                <th>Status</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                           {%if ordered_laboratorities%}
+                                                                           {%for lab_order in ordered_laboratorities%}
+                                                                            <tr>
+                                                                                <td>{{lab_order.TestOrderNumber}}</td>
+                                                                                <td>{{lab_order.Order_date}}</td>
+                                                                                <td>{{lab_order.Status}}</td>
+                                                                            </tr>
+                                                                            {%endfor%}
+                                                                            {%else%}
+                                                                            <tr>
+                                                                                <td class='text-center' colspan='5'>No lab tests has been ordered for this patient.</td>
+                                                                            </tr>
+                                                                            {%endif%}
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <!--end accordion-->
+                                                            </div>
+                                                        </div>
+                                                        <div class="tab-pane" id="radio" role="tabpanel">
+                                                            <div class="profile-timeline">
+                                                                <div class="accordion accordion-flush" id="monthlyExample">
+                                                                    <table class="table table-borderless align-middle mb-0">
+                                                                        <thead class="table-light">
+                                                                            <tr>
+                                                                                <th>Order No</th>
+                                                                                <th>Order Date</th>
+                                                                                <th>Status</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            {% if ordered_radiology%}
+                                                                            {% for radio_order in ordered_radiology%}
+                                                                            <tr>
+                                                                                <td>{{radio_order.RadiologyOrderNumber}}</td>
+                                                                                <td>{{radio_order.Order_date}}</td>
+                                                                                <td>{{radio_order.Status}}</td>
+                                                                            </tr>
+                                                                            {%endfor%}
+                                                                            {%else%}
+                                                                            <tr>
+                                                                                <td class='text-center' colspan='5'>No Radiology Exam has been ordered for this patient.</td>
+                                                                            </tr>
+                                                                            {%endif%}
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <!--end accordion-->
+                                                            </div>
+                                                        </div>
+                                                        <div class="tab-pane" id="operations" role="tabpanel">
+                                                            <div class="profile-timeline">
+                                                                <div class="accordion accordion-flush" id="monthlyExample">
+                                                                    <table class="table table-borderless align-middle mb-0">
+                                                                        <thead class="table-light">
+                                                                            <tr>
+                                                                                <th class="">Operation Number</th>
+                                                                                <th class="">Operation Date</th>    
+                                                                                <th class="">Operation Category</th>                                
+                                                                                <th class="">Operation Name</th>                                                            
+                                                                                <th class="">Operation Status</th>                                                            
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            {% if PatientOperation %}
+                                                                            {% for patient_op in PatientOperation%}
+                                                                            <tr>
+                                                                                <td>{{patient_op.id}}</td>
+                                                                                <td>{{patient_op.OperationDate}}</td>
+                                                                                <td>{{patient_op.Operation.CategoryName.CategoryName}}</td>
+                                                                                <td>{{patient_op.Operation.OperationName}}</td>
+                                                                                <td>{{patient_op.Status}}</td>
+                                                                            </tr>
+                                                                            {%endfor%}
+                                                                           {%else%}
+                                                                            <tr>
+                                                                                <td class='text-center' colspan='5'>No Operation has been ordered for this patient.</td>
+                                                                            </tr>
+                                                                            {%endif%}
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <!--end accordion-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- end card body -->
+                                            </div><!-- end card -->
+                                        </div><!-- end col -->
+                                    </div><!-- end row -->
+                                </div>
+                                <!--end col-->
+                            </div>
+                            <!--end row-->
+                        </div>
+                        <div class="tab-pane fade" id="Prescription" role="tabpanel">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-4">
+                                        <h5 class="card-title flex-grow-1 mb-0">prescriptions</h5>
+                                        <div class="flex-shrink-0">
+                                            {% if Appointment.Status   != "Cancelled" %}
+                                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#PrescriptionModal"><i class="bx bx-plus me-1"></i>Add Prescription</a>
+                                            {%endif%}
+                                        </div>
+                                    </div>
+                                    <div class="acitivity-timeline">
+                                        <div class="table-responsive">
+                                            <table class="table table-borderless align-middle mb-0">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Prescription No</th>
+                                                        <th>Prescription Date</th>
+                                                        <th>Doctor</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% if Prescriped_medicines %}
+                                                    {% for medicine in Prescriped_medicines %}
+                                                    <tr>
+                                                        <td> {{medicine.PrescriptionNo}}</td>
+                                                        <td> {{medicine.Prescription_Date}}</td>
+                                                        <td> {{medicine.Appointment.Doctor.get_full_name}}</td>
+                                                        {% if medicine.Status == "pending" %}
+                                                        <td> <span class="badge bg-danger"> {{medicine.Status}} </span></td>
+                                                        {%else%}
+                                                        <td> <span class="badge bg-primary"> {{medicine.Status}} </span></td>
+                                                        {%endif%}
+                                                        <td>
+                                                            <button type="button" class="btn btn-sm btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#ViewPrescription{{medicine.id}}"><i class="las la-eye"></i> </button>
+                                                            <div class="modal fade view-modal" tabindex="-1" id="ViewPrescription{{medicine.id}}" role="dialog" id="#" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog modal-lg">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="myLargeModalLabel"> Prescription letter</h5>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            
+                                                                            <div class="table-rep-plugin">
+                                                                                <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                                                                    <table id="tech-companies-1" class="table table-bordered table-sm ">
+                                                                                        <form id="labresult">
+                                                        
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th class="text-dark fw-medium">Patient Full Name</th>
+                                                                                                    <td><span>{{Appointment.Patient.get_fullName}}</span></td>
+                                                                                                    <th class="text-dark fw-medium">Appointment ID</th>
+                                                                                                    <td><span>{{Appointment.AppointmentNumber}}</span></td>
+    
+                                                                                                 </tr>
+                                                                                                <tr>
+                                                                                                    <th class="text-dark fw-medium">Patient Gender</th>
+                                                                                                    <td><span>{{Appointment.Patient.PatientGender}}</span></td>
+                                                                                                    <th class="text-dark fw-medium">Appointment Date</th>
+                                                                                                    <td><span>{{Appointment.AppointmentDate}}</span></td>
+                                                                                                    
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <th class="text-dark fw-medium">Patient Age</th>
+                                                                                                    <td><span>{{Appointment.Patient.PatientAge}}</span></td>
+                                                                                                    <th class="text-dark fw-medium">Speciality</th>
+                                                                                                    <td><span>{{Appointment.jobtypes.name}}</span></td>
+                                                                                                    
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    
+                                                                                                    <th class="text-dark fw-medium">Patient MobileNo</th>
+                                                                                                    <td><span>{{Appointment.Patient.PatientMobileNo}}</span></td>
+                                                                                                    <th class="text-dark fw-medium">Patient Address</th>
+                                                                                                    <td><span>{{Appointment.Patient.PatientVillage}}, {{Appointment.Patient.PatientDistrict}}</span></td>
+                                                                                                 
+                                                                                                </tr>
+                                                                
+                                                                                            </thead>
+                                                                                    </table>
+                                                                                </div>
+                                                        
+                                                                            </div>
+                                                                            
+                                                                            <div class="table-responsive">
+                                                                                <table  id="PrescriptionTable" class="table table-borderless  ">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th class="">Medicine Name</th>
+                                                                                            <th class="">Quantity</th>
+                                                                                            <th class="">Dose</th>
+                                                                                            <th class="">Dose Interval</th>
+                                                                                            <th class="">Dose Duration</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        {% if Prescriped_medicines %}
+                                                                                        {% for prescripe_medicine in Prescriped_medicines %}
+                                                                                        {% if prescripe_medicine.id == medicine.id %}
+                                                                                        {%for prescriped_medicine in prescripe_medicine.medicineprescriptiondetials_set.all %}
+                                                                                        <tr>
+                                                                                            <td>{{prescriped_medicine.MedicineName.Medicine_name.Medicine_name}}</td>
+                                                                                            <td>{{prescriped_medicine.Quantity}}</td>
+                                                                                            <td>{{prescriped_medicine.Dose}} x {{prescriped_medicine.DoseInterval}}</td>
+                                                                                            <td>{{prescriped_medicine.DoseDuration}}</td>
+                                                                                        </tr>
+                                                                                        {%endfor%}
+                                                                                        {%endif%}
+                                                                                        {%endfor%}
+                                                                                        {% endif %}    
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <div class="table-responsive">
+                                                                                <table class="table table-sm table-borderless">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th >Instructions</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    
+                                                                                    <tbody >  
+                                                                                        <td style="background-color:white;">  <span >{{medicine.instructions}}</span></td>
+                                                                                    </tbody>
+                                                                                </table>
+                                                        
+                                                                            </div>
+                                                                        </div>
+                                                                    </div><!-- /.modal-content -->
+                                                                </div><!-- /.modal-dialog -->
+                                                            </div><!-- /.modal -->
+                                                            <button type="button" class="btn btn-sm btn-success waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#EditPrescription{{medicine.id}}"><i class="las la-prescription"></i> </button>
+                                                            <div class="modal fade view-modal" tabindex="-1" id="EditPrescription{{medicine.id}}" role="dialog" id="#" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog modal-xl">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="myLargeModalLabel"> Edit Prescription </h5>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            
+                                                                            <div class="table-rep-plugin">
+                                                                                <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                                                                    <table id="tech-companies-1" class="table table-bordered table-sm ">
+                                                                                        <form id="labresult">
+                                                        
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th class="text-dark fw-medium">Patient Full Name</th>
+                                                                                                    <td><span>{{Appointment.Patient.get_fullName}}</span></td>
+                                                                                                    <th class="text-dark fw-medium">Appointment ID</th>
+                                                                                                    <td><span>{{Appointment.AppointmentNumber}}</span></td>
+    
+                                                                                                 </tr>
+                                                                                                <tr>
+                                                                                                    <th class="text-dark fw-medium">Patient Gender</th>
+                                                                                                    <td><span>{{Appointment.Patient.PatientGender}}</span></td>
+                                                                                                    <th class="text-dark fw-medium">Appointment Date</th>
+                                                                                                    <td><span>{{Appointment.AppointmentDate}}</span></td>
+                                                                                                    
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <th class="text-dark fw-medium">Patient Age</th>
+                                                                                                    <td><span>{{Appointment.Patient.PatientAge}}</span></td>
+                                                                                                    <th class="text-dark fw-medium">Speciality</th>
+                                                                                                    <td><span>{{Appointment.jobtypes.name}}</span></td>
+                                                                                                    
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    
+                                                                                                    <th class="text-dark fw-medium">Patient MobileNo</th>
+                                                                                                    <td><span>{{Appointment.Patient.PatientMobileNo}}</span></td>
+                                                                                                    <th class="text-dark fw-medium">Patient Address</th>
+                                                                                                    <td><span>{{Appointment.Patient.PatientVillage}}, {{Appointment.Patient.PatientDistrict}}</span></td>
+                                                                                                 
+                                                                                                </tr>
+                                                                
+                                                                                            </thead>
+                                                                                    </table>
+                                                                                </div>
+                                                        
+                                                                            </div>
+                                                                            <form id="PrescriptionForm1">
+                                                                                {% csrf_token %}
+                                                                                <div class="row">
+                                                                                    <input class="form-control" type="hidden"  id="AppointmentID">
+                                                                                    {% if Prescriped_medicines %}
+                                                                                    {% for prescripe_medicine in Prescriped_medicines %}
+                                                                                    {% if prescripe_medicine.id == medicine.id %}
+                                                                                    {%for prescriped_medicine in prescripe_medicine.medicineprescriptiondetials_set.all %}
+                                                                                    <input type="hidden" prescribedMedicine = 'prescribedMedicine' id="prescribe{{prescriped_medicine.id}}" value="{{prescriped_medicine.id}}" >
+
+                                                                                    <div id="show_item_edit{{forloop.counter}}">
+                                                                                        <div class="row" id="row_edit{{forloop.counter}}">
+                                                                                            <div class="col-md-2">
+                                                                                                <div class="mb-3">
+                                                                                                    <label class="form-label">Medicine Category</label>
+                                                                                                    <select class="form-select" name="MedicineCategory_edit" id="MedicineCategory_edit1">
+                                                                                                        <option selected value="">Select</option>
+                                                                                                         
+                                                                                                        {% for category in MedicineCategories%}
+                                                                                                        {% if category.id == prescriped_medicine.MedicineName.Medicine_categories.id %}
+    
+                                                                                                        <option value="{{category.id}}" selected>{{category.medicine_cat_name}}</option>
+                                                                                                        {%else%}
+                                                                                                        <option value="{{category.id}}">{{category.medicine_cat_name}}</option>
+                                                                                                        {%endif%}
+                                                                                                        {% endfor %}
+                                                                                                    </select>
+                                                                                                </div>                                                       
+                                                                                            </div>
+
+                                                                                            <div class="col-md-2">
+                                                                                                <div class="mb-3">
+                                                                                                    <label class="form-label">Medicine</label>
+                                                                                                    <select class="form-select" name="Medicine1" id="Medicine_edit1" >
+                                                                                                        {% for pharmacy_medicine in Medicines%}
+
+                                                                                                        {% if pharmacy_medicine.Medicine_name.id == prescriped_medicine.MedicineName.Medicine_name.id %}
+                                                                                                        <option value="{{pharmacy_medicine.Medicine_name.id}}" selected>{{pharmacy_medicine.Medicine_name.Medicine_name}}</option>
+                                                                                                        {%else%}
+                                                                                                        {% if pharmacy_medicine.Medicine_categories.id == prescriped_medicine.MedicineName.Medicine_categories.id %}
+                                                                                                        <option value="{{pharmacy_medicine.Medicine_name.id}}">{{pharmacy_medicine.Medicine_name.Medicine_name}}</option>
+                                                                                                        {%endif%}
+                                                                                                        {%endif%}
+                                                                                                        {% endfor %}
+                                                                                                       
+                                                                                                    </select>
+                                                                                                </div>                                                       
+                                                                                            </div>
+                                                                                            <div class="col-md-2">
+                                                                                                <div class="mb-3">
+                                                                                                    <label class="form-label">Dose</label>
+                                                                                                    <input type="text" class="form-control" id="Dosee1" placeholder="1 tablet at a time" value="{{prescriped_medicine.Dose}}">
+                                                                                                </div>                                                       
+                                                                                            </div>
+                                                                                            <div class="col-md-2">
+                                                                                                <div class="mb-3">
+                                                                                                    <label class="form-label">Dose Interval</label>
+                                                                                                    <input type="text" class="form-control" id="DoseIntervale1" placeholder="2 times a day" value="{{prescriped_medicine.DoseInterval}}">
+                                                                                                </div>                                                       
+                                                                                            </div>
+                                                                                         
+                                                                                            <div class="col-md-2">
+                                                                                                <div class="mb-3">
+                                                                                                    <label class="form-label">Dose Duration</label>
+                                                                                                    <select class="form-select" name="DoseDuration1"  id="DoseDuratione1">
+                                                                                                        <option selected value="{{prescriped_medicine.DoseDuration}}">{{prescriped_medicine.DoseDuration}}</option>
+                                                                                                        <option value="3 maalmood">3 maalmood</option>
+                                                                                                        <option value="1 isbuuc">1 isbuuc</option>
+                                                                                                        <option value="2 isbuuc">2 isbuuc</option>
+                                                                                                        <option value="3 isbuuc">3 isbuuc</option>
+                                                                                                        <option value="1 bil">1 bil</option>
+                                                                                                        <option value="2 bil">2 bil</option>
+                                                                                                        <option value="3 bil">3 bil</option>
+                                                                                                        <option value="6 bil">6 bil</option>
+                                                                                                    </select>
+                                                                                                </div>                                                       
+                                                                                            </div>
+                                                                                            <div class="col-lg-1">
+                                                                                                <div class="mb-3">
+                                                                                                    <label class="form-label">Qty</label>
+                                                                                                    <input type="number" class="form-control" name="Qty1" id="Qtye1" value="{{prescriped_medicine.Quantity}}">
+                                                                                                    <div class="text-muted " style="color:#001022;" id="available_qty1"  >*</div>
+                                                                                                    
+                                                                                                </div>                                                       
+                                                                                            </div>
+                                                                                            {%  if forloop.first %}
+                                                                                            <div class="col-lg-1">
+                                                                                                <div class="mb-3">
+                                                                                                    <label class="form-label">Add </label>
+                                                                                                    <button type="button" class="btn btn-primary add_item_btn_edit " >
+                                                                                                        <i class="las la-plus"></i> 
+                                                                                                    </button>
+                                                                                                </div>                                                       
+                                                                                            </div>
+                                                                                            {%else%}
+                                                                                            <div class="col-lg-1">
+                                                                                                <div class="mb-3">
+                                                                                                    <label class="form-label">Add </label>
+                                                                                                    <button type="button" class="btn btn-danger remove_item_btn" >
+                                                                                                        <i class="las la-trash"></i> 
+                                                                                                    </button>
+                                                                                                </div>                                                       
+                                                                                            </div>
+                                                                                            {%endif%}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    {%endfor%}
+                                                                                    {%endif%}
+                                                                                    {%endfor%}
+                                                                                    {% endif %}    
+                                                                                </div>
+                                                                                <div class="mb-3">
+                                                                                    <label for="PatientVillage" class="form-label">Instructions</label>
+                                                                                    <textarea class="form-control" id="Instructions" autocomplete="off" placeholder="Add Comment ....">{{medicine.instructions}}</textarea>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+                                                                                    <button type="button" id="btn_submit" class="btn btn-primary ">Save changes</button>
+                                                                                </div>
+                                                                               
+                                                                            </form>
+                                                                           
+                                                                           
+                                                                        </div>
+                                                                    </div><!-- /.modal-content -->
+                                                                </div><!-- /.modal-dialog -->
+                                                            </div><!-- /.modal -->
+                                                           
+                                                        </td>
+                                                      
+                                                        
+                                                    </tr>
+                                                    {%endfor%}
+                                                    {%else%}
+                                                    <tr>
+                                                        <td class='text-center' colspan='5'>No Medicine has been prescriped for this patient.</td>
+                                                    </tr>
+                                                    {%endif%}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <!--end card-body-->
+                            </div>
+                            <!--end card-->
+                        </div>
+                        <!--end tab-pane-->
+                        <div class="tab-pane fade" id="Investigation" role="tabpanel">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-4">
+                                        <h5 class="card-title flex-grow-1 mb-0">Diagnosis</h5>
+                                        <div class="flex-shrink-0">
+                                            {% if Appointment.Status   != "Cancelled" %}
+                                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" id="add_diagnosis" data-bs-target="#DiagnosisModal"><i class="bx bx-plus me-1"></i>Add Diagnosis</a>
+                                            {%endif%}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6" >
+                                            <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-title mb-0">Laboratory</h5>
+                                            </div>
+                                
+                                            <div class="card-body table-responsive">
+                                                <table  id="LabTable" class="table table-borderless align-middle mb-0">
+                                                    <thead class="table-light"> 
+                                                        <tr>
+                                                            <th>Order No</th>
+                                                            <th>Order Date</th>
+                                                            <th>Status</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {%if ordered_laboratorities%}
+                                                        {%for ordered in ordered_laboratorities%}
+                                                         <tr>
+                                                            <td>{{ordered.TestOrderNumber}}</td>
+                                                            <td>{{ordered.Order_date}}</td>
+                                                            <td> 
+                                                                {% if ordered.Status == "Pending" %}
+                                                                <span class="badge bg-danger" >{{ordered.Status}}</span>
+                                                                {% else %}
+                                                                <span class="badge bg-success" >{{ordered.Status}}</span>
+                                                                {%endif%}
+                                                            </td>
+                                                             
+                                                            <td>
+                                                                <button type="button" class=" btn btn-sm btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#ViewLabTests{{ordered.id}}"><i class="las la-eye"></i> </button>
+                                                                <div class="modal fade view-modal" tabindex="-1" id="ViewLabTests{{ordered.id}}" role="dialog" id="#" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-lg">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="myLargeModalLabel"> Lab Request Letter</h5>
+                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                            </div>
+                                                                            {% block printData %}
+                                                                            <div class="modal-body view-lab">
+                                                                                <div class="card-body">
+                                                                                    
+                                                                                    <div class="table-responsive">
+                                                                                        <table  class="table table-sm table-bordered">
+                                                                                            <form id="labresult">
+                                                            
+                                                                                                <thead>
+                                                                                                    <tr>
+                                                                                                        <th class="text-dark fw-medium">Patient Full Name</th>
+                                                                                                        <td><span >{{Appointment.Patient.get_fullName}}</span></td>
+                                                                                                        <th class="text-dark fw-medium">Appointment ID</th>
+                                                                                                        <td><span >{{Appointment.AppointmentNumber}}</span></td>
+                                                                                                    </tr>
+                                                                                                    <tr>
+                                                                                                        <th class="text-dark fw-medium">Patient Gender</th>
+                                                                                                        <td><span >{{Appointment.Patient.PatientAge}}</span></td>
+                                                                                                        <th class="text-dark fw-medium">Doctor</th>
+                                                                                                        <td><span >{{Appointment.Doctor.get_full_name}}</span></td>
+                                                                                                        
+                                                                                                    </tr>
+                                                                                                    <tr>
+                                                                                                        <th class="text-dark fw-medium">Patient Age</th>
+                                                                                                        <td><span >{{Appointment.Patient.PatientGender}}</span></td>
+                                                                                                        <th class="text-dark fw-medium">Speciality</th>
+                                                                                                        <td><span >{{Appointment.Specialities.name}}</span></td>
+                                                                                                        
+                                                                                                    </tr>
+                                                                    
+                                                                                                    <tr>
+                                                                                                        
+                                                                                                        <th class="text-dark fw-medium">Patient MobileNo</th>
+                                                                                                        <td><span >{{Appointment.Patient.PatientMobileNo}}</span></td>
+                                                                                                        <th class="text-dark fw-medium">Patient Address</th>
+                                                                                                        <td><span >{{Appointment.Patient.PatientVillage}}, {{Appointment.Patient.PatientVillage}}</span></td>
+                                                                                                    
+                                                                                                    </tr>
+                                                                    
+                                                                                                </thead>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                    
+                                                                                    {%if ordered.Status == "Approved" %}
+                                                                                    <div class="table-responsive">
+                                                                                        {% if ordered.labtestresult_set.first.lab_blood_results_set.first %}
+                                                                                        <h6 style="text-align:center;"><u><i>Blood Result</i></u></h6>
+                                                                                        {%for unique in unique_group_list%}
+                                                                                        <table  id="PrescriptionTable"  class="table table-sm m-0 table-bordered">
+                                                                                            <caption style="caption-side: top;font-size: 14px;padding: 1px;margin-bottom: 0em;font-weight: 600;margin-top:3px">{{unique.GroupName}} Lab</caption>
+
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th >Test</th>
+                                                                                                    <th >Result Value</th>
+                                                                                                    <th>Test Unit</th>
+                                                                                                    <th>Reference Range</th>
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+
+                                                                                              
+                                                                                                {%for unique_subgroup in unique_subgroup_list%}
+                                                                                                {% if unique.id == unique_subgroup.Group.id%}
+                                                                                                    <tr>
+                                                                                                        <td  colspan='8'><span style="font-weight:600;">{{unique_subgroup.SubGroupName}}</span> </td>
+                                                                                                    </tr> 
+                                                                                                {% for lab_result in lab_blood_result_list%}
+                                                                                                {% if lab_result.labTest_result.LabTestOrder.id == ordered.id%}
+                                                                                                {%if lab_result.TestID.Group.id == unique.id%}
+                                                                                                {%if lab_result.TestID.SubGroup.id == unique_subgroup.id%}
+                                                                                                    <tr>
+                                                                                                        <td>{{lab_result.TestID.TestID.TestName}}</td>
+                                                                                                        <td>{{lab_result.ResultValue}} {%if lab_result.flag%} ({{lab_result.flag}}) {%endif%}</td>
+                                                                                                        <td>{{lab_result.TestID.TestUnit}}</td>
+                                                                                                        <td>{{lab_result.TestID.NormalRange}}</td>
+                                                                                                        
+                                                                                                    </tr>
+                                                                                                {%endif%}
+                                                                                                {%endif%}
+                                                                                                {%endif%}
+                                                                                                {%endfor%}
+                                                                                                {%endif%}
+                                                                                                {%endfor%}
+            
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                        {%endfor%}
+                                                                                        {%endif%}
+                                                                                    </div>
+                                                                                    <div class="table-responsive">
+                                                                                       <br>
+
+                                                                                        {% if ordered.labtestresult_set.first.lab_examinationparameters_results_set.first %}
+                                                                                        <h6 style="text-align:center;"><u><i>Urine Result</i></u></h6>
+                                                                                        
+                                                                                        {%for unique_param in unique_result_parameter_list%}
+                                                                                        
+                                                                                        <table  id="PrescriptionTable"  class="table table-sm m-0 table-bordered">
+
+                                                                                            {%if unique_param.labexaminationparameters_set.first.Type != "-" and unique_param.SampleType == "Urine"%}
+                                                                                            {% if unique_param.SampleType == "Urine" %}
+                                                                                            <caption style="caption-side: top;font-size: 14px;padding: 1px;margin-bottom: 0em;font-weight: 600;margin-top:3px"><span style="color:black;font:12px;">Test name:</span>   {{unique_param.TestName}} </caption>
+
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th >Parameter Name</th>
+                                                                                                    <th >Report Value</th>
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                              
+                                                                                                {%for type in unique_types%}
+                                                                                                {% if type != "-" %}
+                                                                                                <tr>
+                                                                                                    <td  colspan='8'><span style="font-weight:600;">{{type}} Examination</span> </td>
+                                                                                                </tr>
+                                                                                                {% for lab_result in lab_parameter_result_list%}
+                                                                                                {% if lab_result.labTest_result.LabTestOrder.id == ordered.id%}
+                                                                                                {%if unique_param.TestName == lab_result.TestID.TestName%}
+
+                                                                                                {% if lab_result.Parameter.Type == type %}
+                                                                                              
+                                                                                                <tr>
+                                                                                                    <td>{{lab_result.Parameter.ParameterName}}</td>
+                                                                                                    <td>{{lab_result.ResultValue}}</td>
+                                                                                                </tr>
+                                                                                                {%endif%}
+                                                                                                {%endif%}
+                                                                                                {%endif%}
+
+                                                                                                {%endfor%}
+                                                                                                {%endif%}
+            
+                                                                                                {%endfor%}
+                                                                                                
+                                                                                            </tbody>
+                                                                                            {%elif unique_param.labexaminationparameters_set.first.Type == "-" and unique_param.SampleType == "Urine"%}
+                                                                                            {% for lab_result in lab_parameter_result_list%}
+                                                                                            {%if unique_param.TestName == lab_result.TestID.TestName and unique_param.SampleType == "Urine"%}
+                                                                                            {% if lab_result.labTest_result.LabTestOrder.id == ordered.id%}
+                                                                                            <caption style="caption-side: top;font-size: 14px;padding: 1px;margin-bottom: 0em;font-weight: 600;margin-top:3px"><span style="color:black;font:12px;">Test name:</span>   {{unique_param.TestName}} </caption>
+
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th> #ID</th>
+                                                                                                    <th >Test Name</th>
+                                                                                                    <th >Report Value</th>
+                                                                                                
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                               
+            
+                                                                                                <tr>
+                                                                                                    <td>{{unique_param.TestNumber}}</td>
+                                                                                                    <td>{{lab_result.TestID.TestName}}</td>
+                                                                                                    <td>{{lab_result.ResultValue}}</td>
+            
+                                                                                                </tr>
+                                                                                                {%endif%}
+                                                                                                {%endif%}
+                                                                                                {%endfor%}
+                                                                                            </tbody>
+                                                                                            {%endif%}
+                                                                                            {%endif%}
+                                                                                        </table>
+                                                                                        {%endfor%}
+                                                                                        {%endif%}
+                                                                                        <br>
+                                                                                        {% if ordered.labtestresult_set.first.lab_examinationparameters_results_set.first %}
+                                                                                        <h6 style="text-align:center;"><u><i>Stool Result</i></u></h6>
+
+                                                                                        {%for unique_param in unique_result_parameter_list%}
+
+                                                                                        <table  id="PrescriptionTable"  class="table table-sm m-0 table-bordered">
+
+                                                                                                {%if unique_param.labexaminationparameters_set.first.Type != "-" and  unique_param.SampleType == "Stool"%}
+                                                                                                <caption style="caption-side: top;font-size: 14px;padding: 1px;margin-bottom: 0em;font-weight: 600;margin-top:3px"><span style="color:black;font: 12px;">Test name:</span>   {{unique_param.TestName}} </caption>
+
+                                                                                                <thead>
+                                                                                                    <tr>
+                                                                                                        <th >Parameter Name</th>
+                                                                                                        <th >Report Value</th>
+                                                                                                    </tr>
+                                                                                                </thead>
+                                                                                                 <tbody>
+                                                                                              
+                                                                                                {%for type in unique_types%}
+                                                                                                {% if type != "-" %}
+                                                                                                <tr>
+                                                                                                    <td  colspan='8'><span style="font-weight:600;">{{type}} Examination</span> </td>
+                                                                                                </tr>
+                                                                                                {% for lab_result in lab_parameter_result_list%}
+                                                                                                {% if lab_result.labTest_result.LabTestOrder.id == ordered.id%}
+                                                                                                {%if unique_param.TestName == lab_result.TestID.TestName%}
+
+                                                                                                {% if lab_result.Parameter.Type == type %}
+                                                                                              
+                                                                                                <tr>
+                                                                                                    <td>{{lab_result.Parameter.ParameterName}}</td>
+                                                                                                    <td>{{lab_result.ResultValue}}</td>
+                                                                                                </tr>
+                                                                                                {%endif%}
+                                                                                                {%endif%}
+                                                                                                {%endif%}
+
+                                                                                                {%endfor%}
+                                                                                                {%endif%}
+            
+                                                                                                {%endfor%}
+                                                                                                
+                                                                                            </tbody>
+                                                                                            {%elif unique_param.labexaminationparameters_set.first.Type == "-" and  unique_param.SampleType == "Stool"%}
+                                                                                            <caption style="caption-side: top;font-size: 14px;padding: 1px;margin-bottom: 0em;font-weight: 600;margin-top:3px"><span style="color:black;font: 12px;">Test name:</span>   {{unique_param.TestName}} </caption>
+
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th> #ID</th>
+                                                                                                    <th >Test Name</th>
+                                                                                                    <th >Report Value</th>
+                                                                                                
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                {% for lab_result in lab_parameter_result_list%}
+                                                                                                {%if unique_param.TestName == lab_result.TestID.TestName%}
+                                                                                                {% if lab_result.labTest_result.LabTestOrder.id == ordered.id%}
+            
+                                                                                                <tr>
+                                                                                                    <td>{{unique_param.TestNumber}}</td>
+                                                                                                    <td>{{lab_result.TestID.TestName}}</td>
+                                                                                                    <td>{{lab_result.ResultValue}}</td>
+            
+                                                                                                </tr>
+                                                                                                {%endif%}
+                                                                                                {%endif%}
+                                                                                                {%endfor%}
+                                                                                            </tbody>
+                                                                                            {%endif%}
+                                                                                        </table>
+                                                                                        {%endfor%}
+                                                                                        {%endif%}
+                                                                                    </div>
+                                                                                    {%else%}
+                                                                                    <h5 style="text-align: center;"><u ><i>Lab Requests</i></u></h5>
+                                                                                    <div class="table-responsive">
+                                                                                        
+                                                                                        <table  id="PrescriptionTable"  class="table table-sm m-0 table-bordered">
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th >Test Ref</th>
+                                                                                                    <th >Test Type</th>
+                                                                                                    <th >Test Name</th>
+                                                                                                   
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                {% if ordered.Status == "Pending" %}
+            
+                                                                                                {%for ordered_lab_test in ordered_lab_tests_list%}
+                                                                                               
+                                                                                                {% if ordered_lab_test.LabTestOrder.id == ordered.id%}
+                                                                                                <tr>
+            
+                                                                                                    <td>{{ordered_lab_test.Test.TestNumber}}</td>
+                                                                                                    {% if ordered_lab_test.Test.SampleType == "Blood"%}
+                                                                                                    {%for lab_blood in lab_blood_list%}
+                                                                                                    {% if ordered_lab_test.Test.id  == lab_blood.TestID.id%}
+                                                                                                    <td>{{lab_blood.Group.GroupName}}</td>
+                                                                                                    {%endif%}
+                                                                                                    {%endfor%} 
+                                                                                                    {%endif%}
+                                                                                                    {%if ordered_lab_test.Test.SampleType == "Urine" or ordered_lab_test.Test.SampleType == "Stool" %}
+                                                                                                    <td>{{ordered_lab_test.Test.SampleType}}</td>
+                                                                                                    {%endif%}
+            
+                                                                                                    <td>{{ordered_lab_test.Test.TestName}}</td> 
+                                                                                                </tr>
+                                                                                                {%endif%}
+                                                                                                {%endfor%}
+                                                                                                {%endif%}
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                    {%endif%}
+                                                                                    {%if ordered.Status == "Approved" %}
+                                                                                    {% for lab in lab_result%}
+                                                                                    {% if lab.LabTestOrder.id == ordered.id%}
+                                                                                    {%if lab.Comment%}
+                                                                                    <div class="table-responsive">
+                                                                                        <table class="table table-sm m-0 table-borderless">
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th >Comments</th>
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            
+                                                                                            <tbody >  
+                                                                                                <td style="background-color:white;">  <span >{{lab.Comment}}</span></td>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                
+                                                                                    </div>
+                                                                                    {%endif%}
+                                                                                    {%endif%}
+                                                                                    {%endfor%}
+                                                                                    {%endif%}
+                                                                                </div>
+                                                                            </div>
+                                                                            {% endblock %}
+                                                                          
+                                                                        </div><!-- /.modal-content -->
+                                                                    </div><!-- /.modal-dialog -->
+                                                                </div><!-- /.modal -->
+                                                                <a id="editBtnDiagnosis" rowid = {{ordered.id}} >   
+                                                                   
+                                                            </td>
+                                                         </tr>
+                                                         {%endfor%}
+                                                         {%else%}
+                                                         <tr>
+                                                             <td class='text-center' colspan='5'>No lab tests has been ordered for this patient.</td>
+                                                         </tr>
+                                                         {%endif%}
+                                                     </tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-lg-6">
+                                            <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-title mb-0">Radiology</h5>
+                                            </div>
+                                
+                                            <div class="card-body table-responsive">
+                                                <table  id="LabTable" class="table table-borderless align-middle mb-0">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Order No</th>
+                                                            <th>Order Date</th>
+                                                            <th>Status</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% if ordered_radio%}
+                                                        {% for ordered in ordered_radio%}
+                                                        <tr>
+                                                            <td>{{ordered.RadiologyOrderNumber}}</td>
+                                                            <td>{{ordered.Order_date}}</td>
+                                                            <td>{{ordered.Status}}</td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-sm btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#ViewRadioResults{{ordered.id}}"><i class="las la-eye"></i> </button>
+                                                                <div class="modal fade view-modal" tabindex="-1" id="ViewRadioResults{{ordered.id}}" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" id="#" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-lg">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="myLargeModalLabel">View Radiology Exams</h5>
+                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                            </div>
+                                                                            <div class="modal-body">                                                                                   
+                                                                                    <br>
+                                                                                    {% if ordered.Status == "Pending" %}
+                                                                                    <div class="table-responsive">
+                                                                                        <table  class="table table-sm table-bordered">
+                                                                                            <form id="labresult">
+                                                            
+                                                                                                <thead>
+                                                                                                    <tr>
+                                                                                                        <th class="text-dark fw-medium">Patient Full Name</th>
+                                                                                                        <td><span >{{Appointment.Patient.get_fullName}}</span></td>
+                                                                                                        <th class="text-dark fw-medium">Appointment ID</th>
+                                                                                                        <td><span >{{Appointment.AppointmentNumber}}</span></td>
+                                                                                                    </tr>
+                                                                                                    <tr>
+                                                                                                        <th class="text-dark fw-medium">Patient Gender</th>
+                                                                                                        <td><span >{{Appointment.Patient.PatientAge}}</span></td>
+                                                                                                        <th class="text-dark fw-medium">Doctor</th>
+                                                                                                        <td><span >{{Appointment.Doctor.get_full_name}}</span></td>
+                                                                                                        
+                                                                                                    </tr>
+                                                                                                    <tr>
+                                                                                                        <th class="text-dark fw-medium">Patient Age</th>
+                                                                                                        <td><span >{{Appointment.Patient.PatientGender}}</span></td>
+                                                                                                        <th class="text-dark fw-medium">Speciality</th>
+                                                                                                        <td><span >{{Appointment.Specialities.name}}</span></td>
+                                                                                                        
+                                                                                                    </tr>
+                                                                    
+                                                                                                    <tr>
+                                                                                                        
+                                                                                                        <th class="text-dark fw-medium">Patient MobileNo</th>
+                                                                                                        <td><span >{{Appointment.Patient.PatientMobileNo}}</span></td>
+                                                                                                        <th class="text-dark fw-medium">Patient Address</th>
+                                                                                                        <td><span >{{Appointment.Patient.PatientVillage}}, {{Appointment.Patient.PatientVillage}}</span></td>
+                                                                                                    
+                                                                                                    </tr>
+                                                                    
+                                                                                                </thead>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                    
+                                                                                    <h4 style="text-align:center;font-style:italic"> <u>Radiology Request</u></h4>
+                                                                                    <div class="table-responsive">
+                                                                                        <table  id="PrescriptionTable"  class="table table-sm m-0 table-bordered">
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th >Exam Ref</th>
+                                                                                                    <th >Exam Category</th>
+                                                                                                    <th >Exam Name</th>
+                                                                                                    
+                                                                                                  
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                               
+                                                                                               {%for ordered_radio in radiology_exams%}
+                                                                                               {% if ordered_radio.RadiologyOrder.id == ordered.id%}
+                                                                                                <tr>
+                                                                                                    <td>{{ordered_radio.RadiologyExam.ExamNumber}}</td>
+                                                                                                    <td>{{ordered_radio.RadiologyExam.Category.CategoryName}}</td>
+                                                                                                    <td>{{ordered_radio.RadiologyExam.ExamName}}</td>
+                                                                                                </tr>
+                                                                                                {%endif%}
+                                                                                                {%endfor%}
+                                                                                               
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                    {%else%}
+                                                                                    {%for radio in radio_result%}
+                                                                                    {%for radio_details in radio_result_details_list%}
+                                                                                    {%if radio.id == radio_details.Radiology_Result.id%}
+                                                                                    {% if radio_details.Radiology_Result.RadiologyOrder.id == ordered.id%}
+                                                                                    <div class="table-responsive">
+                                                                                        <table  class="table table-sm table-bordered">
+                                                                                            <form id="labresult">
+                                                            
+                                                                                                <thead>
+                                                                                                    <tr>
+                                                                                                        <th class="text-dark fw-medium">Patient Full Name</th>
+                                                                                                        <td><span >{{Appointment.Patient.get_fullName}}</span></td>
+                                                                                                        <th class="text-dark fw-medium">Appointment ID</th>
+                                                                                                        <td><span >{{Appointment.AppointmentNumber}}</span></td>
+                                                                                                    </tr>
+                                                                                                    <tr>
+                                                                                                        <th class="text-dark fw-medium">Patient Gender</th>
+                                                                                                        <td><span >{{Appointment.Patient.PatientAge}}</span></td>
+                                                                                                        <th class="text-dark fw-medium">Doctor</th>
+                                                                                                        <td><span >{{Appointment.Doctor.get_full_name}}</span></td>
+                                                                                                        
+                                                                                                    </tr>
+                                                                                                    <tr>
+                                                                                                        <th class="text-dark fw-medium">Patient Age</th>
+                                                                                                        <td><span >{{Appointment.Patient.PatientGender}}</span></td>
+                                                                                                        <th class="text-dark fw-medium">Speciality</th>
+                                                                                                        <td><span >{{Appointment.jobtypes.name}}</span></td>
+                                                                                                        
+                                                                                                    </tr>
+                                                                    
+                                                                                                    <tr>
+                                                                                                        
+                                                                                                        <th class="text-dark fw-medium">Patient MobileNo</th>
+                                                                                                        <td><span >{{Appointment.Patient.PatientMobileNo}}</span></td>
+                                                                                                        <th class="text-dark fw-medium">Patient Address</th>
+                                                                                                        <td><span >{{Appointment.Patient.PatientVillage}}, {{Appointment.Patient.PatientVillage}}</span></td>
+                                                                                                    
+                                                                                                    </tr>
+                                                                                                    <tr>
+                                                                                                        <th class="text-dark fw-medium">Examined By</th>
+                                                                                                        <td><span >{{radio_details.Radiology_Result.Collected_by.get_full_name}}</span></td>
+                                                                                                        <th class="text-dark fw-medium">Examined Date</th>
+                                                                                                        <td><span >{{radio_details.Radiology_Result.CollectionDate}}</span></td>
+                                                                                                    </tr>
+                                                                                                    <tr>
+                                                                                                        <th class="text-dark fw-medium">Result Date</th>
+                                                                                                        <td><span >{{radio_details.Radiology_Result.Result_date}}</span></td>
+                                                                                                        <th class="text-dark fw-medium">Document</th>
+                                                                                                        <td><span ><a href="{{radio_details.Result_Files.url}}" class="fw-medium badge  text-bg-success right" target="_blank">View & Print</a></span></td>
+                                                                                                    </tr>
+                                                                                                   
+                                                                    
+                                                                                                </thead>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                   <h6 class="text-center">{{radio_details.RadiologyExam.ExamName}}</h6>
+                                                                                    <h6 class="fw-semibold text-uppercase mb-1">Findings</h6>
+                                                                                    <p class="text-muted">{{radio_details.Findings}} </p>
+                                                                                    <h6 class="fw-semibold text-uppercase mb-1">Impressions</h6>
+                                                                                    <p class="text-muted">{{radio_details.Impressions}} </p>
+                                                                                    <h6 class="fw-semibold text-uppercase mb-1">Recommendations</h6>
+                                                                                    <p class="text-muted">{{radio_details.Recommendations}} </p>
+                                                                                    <h6 class="fw-semibold text-uppercase mb-1">Comments</h6>
+                                                                                    <p class="text-muted">{{radio_details.Comments}} </p>
+                                                                                    <div class="row d-flex justify-content-between">
+                                                                                        <div class="col-lg-9">
+                                                                                        </div>
+                                                                                        
+                                                                                    </div>
+                                                                                    <div style="margin-top: 10px;margin-bottom: 20px;">
+                                                                                        <table style="width: 100%;">
+                                                                                          <tr>
+                                                                                            <td style="text-align: center;">
+                                                                                                <i>  {{radio.Collected_by.get_full_name}}  </i>
+                                                                                                <br>
+                                                                                                Radiologist
+                                                                                              </td>
+                                                                                           
+                                                                                          </tr>
+                                                                                        </table>
+                                                                                      </div>
+                                                                                    {%endif%}
+                                                                                    {%endif%}
+                                                                                    {%endfor%}
+                                                                                    {%endfor%}
+                                                                                    {%endif%}
+                                                                                   
+                                                                            </div>
+                                                                        </div><!-- /.modal-content -->
+                                                                    </div><!-- /.modal-dialog -->
+                                                                </div><!-- /.modal -->
+                                                                
+                                                                {% comment %} <button type="button" class=" btn-success">
+                                                                    <i class="las la-edit"></i> 
+                                                                </button>
+                                                                <button type="button" class=" btn-danger">
+                                                                    <i class="las la-trash"></i> 
+                                                                </button> {% endcomment %}
+                                                            </td>
+                                                        </tr>
+                                                        {%endfor%}
+                                                        {%else%}
+                                                        <tr>
+                                                            <td class='text-center' colspan='5'>No Radiology Exam has been ordered for this patient.</td>
+                                                        </tr>
+                                                        {%endif%}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end card-->
+                        </div>
+                        <!--end tab-pane-->
+                        <div class="tab-pane fade" id="operation" role="tabpanel">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-4">
+                                        <h5 class="card-title flex-grow-1 mb-0">Operations</h5>
+                                        <div class="flex-shrink-0">
+                                            {% if Appointment.Status   != "Cancelled" %}
+                                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#operationModal"><i class="bx bx-plus me-1"></i>Add Operation</a>
+                                            {%endif%}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="table-responsive">
+                                                <table class="table table-borderless align-middle mb-0">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th class="">Operation Number</th>
+                                                            <th class="">Operation Date</th>    
+                                                            <th class="">Operation Category</th>                                
+                                                            <th class="">Operation Name</th>  
+                                                            <th class="">Status</th>  
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% if PatientOperation %}
+                                                        {% for patient_op in PatientOperation%}
+                                                        <tr>
+                                                            <td>{{patient_op.id}}</td>
+                                                            <td>{{patient_op.OperationDate}}</td>
+                                                            <td>{{patient_op.Operation.CategoryName.CategoryName}}</td>
+                                                            <td>{{patient_op.Operation.OperationName}}</td>
+                                                            <td>{{patient_op.Status}}</td>
+                                                        </tr>
+                                                        {%endfor%}
+                                                       {%else%}
+                                                        <tr>
+                                                            <td class='text-center' colspan='5'>No Operation has been ordered for this patient.</td>
+                                                        </tr>
+                                                        {%endif%}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end tab-pane-->
+                        <div class="tab-pane fade" id="Treatmenthistory" role="tabpanel">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-4">
+                                        <h5 class="card-title flex-grow-1 mb-0">Treatment History</h5>
+                                        <div class="flex-shrink-0">
+                                            {% comment %} <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#operationModal"><i class="bx bx-plus me-1"></i>Add Operation</a> {% endcomment %}
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="table-responsive">
+                                                <table class="table table-borderless align-middle mb-0">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Appointment No</th>
+                                                            <th>Appointment Date </th>  
+                                                            <th>Speciality</th>                              
+                                                            <th>Doctor</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% if treatementHistory %}
+                                                        {%for history in treatementHistory %}
+                                                        <tr>
+                                                            <td> {{history.AppointmentNumber}} </td>
+                                                            <td> {{history.AppointmentDate}} </td>
+                                                            <td> {{history.jobtypes.name}} </td>
+                                                            <td> {{history.Doctor.get_full_name}} </td>
+                                                        
+                                                            <td>   
+                                                                
+                                                                <a href="{% url 'patient-view' history.id %}">
+                                                                    <button type="button" class="btn btn-sm btn-primary">
+                                                                        <i class="las la-eye"></i>
+                                                                    </button>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                       {%endfor%}
+                                                       {%else%}
+                                                       <tr>
+                                                           <td class='text-center' colspan='5'>There is no treatment History for this patient.</td>
+                                                       </tr>
+                                                       {%endif%}
+                                                     
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end tab-content-->
+                </div>
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
+
+  
+{% endblock  %}
+
+
+{% block scripts %}
+<script>
+    var appointmentId = '{{id}}'
+ </script>
+<script src='{% static "scripts/APEN/Patients/patientView.js" %}'></script>
+<script src='{% static "scripts/APEN/Patients/patient_diagnosis.js" %}'></script>
+
+{% endblock scripts %}

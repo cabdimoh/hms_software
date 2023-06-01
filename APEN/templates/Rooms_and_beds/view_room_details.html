@@ -1,0 +1,414 @@
+{% extends 'base/index.html' %}
+{% load static%}
+{% block content %}
+
+<!-- /.modal -->
+
+
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Room Details</h4>
+
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xxl-3">
+        <div class="card">
+            <div class="card-body p-4">
+                <div>
+                    <div class="flex-shrink-0 avatar-md mx-auto">
+                        <div class="avatar-title bg-light rounded">
+                            <img src="{% static "assets/images/room .jpeg" %}" style="width: 200%;" alt="" height="100" />
+                        </div>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <h5 class="mb-1"> Medicine Room </h5>
+                        <p class="text-muted">Since 1987</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table mb-0 table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th><span class="fw-medium">ID</span></th>
+                                    <td>{{room.id}}</td>
+                                </tr>
+                                <tr>
+                                    <th><span class="fw-medium">Room Category</span></th>
+                                    <td>{{room.Room_category.Category_name}}</td>
+                                </tr>
+                                <tr>
+                                    <th><span class="fw-medium">Room No</span></th>
+                                    <td>{{room.Room_NO}}</td>
+                                </tr>
+                                <!-- <tr>
+                                    <th><span class="fw-medium">Status</span></th>
+                                    <td>{{total_beds}}</td>
+                                </tr> -->
+                                <tr>
+                                    <th><span class="fw-medium">Status</span></th>
+                                    <td>{{room.status}}</td>
+                                </tr>
+                                
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--end card-body-->
+            
+            <!--end card-body-->
+            
+            <!--end card-body-->
+        </div>
+        <!--end card-->
+    </div>
+    <!--end col-->
+
+    <div class="col-xxl-9">
+        <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Beds</h4>
+                
+            </div><!-- end card header -->
+
+           <!-- end card header -->
+
+            <div class="card-body p-0 pb-2">
+                <div>
+                    <ul class="nav nav-pills arrow-navtabs nav-soft-primary bg-soft-primary mb-3" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#home1" role="tab">
+                                <span class="d-block d-sm-none"><i class="mdi mdi-home-variant"></i></span>
+                                <span class="d-none d-sm-block"> Empty Beds</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#settings1" role="tab">
+                                <span class="d-block d-sm-none"><i class="mdi mdi-account"></i></span>
+                                <span class="d-none d-sm-block">Full Beds</span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                    
+
+                    <!-- <ul class="nav nav-tabs nav-justified mb-3" role="tablist" style="color: rgb(202, 34, 34);">
+                        <li class="nav-item" style="color: blue;">
+                            <a class="nav-link" data-bs-toggle="tab" href="#home1" role="tab" aria-selected="false" style="color: blue;">
+                               Empty Beds
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#settings1" role="tab" aria-selected="false" style="color: blue;">
+                                Full Beds
+                            </a>
+                        </li>
+                        
+                        
+                    </ul> -->
+                    
+                    <div class="tab-content p-3 text-muted">
+                        <div class="tab-pane active" id="home1" role="tabpanel">
+                            <br>
+                            <br>
+                            
+                            <!-- <h2 style="align-items: self-end; color: rgba(2, 2, 8, 0.466);">Purcase Transection </h2>  -->
+                                    <!-- <table id="transactiontable" class="table table-bordered">
+                                        <thead >
+                                          <tr>
+                                           
+                                            <th scope="col">ID </th>
+                                           
+                                            <th scope="col">Bed No</th>
+                                            <th scope="col">Room No </th>
+                                            <th scope="col">Status</th>
+                                            
+                                          
+                                          </tr>
+                                        </thead>
+                                        <tbody id="tbody">
+                                         
+                                          {% for beds in bed %}
+                                          {% if beds.status == 'empty'%}
+                                         
+                                          <tr>
+                                            
+                                          <td>{{beds.id}}</td>
+                                          <td>{{beds.BedNO}}</td>
+                                          <td>{{beds.Room.Room_NO}}</td>
+                                          <td>{{beds.status}}</td>
+                                         
+                                          </tr>
+                                          {% endif %}
+                                          
+                                          
+                                          {%endfor%}
+                                         
+                                         
+                                        </tbody>
+                                      </table> -->
+                                      <div class="row"> 
+                                        <div class="col-12">
+                                            <fieldset style="background-color:white">
+                                                
+                                                <div class="row ">
+                                                    {% for beds in bed %}
+                                                    {% if beds.status == 'Available'%}
+                                                    <div class="col-lg-2">
+                                                        <a data-toggle="popover" class="beddetail_popover">
+                                                        <div class="relative">
+                                                            <div class="bedred">
+                                                                <style>
+                                                                    .icon-size1 {
+                                                                        font-size: 90px;
+                                                                        color: green
+                                                                    }
+                                                                </style>
+                                                                 <!-- <div class="bedtepmiuns6">{{beds.BedNO}}</div> -->
+                                                                 <i class="ri-hotel-bed-fill icon-size1"></i>
+                                                                <div class="bedtepmiuns6">{{beds.BedNO}}</div>
+                                                                <div class="bed_detail_popover" style="display: none">
+
+                                                                   
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        </a>
+                                                    </div>
+                                                    {% endif %}
+                                          
+                                          
+                                                    {%endfor%}
+                                                    
+                                                
+                                                    
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                        </div>
+                        
+                        
+                        <div class="tab-pane" id="settings1" role="tabpanel">
+                            <br>
+                            <br>
+                            <!-- <h2 style="align-items: self-end; color: rgba(2, 2, 8, 0.466);">Refill Transection</h2>  -->
+                                    <!-- <table id="transactiontable2" class="table table-bordered solid">
+                                        <thead>
+                                          <tr>
+                                           
+                                            <th scope="col">ID </th>
+                                           
+                                            <th scope="col">Bed No</th>
+                                            <th scope="col">Room No </th>
+                                            <th scope="col">Status</th>
+                                          
+                                          </tr>
+                                        </thead>
+                                        <tbody id="tbody" class="table table-bordered nowrap table-striped align-middle" style="width:100%">
+                                        
+                                            {% for beds in bed %}
+                                          {% if beds.status == 'full'%}
+                                         
+                                          <tr>
+                                          
+                                          <td>{{beds.id}}</td>
+                                          <td>{{beds.BedNO}}</td>
+                                          <td>{{beds.Room.Room_NO}}</td>
+                                          <td>{{beds.status}}</td>
+                                         
+                                          </tr>
+                                          {% endif %}
+                                          
+                                          
+                                          {%endfor%}
+                                          
+                                         
+                                        </tbody>
+                                      </table> -->
+                                      <div class="row"> 
+                                        <div class="col-12">
+                                            <fieldset style="background-color:white;">
+                                               
+                                                <div class="row ">
+                                                 
+                                                    
+                                                    <div class="col-lg-2">
+                                                        <div class="relative">
+                                                            <div class="bedred">
+                                                                <style>
+                                                                    .icon-size {
+                                                                        font-size: 90px;
+                                                                        color:red;
+                                                                    }
+                                                                    /* Base styling*/
+                                                                   
+
+                                                                    /* Popover styling */
+
+                                                                    a {
+                                                                    text-decoration: none;
+                                                                    }
+
+                                                                    .icon-size {
+                                                                    font-size: 90px;
+                                                                    line-height: 36px;
+                                                                    text-decoration: none;
+                                                                    color: rgb(228, 68, 68);
+                                                                    text-align: left;
+                                                                    position: center;
+                                                                    padding: 15px 0;
+                                                                    }
+
+                                                                    .popover__wrapper {
+                                                                    position: relative;
+                                                                    margin-top: 1.5rem;
+                                                                    display: inline-block;
+                                                                    }
+                                                                    .popover__content {
+                                                                    opacity: 0;
+                                                                    visibility: hidden;
+                                                                    position: absolute;
+                                                                    right: -100px;
+                                                                    transform: translate(0, 10px);
+                                                                    background-color: #efecece4;
+                                                                    padding: 1.5rem;
+                                                                    box-shadow: 0 2px 5px 0 rgba(144, 141, 141, 0.26);
+                                                                    width: auto;
+                                                                    }
+                                                                    .popover__content:before {
+                                                                    position: absolute;
+                                                                    z-index: -1;
+                                                                    content: "";
+                                                                    right: calc(50% - 10px);
+                                                                    top: -8px;
+                                                                    border-style: solid;
+                                                                    border-width: 0 10px 10px 10px;
+                                                                    border-color: transparent transparent #bfbfbf transparent;
+                                                                    transition-duration: 0.3s;
+                                                                    transition-property: transform;
+                                                                    }
+                                                                    .popover__wrapper:hover .popover__content {
+                                                                    z-index: 10;
+                                                                    opacity: 1;
+                                                                    visibility: visible;
+                                                                    transform: translate(0, -20px);
+                                                                    transition: all 0.5s cubic-bezier(0.75, -0.02, 0.2, 0.97);
+                                                                    }
+                                                                    .popover__message {
+                                                                    text-align: left;
+                                                                    }
+                                                                </style>
+
+                                                                <div class="row ">
+                                                                    {% for assigned in paitient %}
+                                                                    {% if assigned.Visit %}
+                                                                    <div class="col-lg-2">
+                                                                        <div class="relative">
+                                                                
+                                                                            <div class="popover__wrapper">
+                                                                                <a href="#">
+                                                                                
+                                                                                    <i class="ri-hotel-bed-fill icon-size"></i>  
+                                                                                    <div  class="popover__message">{{assigned.Visit.Patient.get_fullName}}</div>
+                                                                                </a>
+                                                                                <div class="popover__content">
+                                                                                    <div class="bedtepmiuns6">Bed No: {{assigned.Bed.BedNO}}</div>
+                                                                                    <div class="popover__message">Doctor: {{assigned.Admission.Admission_order.Visit.Doctor.get_full_name}}</div>
+                                                                                    <div class="popover__message">Age: {{assigned.Admission.Admission_order.Visit.Patient.PatientAge}}</div>
+                                                                                    <div class="popover__message">Gender: {{assigned.Admission.Admission_order.Visit.Patient.PatientGender}}</div>
+                                                                                    <div class="popover__message">Phone: {{assigned.Admission.Admission_order.Visit.Patient.PatientMobileNo}}</div>
+                                                                                    <div class="popover__message">Distric: {{assigned.Admission.Admission_order.Visit.Patient.PatientDistrict}}</div>
+                                                                                    
+                                                        
+                                                                                </div>
+                                                                                
+                                                                            </div>
+                                                                            {% else %}
+                                                                            {% if assigned.Admission.Admission_order.Visit   %}
+                                                                            <div class="popover__wrapper">
+                                                                                <a href="{% url 'Inpatient-view-emergency' admission_id=assigned.Admission.id  %}">
+                                                                                
+                                                                                    <i class="ri-hotel-bed-fill icon-size"></i>
+                                                                                    <div class="popover__message">{{assigned.Admission.Admission_order.Visit.Patient.get_fullName}}</div>
+                                                                                </a>
+                                                                                <div class="popover__content">
+                                                                                    <div class="bedtepmiuns6">Bed No: {{assigned.Bed.BedNO}}</div>
+                                                                                    <div class="popover__message">Doctor: {{assigned.Admission.Admission_order.Visit.Doctor.get_full_name}}</div>
+                                                                                    <div class="popover__message">Age: {{assigned.Admission.Admission_order.Visit.Patient.PatientAge}}</div>
+                                                                                    <div class="popover__message">Gender: {{assigned.Admission.Admission_order.Visit.Patient.PatientGender}}</div>
+                                                                                    <div class="popover__message">Phone: {{assigned.Admission.Admission_order.Visit.Patient.PatientMobileNo}}</div>
+                                                                                    <div class="popover__message">Distric: {{assigned.Admission.Admission_order.Visit.Patient.PatientDistrict}}</div>
+                                                                                    
+                                                                                
+                                                                                
+                                                                                </div>
+                                                                                
+                                                                            </div>
+
+                                                                            {% else %}
+                                                                            
+                                                                        
+                                                                            
+                                                                            <div class="popover__wrapper">
+                                                                                <a href="{% url 'Inpatient-view-appointment' admission_id=assigned.Admission.id  %}">
+                                                                                    <i class="ri-hotel-bed-fill icon-size"></i>
+                                                                                    <div  class="popover__message">{{assigned.Admission.Admission_order.Appointment.Patient.get_fullName}}</div>
+                                                                                </a>
+                                                                                <div class="popover__content">
+                                                                                <div class="popover__message"> Bed No: {{assigned.Bed.BedNO}}</div>
+                                                                                    <div class="popover__message">Doctor: {{assigned.Admission.Admission_order.Appointment.Doctor.get_full_name}}</div>
+                                                                                    <div class="popover__message">Age: {{assigned.Admission.Admission_order.Appointment.Patient.PatientAge}}</div>
+                                                                                    <div class="popover__message">Gender: {{assigned.Admission.Admission_order.Appointment.Patient.PatientGender}}</div>
+                                                                                    <div class="popover__message">Phone: {{assigned.Admission.Admission_order.Appointment.Patient.PatientMobileNo}}</div>
+                                                                                    <div class="popover__message">Distric: {{assigned.Admission.Admission_order.Appointment.Patient.PatientDistrict}}</div>
+                                                                                
+                                                                                
+                                                                                </div>
+                                                                                
+                                                                            </div>
+                                                                        
+                                                                    </div>
+                                                                    
+                                                                    
+                                                                    {% endif %}
+                                                                    {% endif %}
+                                                                    {%endfor%}
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                        </div>
+                       
+                       
+                    </div>
+                </div>
+            </div><!-- end card body -->
+        </div><!-- end card -->
+
+    </div>
+    <!--end col-->
+</div>
+
+
+{% endblock content %}
+{% block scripts %}
+<!-- <script src={% static "scripts/Inventory/store_cate.js" %}></script> -->
+<!-- <script src={% static "scripts/Inventory/view_medicine_print.js" %}></script>
+<script src={% static "scripts/Inventory/maincanva.js" %}></script> -->
+{% endblock scripts %}

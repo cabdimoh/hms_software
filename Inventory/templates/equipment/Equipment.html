@@ -1,0 +1,302 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex">
+        <h4 class="card-title">Equipment</h4>
+    </div>
+
+    <div class="card-body">
+        <div class="row mb-2 g-4 align-items-center">
+            <div class="col-sm-3">
+
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"><i class="bx bx-plus me-1"></i> add Equipment </a>
+   
+            </div>
+            <div class="col-sm-auto ms-auto">
+                <div class="hstack gap-2">
+                    
+                    <div class="form-group">
+                        <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber}}
+                            class="form-control select2 w-100">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+
+                   <form autocomplete='off'>
+                    <div class="input-group mr-0">
+                        <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                            class="form-control" aria-label="Recipient's username"
+                            aria-describedby="button-addon2">
+                        <button class="btn btn-primary" type="button" id="button-addon2">
+                            <i class="bx bx-search"></i>
+                        </button>
+                    </div>
+                  </form>
+
+                </div>
+            </div>
+        </div>
+       
+        <div class="table-rep-plugin">
+            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                <table id="EquipmentTable" class="table table-bordered nowrap table-striped align-middle" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Equipment ID</th>
+                            <th data-priority="1">Equipment Name</th>
+                            <th data-priority="3">Category Name </th>
+                            <th data-priority="3">Quantity</th>
+                            <th data-priority="3">Lost_and_Damage </th>
+                            <th data-priority="3">Manufacturing </th>
+                            <th data-priority="3">Supplier price </th>
+                            <th data-priority="3">Refill</th>
+                            
+                            <!-- <th data-priority="3">Imployee</th> -->
+                            
+                            <th data-priority="6">Action</th>
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%if page_objects%}
+                        {% for Equipment in page_objects %}
+                        <tr>
+                            <td><a href="javascript: void(0);" class="text-dark fw-medium">{{Equipment.id}}</a> </td>
+                            <td>{{Equipment.item_name}}</td>
+                            <td>{{Equipment.category.category_name}}</td>
+                            {% if Equipment.quantity <= 10  %}
+                            <td style="color: red;">{{Equipment.quantity}}</td>
+                            {% else %}
+                            <td>{{Equipment.quantity}} </td>
+                            {% endif %}
+                            
+                            <td>{{Equipment.lost_and_damaged}}</td>
+                            <td>{{Equipment.manufacturing}}</td>
+                            <td>{{Equipment.supplier_price}}</td>
+                            <td><a id="Refill" rowid = {{Equipment.id}} href="#" class="btn btn-primary btn btn-sm" data-bs-toggle="modal" data-bs-target="#refillequipment"></i>Refill
+                                
+                            </a></td>
+                            
+                           
+                            
+                            <td>
+                                <a   href="{{Equipment.get_equipment_details_url}}" style="color:white;"  data-bs-toggle="#"
+                                data-bs-target=".bs-example-modal-lg">
+                                 <button type="button" class="btn btn-sm btn-primary waves-effect waves-light"><i class="r ri-eye-fill"></i></button>
+                                </a>
+                                <a id="EditEquipmentButton" rowid = {{Equipment.id}} >
+                                    <button type="button" class="btn btn-sm btn-primary waves-effect waves-light"><i class="ri-pencil-fill"></i></button>
+                            </a>
+                                
+                                <!-- <a href="{% url 'delete_equipment' Equipment.id %}" type="button" >   
+                                    <button type="button" class="btn btn-danger btn-icon waves-effect waves-light"><i class="ri-delete-bin-5-line"></i></button>
+                                    </a> -->
+                            </td>
+                        </tr>
+                       {%endfor%}
+                       {% else %}
+                        <tr>
+                            <td class='text-center' colspan='6'>No Equipment available</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+            <div activePage = {{ page_objects.number }} class="col-md-6 activePage">
+                
+            </div>
+            <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                       
+                <nav aria-label="...">
+                    <ul class="pagination mb-0">
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="1">
+                            <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="{% if page_objects.has_previous %}{{ page_objects.previous_page_number }}{% else %}No Page{% endif %}">
+                            <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                        </li>
+                       
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{% if page_objects.has_next %}{{ page_objects.next_page_number }}{% else %}No Page{% endif %}">
+                            <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{{ page_objects.paginator.num_pages}}">
+                            <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+ 
+            
+
+            <div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" data-bs-scroll="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="myModalLabel">Add Equipment</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Start row -->
+                            <form id="itemsForm"> 
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div>
+                                            
+                                            <div class="mb-3">
+                                                <label class="form-label">Select category</label>
+                                                <select class="form-select" id="select_store_cat">
+                                                    <option value="">Select cat</option>
+                                                    {% for equipment_cat in Equipment_categories %}
+                                                    <option value='{{equipment_cat.id}}'>{{equipment_cat.category_name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="mb-4">
+                                                <label class="form-label" for="default-input">Equipment Name</label>
+                                                <input class="form-control" type="text" id="ItemName" placeholder="category name ">
+                                                <input class="form-control" type="hidden" id="EquipmentID" placeholder="category name ">
+                                            </div>
+                                            <div class="mb-4">
+                                                <label class="form-label" for="default-input">Quantity</q></label>
+                                                <input class="form-control" type="number" id="quantity" placeholder="description">
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <div class="mt-3 mt-lg-0">
+                                            <div class="mb-4">
+                                                <label class="form-label" for="default-input">Lost and damage</label>
+                                                <input class="form-control" type="text" id="Lost_and_damage" placeholder="description">
+                                            </div>
+                                            <div class="mb-4">
+                                                <label class="form-label" for="default-input">Manufaturing</label>
+                                                <input class="form-control" type="text" id="manufaturing" placeholder="description">
+                                            </div>
+                                            <div class="mb-4">
+                                                <label class="form-label" for="default-input">Supplier_price</label>
+                                                <input class="form-control" type="number" id="supplier_price" placeholder="description">
+                                            </div>
+                                     
+                                        </div>
+    
+                                    </div>
+    
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        <button type='button'  data-bs-dismiss="modal" class="btn-danger btn">Back</button>
+                                        <button type="button" id="btn_submit" class="btn btn-primary waves-effect waves-light">Save</button>
+                                    </div>
+                                    <div class="col-lg-10">
+                                        
+    
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- end col -->
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+             </div>
+
+
+             <div id="refillequipment" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" data-bs-scroll="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="myModalLabel">Add Equipment</h5>
+                            <button type="text"  class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Start row -->
+                            <form id="itemsForm"> 
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div>
+                                            <div class="mb-4">
+                                                <label class="form-label" for="default-input">Item Name</label>
+                                                <input class="form-control" type="text" disabled id="EquipmenCat" placeholder="category name ">
+                                                <input class="form-control" type="hidden" id="EquipmentID" placeholder="category name ">
+                                            </div>
+                                            <div class="mb-4">
+                                                <label class="form-label" for="default-input">quantity</q></label>
+                                                <input class="form-control" type="text" id="quantity2" placeholder="description">
+                                            </div>
+                                            
+                                            
+                                            <div class="mb-4">
+                                                <label class="form-label" for="default-input">Lost and damage</label>
+                                                <input class="form-control" type="text" id="Lost_and_damage2" placeholder="description">
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <div class="mt-3 mt-lg-0">
+                                            <div class="mb-3">
+                                                <label class="form-label">Select Category</label>
+                                                <input class="form-control" type="text" disabled   id="SelectStoreCat" placeholder="Category ">
+                                            </div>
+                                            
+                                            <div class="mb-4">
+                                                <label class="form-label" for="default-input">manufaturing</label>
+                                                <input class="form-control" type="text" id="manufaturing2" placeholder="description">
+                                            </div>
+                                            <div class="mb-4">
+                                                <label class="form-label" for="default-input">supplier_price</label>
+                                                <input class="form-control" type="text" id="supplier_price2" placeholder="description">
+                                            </div>
+                                            
+                                            
+                                            
+                                            
+                                            
+                                        </div>
+    
+                                    </div>
+    
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        <button type="button" class="btn btn-danger waves-effect waves-light">Back</button>
+                                        <button type="button" id="btn_submit_refill_equipment" class="btn btn-primary waves-effect waves-light">Save</button>
+                                    </div>
+                                    <div class="col-lg-10">
+                                        
+    
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- end col -->
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+             </div>
+
+{% endblock content %}
+{% block scripts %}
+<script src={% static "scripts/Inventory/store.js" %}></script>
+<script src={% static "scripts/Inventory/add_store.js" %}></script>
+{% endblock scripts %}

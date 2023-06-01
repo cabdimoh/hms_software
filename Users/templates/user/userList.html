@@ -1,0 +1,154 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block modal %}
+
+{%endblock%}
+
+{% block content %}
+
+<!-- end row -->
+        <div class="row">
+
+            <div class="col-lg-12 mt-4">
+                <div class="card">
+                  
+                    <div class="card-body">
+                    <div class="row mb-2 g-4 align-items-center ">
+                        <div class="col-3">
+                            <h5 class="fw-bolder">User creation</h5 class="fw-bolder">
+                        </div>
+                            <div class="col-sm-auto ms-auto">
+                                <div class="hstack gap-2">                                    
+        
+                                    <div class="form-group">
+                                        <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber }}
+                                            class="form-control select2 w-100">        
+
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="30">30</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+
+                                        </select>
+                                    </div>
+        
+                                   <form autocomplete='off'>
+                                    <div class="input-group mr-0">
+                                        <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                                            class="form-control" aria-label="Recipient's username"
+                                            aria-describedby="button-addon2">
+                                        <button class="btn btn-primary" type="button" id="button-addon2">
+                                            <i class="bx bx-search"></i>
+                                        </button>
+                                    </div>
+                                  </form>
+        
+                                </div>
+                            </div>
+                    </div>
+                    <div class="row table-responsive">
+                        {% csrf_token %}
+                        <div class="col-md-12 mt-3">
+                            <table id="userList_table" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">EmployeeID</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">User type</th>
+                                        <th scope="col">state</th>
+                                        <th scope="col">Activation</th>                                       
+                                    
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% if page_obj %}
+                                    {% for item in page_obj %}
+                                    
+                                    
+                                    <tr>
+                                        <td>{{item.employee.emp_number}}</td>
+
+                                        <td><a href={{item.employee.get_absolute_url}}>{{item.employee.get_full_name}}</a></td>
+                                        <td>{{item.getUserType}}</td> 
+                                        {%if item.is_active == True %}
+                                        <td>active</td>
+                                        {% else %}
+                                        <td>Inactive</td>
+                                        {% endif %}     
+                                        {%if item.is_active == True %}  
+                                        <td><div class="form-check form-switch form-switch-success">
+                                            <input class="form-check-input" userIDs={{item.id}} type="checkbox" role="switch" id="Activation_btn" checked>                                          
+                                          </div>
+                                    </td>
+                                        {% else %}      
+                                        <td><div class="form-check form-switch form-switch-success">
+                                            <input class="form-check-input" userIDs={{item.id}} type="checkbox" role="switch" id="Activation_btn" >                                          
+                                          </div>
+                                    </td>
+                                    {%endif%}
+                                       
+          
+
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td class='text-center' colspan='12'>No employees available</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+        
+                        <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+                            <div activePage = {{ page_obj.number }} class="col-md-6 activePage">
+                              
+                            </div>
+                        
+                            <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                                       
+                                <nav aria-label="...">
+                                    <ul class="pagination mb-0">
+                                        <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}" page="1">
+                                            <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                                        </li>
+                                        <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}" page="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}No Page{% endif %}">
+                                            <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                                        </li>
+                                       
+                                        <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}" page="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}No Page{% endif %}">
+                                            <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                                        </li>
+                                        <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}" page="{{ page_obj.paginator.num_pages}}">
+                                            <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                                        </li>
+                                    </ul>
+                                </nav>
+        
+        
+        
+                            </div>
+                        </div>
+
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+
+
+
+{% endblock  %}
+
+
+{% block scripts %}
+
+<script src={% static "scripts/users/userpaginations.js" %}></script>
+<script src={% static "scripts/users/userList.js" %}></script>
+
+
+
+
+{% endblock scripts %}

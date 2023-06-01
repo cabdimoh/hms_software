@@ -1,0 +1,460 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex ">
+        <h4 class="card-title">Lab Tests</h4>
+    </div>
+    <div class="card-body">
+        
+        <div class="row mb-2 g-4 align-items-center">
+            <div class="col-sm-3">
+                <a href="#" class="btn btn-primary" id='add_test' data-bs-toggle="modal" data-bs-target="#labTestModal"><i class="bx bx-plus me-1"></i>Add Test</a>
+
+                
+            </div>
+            <div class="col-sm-auto ms-auto">
+                <div class="hstack gap-2">
+                    
+                    <div class="form-group">
+                        <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber}}
+                            class="form-control select2 w-100">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+
+                <form autocomplete='off'>
+                    <div class="input-group mr-0">
+                        <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                            class="form-control" aria-label="Recipient's username"
+                            aria-describedby="button-addon2">
+                        <button class="btn btn-primary" type="button" id="button-addon2">
+                            <i class="bx bx-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%" id="TestTable">
+                <thead>
+                    <tr>
+                        <th>Test Number</th>
+                        <th data-priority="1">Test Category</th>
+                        <th data-priority="1">Test Name</th>
+                        <th data-priority="3">Test Description</th>
+                        <th data-priority="6">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%if page_objects %}
+                    {% for Test in page_objects %}
+                    <tr>
+                        <td><a href="javascript: void(0);" class="text-dark fw-medium">{{Test.TestNumber}}</a> </td>
+                        <td>{{Test.SampleType}}</td>
+                        <td>{{Test.TestName}}</td>
+                        <td>{{Test.TestDescription}}</td>
+                        <td>
+                            <a href="#" rowid={{Test.id}} id="viewLabTests">
+                                <button type="button" class="btn btn-sm btn-primary">
+                                    <i class="las la-eye"></i>
+                                </button>
+                            </a> 
+                            <a href="#" rowid={{Test.id}} id="editButtonTest" data-bs-toggle="modal" data-bs-target="#editlabTestModal">
+                                <button type="button" class="btn btn-sm btn-success">
+                                    <i class="las la-edit"></i>
+                                </button>
+                            </a> 
+                          
+                         
+                         </td>
+                    </tr>
+                    {%endfor%}
+                    {% else %}
+                    <tr>
+                        <td class='text-center' colspan='6'>No Tests available</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+       
+
+        <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+            <div activePage = {{ page_objects.number }} class="col-md-6 activePage">
+                
+            </div>
+            <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                    
+                <nav aria-label="...">
+                    <ul class="pagination mb-0">
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="1">
+                            <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="{% if page_objects.has_previous %}{{ page_objects.previous_page_number }}{% else %}No Page{% endif %}">
+                            <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                        </li>
+                    
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{% if page_objects.has_next %}{{ page_objects.next_page_number }}{% else %}No Page{% endif %}">
+                            <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{{ page_objects.paginator.num_pages}}">
+                            <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    
+    </div>
+</div>
+
+<!--  Add Lab Test Modal -->
+<div class="modal fade add_labtest"  id="labTestModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myLargeModalLabel">Large modal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="TestForm">
+                    {% csrf_token %}
+                    <div class="row">
+                       
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="ItemCat" class="form-label"> Sample Type</label>
+                                <select class="form-select" id="sampleType">
+                                    <option value="">Select Sample Type</option>
+                                    <option value="Blood">Blood</option>
+                                    <option value="Urine">Urine</option>
+                                    <option value="Stool">Stool</option>
+                                   
+                                </select>                                   
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="ItemCat" class="form-label">Result Type</label>
+                                <select class="form-select" id="ResultType">
+                                    <option value="">Select Result Type</option>
+                                    <option value="Quantitative">Quantitative</option>
+                                    <option value="Qualitative">Qualitative</option>
+                                    <option value="MultiComponent">MultiComponent</option>
+                                </select>                                   
+                            </div>
+                        </div>
+                    </div>
+                    <div class="for-blood d-none">
+                        <div class="row blood">
+
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label for="ItemCat" class="form-label">Group</label>
+                                    <select class="form-select" id="Group">
+                                        <option value="">Select Group</option>
+                                        {% for group in lab_groups %}
+                                        <option value='{{group.id}}'>{{group.GroupName}}</option>
+                                        {% endfor %}
+                                    </select>                                   
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label for="ItemCat" class="form-label">Sub Group</label>
+                                    <select class="form-select" id="SubGroup">
+                                       
+                                    </select>                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="TestName" class="form-label">Test Name</label>
+                                <input class="form-control" type="text"  hidden disabled id="TestID">
+                                <input class="form-control" type="text" id="TestName" name="TestName" placeholder="Test Name" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="TestName" class="form-label">Short Name</label>
+                                <input class="form-control" type="text"  hidden disabled id="TestID">
+                                <input class="form-control" type="text" id="ShortName" name="ShortName" placeholder="Short Name" autocomplete="off">
+                            </div>
+                        </div>
+                        
+                    </div>
+                 
+                    <div class="for-blood-result d-none ">
+                        <div class="row blood_result">
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label for="TestUnit" class="form-label">Test Unit</label>
+                                    <input class="form-control" type="text" id="TestUnit" name="TestUnit" placeholder="Test Unit" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label for="NormalRange" class="form-label">Normal Range</label>
+                                    <input class="form-control" type="text" id="NormalRange" name="NormalRange" placeholder="Normal Range" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     
+                    <div class="for-others d-none ">
+                        <div class="row others">
+                            <div class="col-md-6">
+                                <div id="show_physical">
+                                    <h6>Physical Examination</h6>
+
+                                    <div class="row" id="row1">
+                                        
+                                        <div class="col-md-10">
+                                            <div class="mb-3">
+                                                <input class="form-control" type="text" id="Physical1">
+                                            </div>                                                       
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="mb-3">
+                                                <label class="form-label"></label>
+                                                <button type="button" class="btn btn-sm btn-primary add_item_btn" >
+                                                    <i class="las la-plus"></i> 
+                                                </button>
+                                            </div>                                                       
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div id="show_chemical">
+                                    <h6>Chemical Examination</h6>
+
+                                    <div class="row" id="row1">
+                                        
+                                        <div class="col-md-10">
+                                            <div class="mb-3">
+                                                <input class="form-control" type="text" id="Chemical1">
+                                            </div>                                                       
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="mb-3">
+                                                <label class="form-label"></label>
+                                                <button type="button" class="btn btn-primary btn-sm add_chemical_btn" >
+                                                    <i class="las la-plus"></i> 
+                                                </button>
+                                            </div>                                                       
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+
+                                    
+                                       
+                        </div>
+                        <div class="row others">
+                            <div class="col-md-6">
+                                <div id="show_micro">
+                                    <h6>Microscopic Examination</h6>
+
+                                    <div class="row" id="row1">
+                                        
+                                        <div class="col-md-10">
+                                            <div class="mb-3">
+                                                <input class="form-control" type="text" id="Microscopic1">
+                                            </div>                                                       
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="mb-3">
+                                                <label class="form-label"></label>
+                                                <button type="button" class="btn btn-primary btn-sm add_micro_btn" >
+                                                    <i class="las la-plus"></i> 
+                                                </button>
+                                            </div>                                                       
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                          
+                                    
+                                       
+                        </div>
+                           
+                    </div>
+                    <div class="mb-3">
+                        <label for="TestDescription" class="form-label">Test Description</label>
+                        <textarea class="form-control" id="TestDescription" name="TestDescription" placeholder="Test Description" autocomplete="off"></textarea>
+                    </div>
+                    
+                  
+                   
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+                <button type="button" id="SubmitLabTest" class="btn btn-primary ">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!--  Add Lab Test Modal -->
+<div class="modal fade bs-example-modal-lg" id="ViewbloodTests" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myLargeModalLabel">Lab Test Info</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-rep-plugin">
+                    <div class="table-responsive mb-0" data-pattern="priority-columns">
+                        <table id="tech-companies-1" class="table table-striped ">
+                            <form id="labresult">
+                                {% csrf_token %}
+                                    <thead>
+                                        <tr>
+                                            <th>Test Number</th>
+                                            <td><span  id="testID"> </span></td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <th class="text-dark fw-medium">Test Category</th>
+                                            <td><span  id="test_category"> </span></td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <th class="text-dark fw-medium">Group Name</th>
+                                            <td><span  id="group"> </span></td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <th class="text-dark fw-medium">Sub Group Name</th>
+                                            <td><span  id="subgroup"> </span></td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <th class="text-dark fw-medium">Test Name</th>
+                                            <td><span  id="testName"> </span></td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <th class="text-dark fw-medium">Short Name</th>
+                                            <td><span  id="shortName"> </span></td>
+                                            
+                                        </tr>
+                                       
+                                        <tr>
+                                            <th class="text-dark fw-medium">Normal Range</th>
+                                            <td><span  id="normalrange"> </span></td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <th class="text-dark fw-medium">Test Unit</th>
+                                            <td><span  id="testUnit"> </span></td>
+                                            
+                                        </tr>
+                                       
+                                    </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade bs-example-modal-lg" id="ViewparameterTests" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myLargeModalLabel">Lab Test Info</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-rep-plugin">
+                    <div class="table-responsive mb-0" data-pattern="priority-columns">
+                        <table id="tech-companies-1" class="table table-striped ">
+                            <form id="labresult">
+                                {% csrf_token %}
+                                    <thead>
+                                        <tr>
+                                            <th>Test Number</th>
+                                            <td><span  id="testID_"> </span></td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <th class="text-dark fw-medium">Test Category</th>
+                                            <td><span  id="test_category_"> </span></td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <th class="text-dark fw-medium">Test Name</th>
+                                            <td><span  id="testName_"> </span></td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <th class="text-dark fw-medium">Short Name</th>
+                                            <td><span  id="shortName_"> </span></td>
+                                            
+                                        </tr>
+                                        
+                                       <tr id="examination">
+                                        <td>
+                                            <h6>Physical Examinations</h6>
+                                            <uL id="physical_parameters">
+                                                
+                                            </uL>
+                                            <h6>Chemical Examinations</h6>
+                                            <uL id="chemical_parameters">
+                                            </uL>
+                                            <h6>Microscopic Examinations</h6>
+                                            <uL id="microscopic_parameters">
+                                            </uL>
+                                        </td>
+                                       
+                                       </tr>
+                                       
+                                       
+                                    </thead>
+                        </table>
+                       
+                    </div>
+                        
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+             </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+   
+{% endblock content %}
+{% block scripts %}
+<script src={% static "scripts/LRPD/LabTests/LabTestPagination.js" %}></script>
+<script src={% static "scripts/LRPD/LabTests/AddLabTest.js" %}></script>
+
+{% endblock scripts %}

@@ -1,0 +1,198 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block modal %}
+<div class="modal fade add_workshift_modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle">Add Work shift</h5>
+                <input class="form-control" type="text"  hidden disabled id="work_shift_id">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" id="job_t">
+                  
+              <div class="row">
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                    <label for="example-text-input" class="form-label"> Department</label>
+                    <select name="" id="departments_all" class="form-control">
+                        <option value="" >Select Department</option>
+                        {% for item in department_all %}
+                        <option value={{item.id}}>{{item.department_name}}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">shift Name</label>
+                        <input class="form-control" type="text"  id="shift_name">
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                <input class="form-control all_days" type="text"  hidden disabled >
+                    
+                    <select  id="shiftType" class="form-select" >                        
+                        <option value="" >Shift Type</option>
+                        <option value="Fulltime" >Fulltime</option>
+                        <option value="PartTime" >Parttime</option>
+                    </select>
+                </div>
+
+                <div class="col-12 d-flex my-2">
+                    <div class="row days">
+                        <div class="col-4">
+                            <div class="form-check" >
+                                <input class="form-check-input" type="checkbox" value="" id="Saturday">
+                                <label class="form-check-label" for="Saturday">
+                                  Saturday
+                                </label>
+                              </div>
+                        </div>               
+                        
+                        <div class="col-4">
+                            <div class="form-check" >
+                                <input class="form-check-input" type="checkbox" value="" id="Sunday">
+                                <label class="form-check-label" for="Sunday">
+                                  Sunday    
+                                </label>
+                              </div>
+                        </div>    
+                        
+                        <div class="col-4">
+                            <div class="form-check" >
+                                <input class="form-check-input" type="checkbox" value="" id="Monday">
+                                <label class="form-check-label" for="Monday">
+                                  Monday
+                                </label>
+                              </div>
+                        </div>        
+                        
+                        <div class="col-4 ">
+                            <div class="form-check" >
+                                <input class="form-check-input" type="checkbox" value="" id="Tuesday">
+                                <label class="form-check-label" for="Tuesday">
+                                  Tuesday
+                                </label>
+                              </div>
+                        </div>        
+                        
+                        <div class="col-4 ">
+                            <div class="form-check" >
+                                <input class="form-check-input" type="checkbox" value="" id="Wednesday">
+                                <label class="form-check-label" for="Wednesday">
+                                  Wednesday
+                                </label>
+                              </div>
+                        </div>         
+                        
+                        <div class="col-4">
+                            <div class="form-check" >
+                                <input class="form-check-input" type="checkbox" value="" id="Thursday">
+                                <label class="form-check-label" for="Thursday">
+                                  Thursday
+                                </label>
+                              </div>
+                        </div>  
+                        
+                        <div class="col-4 fridayclass">
+                            <div class="form-check" >
+                                <input class="form-check-input" type="checkbox" value="" id="Friday">
+                                <label class="form-check-label" for="Friday">
+                                  Friday
+                                </label>
+                              </div>
+                        </div>      
+                    </div>
+
+                </div>
+
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Start Time</label>
+                        <input class="form-control" type="time"  id="shift_start_time">
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Start end</label>
+                        <input class="form-control" type="time"  id="shift_end_time">
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                        <a href="" data-dismiss="modal" class="btn-danger btn">Cancel</a>
+                       <button  type='button' id="save_workshift" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- end/workshift modal -->
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            <h5 class="card-title mb-0 mt-1"> Work shift</h5>
+            {% if perms.Hr.add_work_shift %}
+            <a class="btn btn-primary waves-effect waves-light mt-0 " id='add_workshift_button_modal' >
+                Add Work shift
+            </a>
+        {% endif %}
+        </div>
+        <div class="card-body table-responsive">
+            <table  id="work_shift_table" class="table table-borderless ">
+                <thead>
+                    <tr>      
+                                          
+                        <th class="col">id</th>
+                        <th class="col">Department</th>
+                        <th class="col">Shift Name</th>
+                        <th class="col">Shift Type </th>                                
+                        <th class="col">Days </th>                                
+                        <th class="col">Start time </th>                                
+                        <th class="col">end time </th>                                
+                        <th class="col text-end">action</th>  
+
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    
+                </tbody>
+            </table>
+    
+        <!-- end card body -->
+    </div>
+</div>
+{% endblock  %}
+
+
+
+{% block scripts %}
+
+<script src={% static "scripts/Management/manageshift.js" %}></script>
+<script src={% static "scripts/Management/newShiftMngmet.js" %}></script>
+<script src='{% static "scripts/hr/prerequest/workshift.js" %}'></script>
+<script src='{% static "assets/js/uijquery.js" %}'></script>
+
+{% endblock scripts %}

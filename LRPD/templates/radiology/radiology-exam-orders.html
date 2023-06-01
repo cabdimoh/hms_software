@@ -1,0 +1,371 @@
+{% extends 'base/index.html' %}
+{% load static%}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header d-flex ">
+        <h4 class="card-title">Radiology Orders</h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-2 g-4 align-items-center">
+            <div class="col-sm-3">
+                <a href="{% url 'Radiology-Result'%}" class="btn btn-primary">Radiology Results</a>
+            </div>
+            <div class="col-sm-auto ms-auto">
+                <div class="hstack gap-2">
+                    
+                    <div class="form-group">
+                        <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber}}
+                            class="form-control select2 w-100">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+
+                <form autocomplete='off'>
+                    <div class="input-group mr-0">
+                        <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                            class="form-control" aria-label="Recipient's username"
+                            aria-describedby="button-addon2">
+                        <button class="btn btn-primary" type="button" id="button-addon2">
+                            <i class="bx bx-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Order Number</th>
+                    <th data-priority="1">Patient Name</th>
+                    <th data-priority="1">Reference Doctor</th>
+                    <th>Ordered By</th>
+                    <th data-priority="6">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%if page_objects %}
+                {% for radiologyOrder in page_objects %}
+                <tr>
+                    <td><a href="{{radiologyOrder.get_absolute_url}}" class="text-dark fw-medium">{{radiologyOrder.RadiologyOrderNumber}}</a> </td>
+                    {% if radiologyOrder.Admission %}
+                        {% if radiologyOrder.Admission.Admission_order.Visit %}
+                        <td><a href="{{radiologyOrder.get_absolute_url}}">{{ radiologyOrder.Admission.Admission_order.Visit.Patient.get_fullName }}</a></td>
+                        <td>{{ radiologyOrder.Admission.Admission_order.Visit.emergencytriage_set.first.Doctor.get_full_name }}</td>
+                       
+                        {% else %}
+                        <td><a href="{{radiologyOrder.get_absolute_url}}">{{ radiologyOrder.Admission.Admission_order.Appointment.Patient.get_fullName }}</a></td>
+                        <td>{{ radiologyOrder.Admission.Admission_order.Appointment.Doctor.get_full_name }}</td>
+                        {% endif %}
+                        <td><div class="badge text-bg-warning">{{radiologyOrder.Ordered_by}}</div></td>
+                    {% elif  radiologyOrder.Appointment  %}
+                        <td><a href="{{radiologyOrder.get_absolute_url}}">{{ radiologyOrder.Appointment.Patient.get_fullName }}</a></td>
+                        <td>{{ radiologyOrder.Appointment.Doctor.get_full_name }}</td>
+                        <td><div class="badge text-bg-primary">{{radiologyOrder.Ordered_by}}</div></td>
+
+                    {%else%}
+                        <td><a href="{{radiologyOrder.get_absolute_url}}">{{radiologyOrder.Visit.Patient.get_fullName}}</a></td>
+                        <td>{{radiologyOrder.Visit.emergencytriage_set.first.Doctor.get_full_name}}</td>
+                        <td><div class="badge text-bg-danger">{{radiologyOrder.Ordered_by}}</div></td>
+
+                    {%endif%}
+                    <td>
+                        <a href="{{radiologyOrder.get_absolute_url}}">
+                            <button type="button" class="btn btn-sm btn-primary">
+                                <i class="las la-plus"></i>
+                            </button>
+                        </a> 
+                        
+                    </td>
+                </tr>
+                {%endfor%}
+                {% else %}
+              
+                <tr>
+                    <td class='text-center' colspan='6'>No radiology has been ordered yet </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+            <div activePage = {{ page_objects.number }} class="col-md-6 activePage">
+                
+            </div>
+            <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                    
+                <nav aria-label="...">
+                    <ul class="pagination mb-0">
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="1">
+                            <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="{% if page_objects.has_previous %}{{ page_objects.previous_page_number }}{% else %}No Page{% endif %}">
+                            <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                        </li>
+                    
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{% if page_objects.has_next %}{{ page_objects.next_page_number }}{% else %}No Page{% endif %}">
+                            <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{{ page_objects.paginator.num_pages}}">
+                            <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+{% comment %} <!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <div class="card-body">
+                <!-- Tab panes -->  
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                        
+                            <div class="card-body">
+                                <div class="row mb-2 g-4 align-items-center">
+                                    <div class="col-sm-3">
+                                        <a href="{% url 'Radiology-Result'%}" class="btn btn-primary">Radiology Results</a>
+                                    </div>
+                                    <div class="col-sm-auto ms-auto">
+                                        <div class="hstack gap-2">
+                                            
+                                            <div class="form-group">
+                                                <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber}}
+                                                    class="form-control select2 w-100">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="10">10</option>
+                                                    <option value="30">30</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select>
+                                            </div>
+                
+                                        <form autocomplete='off'>
+                                            <div class="input-group mr-0">
+                                                <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                                                    class="form-control" aria-label="Recipient's username"
+                                                    aria-describedby="button-addon2">
+                                                <button class="btn btn-primary" type="button" id="button-addon2">
+                                                    <i class="bx bx-search"></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="table-rep-plugin">
+                                    <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                        <table id="RadioResultTable" class="table table-striped ">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order ID</th>
+                                                    <th data-priority="1">Patient Name</th>
+                                                    <th data-priority="1">Reference Doctor</th>
+                                                    <th data-priority="6">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {%if page_objects %}
+                                                {% for radiologyOrder in page_objects %}
+                                                <tr>
+                                                    <td><a href="{{radiologyOrder.get_absolute_url}}" class="text-dark fw-medium">{{radiologyOrder.id}}</a> </td>
+                                                    <td>{{radiologyOrder.Appointment.Patient.get_fullName}}</td>
+                                                    <td>{{radiologyOrder.Doctor.get_full_name}}</td>
+
+                                                    
+                                                    <td>
+                                                        <a href="#" rowid={{radiologyOrder.id}} id="addradiologyResult"  data-bs-toggle="modal" data-bs-target="#AddRadiologyResult">
+                                                            <button type="button" class=" btn-primary">
+                                                                <i class="las la-plus"></i>
+                                                            </button>
+                                                        </a>
+                                                        <button type="button" class=" btn-danger">
+                                                            <i class="las la-trash"></i> 
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            {%endfor%}
+                                            {% else %}
+                                                <tr>
+                                                    <td class='text-center' colspan='6'>No Tests available</td>
+                                                </tr>
+                                                {% endif %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+                                <div activePage = {{ page_objects.number }} class="col-md-6 activePage">
+                                    
+                                </div>
+                                <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                                        
+                                    <nav aria-label="...">
+                                        <ul class="pagination mb-0">
+                                            <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="1">
+                                                <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                                            </li>
+                                            <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="{% if page_objects.has_previous %}{{ page_objects.previous_page_number }}{% else %}No Page{% endif %}">
+                                                <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                                            </li>
+                                        
+                                            <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{% if page_objects.has_next %}{{ page_objects.next_page_number }}{% else %}No Page{% endif %}">
+                                                <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                                            </li>
+                                            <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{{ page_objects.paginator.num_pages}}">
+                                                <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- end card -->
+                    </div> <!-- end col -->
+                </div> <!-- end row -->
+            </div><!-- end card-body -->
+        </div>
+    </div>
+</div>
+<!-- end page title --> {% endcomment %}
+
+{% comment %} <!--  Add lab Result Modal -->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" id="AddRadiologyResult" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myLargeModalLabel">Add Order</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    
+                        <h5 class="card-title mt-2">Patient Information</h5>
+                        <hr>
+                    <br>
+                    <div class="table-responsive">
+                        <div class="table-responsive">
+                            <table class="table table m-0 table-borderless">
+                                <form id="labresult">
+                                    {% csrf_token %}
+                                    <thead>
+                                        <tr>
+                                            <th class="text-dark fw-medium">Order No</th>
+                                            <td><span id="OrderId"></span></td>
+                                            <th class="text-dark fw-medium">Appointment ID</th>
+                                            <td><span id="AppointId"></span></td>
+                                            <th class="text-dark fw-medium">Reference Doctor</th>
+                                            <td><span id="Doctor"></span></td>
+                                            <th class="text-dark fw-medium">Patient Name</th>
+                                            <td><span id="PatientFullname"></span></td>
+                                        </tr>
+                                        <tr>
+                                        
+                                           
+                                            <th class="text-dark fw-medium">Patient Gender</th>
+                                            <td><span id="PatientGender"></span></td>
+                                            <th class="text-dark fw-medium">Patient Age</th>
+                                            <td><span id="PatientAge"></span></td>
+                                            <th class="text-dark fw-medium">Patient Address</th>
+                                            <td><span id="address"></span></td>
+                                            <th class="text-dark fw-medium">Patient MobileNo</th>
+                                            <td><span id="MobileNo"></span></td>
+                                            
+                                        </tr>
+                                    
+                                        <tr>
+                                          
+                                            
+                                           
+                                        </tr>
+                                    </thead>
+                                </form>
+                            </table>
+    
+                        </div>
+
+                    </div>
+                </div>
+               
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="mt-3 mt-lg-0">
+                            <div class="mb-4">
+                                <div id="finding">
+                                </div>
+                            </div> 
+                        </div>
+                    </div>  
+                </div>  
+                            
+                <div class="card-body p-4">
+                    
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div>
+                                <div class="mb-3">
+                                    <label class="form-label">Collected By</label>
+                                    <select class="form-select" name="collected_by" id="Collected_by">
+                                        <option value="" selected>Select</option>
+                                        {% for emp in collected_by %}
+                                        <option value="{{emp.id}}">{{emp.get_full_name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mt-3 mt-lg-0">
+                                <div class="mb-4">
+                                    <label class="form-label" for="CollectionDate">Collection Date</label>
+                                    <input class="form-control" type="date" id="CollectionDate" placeholder="Collection Date">
+                                </div> 
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <button  type='button' id="SubmitRadiologyResult" class="btn-primary btn">Save</button>   
+                        </div>
+                        <div class="col-lg-10">
+                            
+
+                        </div>
+                    </div>
+                    
+         
+                </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal --> {% endcomment %}
+
+
+{% endblock content %}
+{% block scripts %}
+<script src={% static "scripts/LRPD/RadiologyExam/radiologyOrdersPagination.js" %}></script>
+{% endblock scripts %}

@@ -1,0 +1,400 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block modal %}
+<div class="modal fade newEmployeeModal " tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-top">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaeltitle">New Employee  </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    {%csrf_token%}
+                    <div class="row">
+                        <!-- <div class="col-lg-6 col-md-12 col-sm-12">
+                        
+                            <div class="mb-3">
+                                <label for="example-text-input" class="form-label">Photo</label>
+                                <input class="form-control" type="file"  id="photo">
+                        
+                        </div>
+                        </div> -->
+                        <div class="text-center">
+                            <div class="position-relative d-inline-block mb-3">
+                                <div class="position-absolute bottom-0 end-0">
+                                    <label for="lead-image-input" class="mb-0" data-bs-toggle="tooltip" data-bs-placement="right" title="Select Image">
+                                        <div class="avatar-xs cursor-pointer">
+                                            <div class="avatar-title bg-light border rounded-circle text-muted">
+                                                <i class="ri-image-fill"></i>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <input class="form-control d-none" value="" id="lead-image-input" type="file" accept="image/png, image/gif, image/jpeg">
+                                </div>
+                                
+                                <div class="avatar-lg p-1">
+                                    <div class="avatar-title bg-light rounded-circle">
+                                        <img src="{% static 'assets/images/users/user-dummy-img.jpg' %}" id="lead-img" class="avatar-md rounded-circle object-cover " />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <h5 class="fs-13 mt-3">Lead Image</h5> -->
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="example-text-input" class="form-label">First Name</label>
+                                <input class="form-control" type="text"   autocomplete=off id="first_name" autocomplete=off>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="example-text-input" class="form-label">father Name</label>
+                                <input class="form-control" type="text"   autocomplete=off id="father_name">
+                         
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        
+                            <div class="mb-3">
+                                <label for="example-text-input" class="form-label">Last Name</label>
+                                <input class="form-control" type="text"   autocomplete=off id="last_name">
+                        
+                        </div>
+                    </div>
+                
+                    <div class="col-lg-6 col-md-6 col-sm-12">    
+
+                        <div class="mb-3">
+                            <label for="example-text-input" class="form-label">Mother fullname</label>
+                            <input class="form-control" type="text"   autocomplete=off id="mother_name">                    
+                        </div>
+
+                  </div>
+                
+                  <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
+                   
+                    
+                        <label for="example-text-input" class="form-label">Gender</label>
+                        <select class="form-select mt-1 form-select-md" aria-label="Default select example"  autocomplete=off id="Gender">
+                        <option selected value="">Gender</option>
+                        
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+
+                      </select>
+                  
+                    </div>
+                
+                    <div class="col-lg-6 col-md-6 col-sm-12 mb-1">
+                 
+                       
+                            <label for="example-text-input" class="form-label">marital</label>
+                        <select class="form-select mt-1 form-select-md" aria-label="Default select example"  autocomplete=off id="maritial">
+                            <option selected value="">Marital</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Divorce">Divorce</option>
+                            <option value="Separated">Separated</option>
+                            
+                          </select>
+                        </div>
+                      
+                
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                           
+                                <label for="example-text-input" class="form-label">Blood Group</label>
+                            <select class="form-select mt-1 form-select-md" aria-label="Default select example"  autocomplete=off id="blood_group">
+                                <option value="">Blood Group</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                              </select>
+                            </div>
+                 
+                
+                
+                
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                        
+                                <div class="mb-3">
+                                    <label for="example-text-input" class="form-label">DOB</label>
+                                    <input class="form-control" type="date"   autocomplete=off id="Dob">
+                            
+                            </div>
+                        </div>
+                        
+                
+
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        
+                        <div class="mb-3">
+                            <label for="example-text-input" class="form-label">Phone Number</label>
+                            <input class="form-control phoneNumber" type="number"   autocomplete=off id="Phone">
+                    
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                        
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Relative Contacts</label>
+                        <input class="form-control" type="number"   autocomplete=off id="Emer_contact">
+                
+                </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">                        
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Email</label>
+                        <input class="form-control" type="email"   autocomplete=off id="email">                
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                        
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">address</label>
+                        <input class="form-control" type="text"   autocomplete=off id="address">
+                
+                </div>
+                </div>
+                
+                
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                        
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">title</label>
+                        <select name="" id="title" class="form-control">
+                            <option value="">Select Title</option>
+                            {% for item in job_types %}
+                            <option value={{item.id}}>{{item.name}}</option>
+                            {% endfor %}
+                        </select>
+                
+                </div>
+                </div>
+                
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+                        
+                    <div class="mb-3 text-end">
+                        <a href="{% url 'employees' %}" class="btn-danger btn">Cancel</a>
+                       <button  type='button' id="btn_save" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+
+
+
+                    </div>
+                
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{%endblock%}
+
+{% block content %}
+
+
+
+
+
+
+<div class="row align-items-center">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h5 class="mb-sm-0 ">Employee List</h5>
+
+
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+            <div>
+              
+            </div>
+            
+
+        </div>
+
+    </div>
+</div>
+<!-- end row -->
+
+
+<!-- end row -->
+
+
+
+        <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card table-responsive">
+                                <div class="card-body">
+                                    <div class="row mb-2 g-4 align-items-center d-flex justify-content-between">                      
+                                        <div class="col-3">
+                                            {% if perms.Hr.add_employee %}
+                                            <div>
+                                                <a href='.newEmployeeModal'data-bs-toggle='modal'   id="NewEmployee" class="btn btn-info"></i>New employee</a>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        depName
+                                        <div class="col-sm-auto ms-auto ">      
+                                            <div class="hstack ">
+
+                                                <div class="form-group ms-1">
+                                                    <select id="depName" name="depName" depName={{depName}}
+                                                        class="form-control select2 w-100">
+                                                        <option value='All'>Departments</option>
+                                                        {% for item in alldep %}
+                                                        <option value={{item.id}}>{{item.department_name}}</option>
+                                                        {% endfor %}                    
+                                                    </select>
+                                                </div>
+
+
+                                                <div class="form-group ms-1">
+                                                    <select id="Jobtitle" name="Jobtitle" Jobtitle={{Jobtitle}}
+                                                        class="form-control select2 w-100">
+                                                        <option value='All'>Titles</option>
+                                                        {% for item in job_types %}
+                                                        <option value={{item.id}}>{{item.name}}</option>
+                                                        {% endfor %}                    
+                                                    </select>
+                                                </div>
+                                                
+                    
+                                                <div class="form-group ms-1 me-1">
+                                                    <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber }}
+                                                        class="form-control select2 w-100">
+                    
+
+                                                        <option value="5">5</option>
+                                                        <option value="10">10</option>
+                                                        <option value="30">30</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select>
+                                                </div>
+                    
+                                               <form autocomplete='off'>
+                                                <div class="input-group mr-0">
+                                                    <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                                                        class="form-control" aria-label="Recipient's username"
+                                                        aria-describedby="button-addon2">
+                                                    <button class="btn btn-primary" type="button" id="button-addon2">
+                                                        <i class="bx bx-search"></i>
+                                                    </button>
+                                                </div>
+                                              </form>
+                    
+                                            </div>
+                                        </div>
+                                   </div>
+                                   <div class="mt-3">
+                                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                                        <thead>
+                                            <tr>     
+                                                <th scope="col">EmployeeID</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Gender</th>
+                                                <th scope="col">Title</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Phone</th>
+                                                <th scope="col">Approved by</th>
+                                                <th scope="col">State</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                                                       <tr>
+            
+                                                            {% if page_obj %}
+                                                            {% for item in page_obj %}      
+                                                            <tr>
+                                                                <td>{{item.emp_number}}</td>                                                                
+                                                                <td><a href={{item.get_absolute_url}}>{{item.get_full_name}}</a></td>
+                                                                <td>{{item.gender}}  </td>
+                                                                <td>{{item.job_type.name}}</td>
+                                                                <td>{{item.email}}</td>
+                                                                <td>{{item.add_space_to_phone_number}} </td>
+                                                                <td>{{item.appprovedwho}}</td>                                                  
+                                                                <td><span class="btn btn-sm pe-none bg-info text-white fw-bolder">{{item.Employee_state}}</span></td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                            {% else %}
+                                                            <tr>
+                                                                <td class='text-center' colspan='12'>No employees available</td>
+                                                            </tr>
+                                                            {% endif %}
+                                                           
+                                                        </tr>
+                                                        
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center mb-3 ">
+                                    <div activePage = {{ page_obj.number }} class="col-md-6 activePage">
+                                        <p class="">Employee  <span class="text-muted fw-normal ms-2">({{employeeNumber}})</span></p>
+                                    </div>
+                                
+                                    <div class="col-md-6 d-flex justify-content-end align-items-center me-3 ">
+                                                               
+                                        <nav aria-label="...">
+                                            <ul class="pagination mb-0">
+                                                <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}" page="1">
+                                                    <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                                                </li>
+                                                <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}" page="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}No Page{% endif %}">
+                                                    <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                                                </li>
+                                               
+                                                <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}" page="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}No Page{% endif %}">
+                                                    <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                                                </li>
+                                                <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}" page="{{ page_obj.paginator.num_pages}}">
+                                                    <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                
+                
+                
+                                    </div>
+                                </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+             
+                 
+
+           
+              
+          
+        </div> 
+
+
+
+
+
+{% endblock  %}
+
+
+{% block scripts %}
+
+<script src={% static "scripts/hr/employee/employee.js" %}></script>
+<script src={% static "scripts/hr/employee/register_employee.js" %}></script>
+
+
+
+{% endblock scripts %}

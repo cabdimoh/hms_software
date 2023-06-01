@@ -1,0 +1,362 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block content %}
+
+{%csrf_token%}
+<form id="radioresult">
+<div class="row">
+    <div class="col-xxl-3">
+        <h5 class="mb-3"></h5>
+        <div class="card shadow-sm" style="height: 636px;">
+            <div class="card-body" style="overflow-y: auto;">
+                <div class="text-center">
+                    {% if RadioOrders.Admission %}
+                    {% if RadioOrders.Admission.Admission_order.Visit %}
+                        <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                            {% if RadioOrders.Admission.Admission_order.Visit.Patient.PatientGender == "Female"%}
+                            <img src="{% static 'assets/images/femalehijabipat.jpg' %}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+
+                            {%else%}
+                            <img src="{% static 'assets/images/malepatient.jpg' %}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+
+                            {%endif%}
+                        </div>
+                        <h5 class="fs-16 mb-1">{{ RadioOrders.Admission.Admission_order.Visit.Patient.PatientFirstName }} {{ RadioOrders.Admission.Admission_order.Visit.Patient.PatientMiddleName }}</h5>
+                    {% else %}
+                        <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                            {% if RadioOrders.Admission.Admission_order.Appointment.Patient.PatientGender == "Female"%}
+                            <img src="{% static 'assets/images/femalehijabipat.jpg' %}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+
+                            {%else%}
+                            <img src="{% static 'assets/images/malepatient.jpg' %}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+
+                            {%endif%}
+                        </div>
+                        <h5 class="fs-16 mb-1">{{ RadioOrders.Admission.Admission_order.Appointment.Patient.PatientFirstName }} {{ RadioOrders.Admission.Admission_order.Appointment.Patient.PatientMiddleName }}</h5>
+                    {% endif %}
+                    {% elif  RadioOrders.Appointment  %}
+                        <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                            {% if RadioOrders.Appointment.Patient.PatientGender == "Female"%}
+                            <img src="{% static 'assets/images/femalehijabipat.jpg' %}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+
+                            {%else%}
+                            <img src="{% static 'assets/images/malepatient.jpg' %}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+
+                            {%endif%}
+                        </div>
+                        <h5 class="fs-16 mb-1">{{ RadioOrders.Appointment.Patient.PatientFirstName }} {{ RadioOrders.Appointment.Patient.PatientMiddleName }}</h5>
+
+                    {%else%}
+                        <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                            {% if RadioOrders.Visit.Patient.PatientGender == "Female"%}
+                            <img src="{% static 'assets/images/femalehijabipat.jpg' %}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+
+                            {%else%}
+                            <img src="{% static 'assets/images/malepatient.jpg' %}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+
+                            {%endif%}
+                        </div>
+                        <h5 class="fs-16 mb-1">{{ RadioOrders.Visit.Patient.PatientFirstName }} {{ RadioOrders.Visit.Patient.PatientMiddleName }}</h5>
+                    {%endif%}
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-borderless mb-0">
+
+                        <tbody>
+                            {% if RadioOrders.Admission %}
+                            {% if RadioOrders.Admission.Admission_order.Visit %}
+                            <tr>
+                                <th class="ps-0" scope="row"> Full Name :</th>
+                                <td class="text-muted">{{ RadioOrders.Admission.Admission_order.Visit.Patient.get_fullName }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Admission No :</th>
+                                <td class="text-muted">{{ RadioOrders.Admission.AddmissionNumber }}</td>
+                            </tr>
+
+                            <tr>
+                                <th class="ps-0" scope="row">Age :</th>
+                                <td class="text-muted">{{RadioOrders.Admission.Admission_order.Visit.Patient.PatientAge }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Gender :</th>
+                                <td class="text-muted">{{RadioOrders.Admission.Admission_order.Visit.Patient.PatientGender }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">MobileNo :</th>
+                                <td class="text-muted">{{RadioOrders.Admission.Admission_order.Visit.Patient.PatientMobileNo }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Doctor :</th>
+                                <td class="text-muted">{{ RadioOrders.Admission.Admission_order.Visit.Doctor.get_full_name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Address</th>
+                                <td class="text-muted">{{ RadioOrders.Admission.Admission_order.Visit.Patient.PatientVillage }}, {{ RadioOrders.Admission.Admission_order.Visit.Patient.PatientDistrict }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Ordered By :</th>
+                                <td class="text-muted">{{ RadioOrders.Ordered_by }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Req Radiology:<br></th>
+                                
+                                <td class="text-muted">{%for radio_exam in radiology_exams_list%}<li>{{ radio_exam.ExamName }}</li>  {%endfor%}</td>
+                              
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <th class="ps-0" scope="row"> Full Name :</th>
+                                <td class="text-muted">{{ RadioOrders.Admission.Admission_order.Appointment.Patient.get_fullName }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Admission No :</th>
+                                <td class="text-muted">{{ RadioOrders.Admission.AddmissionNumber }}</td>
+                            </tr>
+
+                            <tr>
+                                <th class="ps-0" scope="row">Age :</th>
+                                <td class="text-muted">{{RadioOrders.Admission.Admission_order.Appointment.Patient.PatientAge }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Gender :</th>
+                                <td class="text-muted">{{RadioOrders.Admission.Admission_order.Appointment.Patient.PatientGender }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">MobileNo :</th>
+                                <td class="text-muted">{{RadioOrders.Admission.Admission_order.Appointment.Patient.PatientMobileNo }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Doctor :</th>
+                                <td class="text-muted">{{ RadioOrders.Admission.Admission_order.Appointment.Doctor.get_full_name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Address</th>
+                                <td class="text-muted">{{ RadioOrders.Admission.Admission_order.Appointment.Patient.PatientVillage }}, {{ RadioOrders.Admission.Admission_order.Appointment.Patient.PatientDistrict }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Ordered By :</th>
+                                <td class="text-muted">{{ RadioOrders.Ordered_by }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Req Radiology:<br></th>
+                                
+                                <td class="text-muted">{%for radio_exam in radiology_exams_list%}<li>{{ radio_exam.ExamName }}</li>  {%endfor%}</td>
+                              
+                            </tr>
+                            {% endif %}
+                            {% elif  RadioOrders.Appointment  %}
+                            <tr>
+                                <th class="ps-0" scope="row"> Full Name :</th>
+                                <td class="text-muted">{{ RadioOrders.Appointment.Patient.get_fullName }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Appoint No :</th>
+                                <td class="text-muted">{{ RadioOrders.Appointment.AppointmentNumber }}</td>
+                            </tr>
+
+                            <tr>
+                                <th class="ps-0" scope="row">Age :</th>
+                                <td class="text-muted">{{RadioOrders.Appointment.Patient.PatientAge }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Gender :</th>
+                                <td class="text-muted">{{RadioOrders.Appointment.Patient.PatientGender }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">MobileNo :</th>
+                                <td class="text-muted">{{RadioOrders.Appointment.Patient.PatientMobileNo }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Doctor :</th>
+                                <td class="text-muted">{{ RadioOrders.Appointment.Doctor.get_full_name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Address</th>
+                                <td class="text-muted">{{ RadioOrders.Appointment.Patient.PatientVillage }}, {{ RadioOrders.Appointment.Patient.PatientDistrict }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Ordered By :</th>
+                                <td class="text-muted">{{ RadioOrders.Ordered_by }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Req Radiology:<br></th>
+                                
+                                <td class="text-muted">{%for radio_exam in radiology_exams_list%}<li>{{ radio_exam.ExamName }}</li>  {%endfor%}</td>
+                              
+                            </tr> 
+                            {%else%}
+                            <tr>
+                                <th class="ps-0" scope="row"> Full Name :</th>
+                                <td class="text-muted">{{ RadioOrders.Visit.Patient.get_fullName }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Visit No :</th>
+                                <td class="text-muted">{{ RadioOrders.Visit.VisitNumber }}</td>
+                            </tr>
+
+                            <tr>
+                                <th class="ps-0" scope="row">Age :</th>
+                                <td class="text-muted">{{RadioOrders.Visit.Patient.PatientAge }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Gender :</th>
+                                <td class="text-muted">{{RadioOrders.Visit.Patient.PatientGender }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">MobileNo :</th>
+                                <td class="text-muted">{{RadioOrders.Visit.Patient.PatientMobileNo }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Doctor :</th>
+                                <td class="text-muted">{{ RadioOrders.Visit.emergencytriage_set.first.Doctor.get_full_name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Address</th>
+                                <td class="text-muted">{{ RadioOrders.Visit.Patient.PatientVillage }}, {{ RadioOrders.Visit.Patient.PatientDistrict }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Ordered By :</th>
+                                <td class="text-muted">{{ RadioOrders.Ordered_by }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Req Radiology:<br></th>
+                                
+                                <td class="text-muted">{%for radio_exam in radiology_exams_list%}<li>{{ radio_exam.ExamName }}</li>  {%endfor%}</td>
+                              
+                            </tr>
+                            {%endif%}
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- end card-body -->
+        </div><!-- end card -->
+    </div>
+    <div class="col-xxl-9">
+        <h5 class="mb-3"></h5>
+        <div class="card shadow-sm " style="width: 1100px; height: 636px;">
+            <div class="card-body" style="overflow-y: auto;">
+                <!-- Nav tabs -->
+                
+
+                <ul class="nav nav-tabs nav-justified nav-border-top nav-border-top-success mb-3" role="tablist">
+                    {% for category in unique_categories %}
+                      <li class="nav-item">
+                        <a class="nav-link {% if forloop.first %}active{% endif %}" data-bs-toggle="tab" href="#category{{category.id}}" role="tab" aria-selected="false">
+                          <i class="las la-microscope align-middle me-1"></i>{{category.CategoryName}}
+                        </a>
+                      </li>
+                      {%endfor%}
+                  </ul>
+                <div class="tab-content text-muted">
+
+                    {% for category in unique_categories %}
+
+                    <div class="tab-pane {% if forloop.first %}active{% endif %}" id="category{{category.id}}" role="tabpanel">
+                      <ul class="nav nav-pills arrow-navtabs nav-success bg-light  mb-3 mt-3 mx-3 my-3" role="tablist">
+                        {% for radio_exam in radiology_exams_list %}
+                          {% if radio_exam.Category.id == category.id %}
+                            <li class="nav-item">
+                              <a class="nav-link {% if forloop.first %}active{% endif %}" data-bs-toggle="tab" href="#radio_exams{{radio_exam.id}}" role="tab">
+                                <span class="d-block d-sm-none"><i class="mdi mdi-home-variant"></i></span>
+                                <span class="d-none d-sm-block">{{radio_exam.ExamName}}</span>
+                              </a>
+                            </li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                        <div class="card-body">
+                          <div class="tab-content text-muted">
+                            {% for radio_exam in radiology_exams_list %}
+                              {% if radio_exam.Category.id == category.id %}
+                                <div class="tab-pane {% if forloop.first %}active{% endif %}" id="radio_exams{{radio_exam.id}}" role="tabpanel">
+                                  <div class="mb-4 mt-1">
+                                    <span style="font-weight:600;">Radiology Name: </span><span>{{radio_exam.ExamName}}</span>
+                                  </div> 
+                                  <div class="mb-4">
+                                    <label class="form-label" for="CollectionDate">Findings</label>
+                                    <textarea class="form-control" rdlogy='rdlogy' id="findings{{radio_exam.id}}" placeholder="Add Findings...."></textarea>
+                                    <input class="form-control" id="exam_id{{radio_exam.id}}" type="hidden" value="{{radio_exam.id}}">
+                                  </div> 
+                                  <div class="mb-4">
+                                    <label class="form-label" for="CollectionDate">Impressions</label>
+                                    <textarea class="form-control" id="impressions{{radio_exam.id}}" placeholder="Add Impressions...."></textarea>
+                                  </div> 
+                                  <div class="mb-4">
+                                    <label class="form-label" for="CollectionDate">Recommendations</label>
+                                    <textarea class="form-control" id="recommendations{{radio_exam.id}}" placeholder="Add Recommendations...."></textarea>
+                                  </div> 
+                                  <div class="mb-4">
+                                    <label class="form-label" for="CollectionDate">Comment</label>
+                                    <textarea class="form-control" id="comments{{radio_exam.id}}" placeholder="Add Comment...."></textarea>
+                                  </div> 
+                                  <div class="mb-4">
+                                    <label class="form-label" for="CollectionDate">Add Files</label>
+                                    <input type="file" class="form-control" id="result_files{{radio_exam.id}}" placeholder="Add Result files....">
+                                  </div> 
+                                </div>
+                              {% endif %}
+                            {% endfor %}
+                          </div>
+                        </div><!-- end card body -->
+                    </div>
+
+                  {% endfor %}
+
+                </div>
+
+            </div><!-- end card-body -->
+        </div>
+    </div>
+   
+</div>
+
+        <div class="card shadow-sm" style = "width: 1510px;">
+            <div class="card-body p-4">
+               
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div>
+                            <div class="mb-3">
+                                <label class="form-label">Collected By</label>
+                                <select class="form-select" id="Collected_by">
+                                    <option value="" selected>Select</option>
+                                    {% for emp in collected_by %}
+                                    <option value="{{emp.id}}">{{emp.get_full_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="mt-3 mt-lg-0">
+                            <div class="mb-4">
+                                <label class="form-label" for="CollectionDate">Collection Date</label>
+                                <input class="form-control" type="date" id="CollectionDate" placeholder="Collection Date">
+                                <input class="form-control" id="order_id" type="hidden" value="{{RadioOrders.id}}">
+                            </div> 
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-2">
+                        <button type="button" id="SubmitRadiologyResult" class="btn btn-primary ">Save changes</button>
+                    </div>
+                    <div class="col-lg-10">
+                    </div>
+                </div>
+            </div>
+        </div>
+</form>
+
+  
+
+{% endblock content %}
+
+{% block scripts %}
+<script src={% static "scripts/LRPD/RadiologyExam/Addradioresult.js" %}></script>
+
+{% endblock scripts %}

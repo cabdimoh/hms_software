@@ -1,0 +1,360 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex ">
+        <h4 class="card-title">Lab Tests</h4>
+    </div>
+    <div class="card-body">
+        
+        <div class="row mb-2 g-4 align-items-center">
+            <div class="col-sm-3">
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CategoryModal"><i class="bx bx-plus me-1"></i>Add Category</a>
+    
+            </div>
+            <div class="col-sm-auto ms-auto">
+                <div class="hstack gap-2">
+                    
+                    <div class="form-group">
+                        <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber}}
+                            class="form-control select2 w-100">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+
+                    <form autocomplete='off'>
+                    <div class="input-group mr-0">
+                        <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                            class="form-control" aria-label="Recipient's username"
+                            aria-describedby="button-addon2">
+                        <button class="btn btn-primary" type="button" id="button-addon2">
+                            <i class="bx bx-search"></i>
+                        </button>
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Category ID</th>
+                    <th data-priority="1">Category name</th>
+                    <th data-priority="3">Description</th>
+                    <th data-priority="6">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%if page_objects%}
+                {% for category in page_objects %}
+                <tr>
+                    <td><a href="javascript: void(0);" class="text-dark fw-medium">{{category.id}}</a> </td>
+                    <td>{{category.CategoryName}}</td>
+                    <td>{{category.Description}}</td>
+                    
+                    <td>
+                        <a id="editButtonCat" rowid = {{category.id}}  >   
+                    <button type="button" class=" btn-success">
+                        <i class="las la-edit"></i> 
+                    </button>
+                </a>
+                    
+                    <button type="button" class=" btn-danger">
+                        <i class="las la-trash"></i>
+                </tr>
+                {%endfor%}
+                {% else %}
+                <tr>
+                    <td class='text-center' colspan='6'>No Medicne available</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+        <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+            <div activePage = {{ page_objects.number }} class="col-md-6 activePage">
+                
+            </div>
+            <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                        
+                <nav aria-label="...">
+                    <ul class="pagination mb-0">
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="1">
+                            <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="{% if page_objects.has_previous %}{{ page_objects.previous_page_number }}{% else %}No Page{% endif %}">
+                            <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                        </li>
+                        
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{% if page_objects.has_next %}{{ page_objects.next_page_number }}{% else %}No Page{% endif %}">
+                            <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{{ page_objects.paginator.num_pages}}">
+                            <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="CategoryModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" data-bs-scroll="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Add Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="categoryForm">
+                <div class="modal-body">
+                    
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label class="form-label" for="default-input">Category Name</label>
+                        <input class="form-control" type="text" id="CategoryName" placeholder="category name ">
+                        <input class="form-control" type="hidden" id="CategoryID" placeholder="category name ">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label" for="default-input">Description</label>
+                        <input class="form-control" type="text" id="Description" placeholder="description">
+                    </div>
+                                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="btn_submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
+                </div>
+            </form>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+           
+
+ {% comment %} <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+          
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0 font-size-18">Category</h4>
+
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Category</a></li>
+                                <li class="breadcrumb-item active">category List</li>
+                            </ol>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row mb-2 g-4 align-items-center">
+                                                <div class="col-sm-3">
+                                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CategoryModal"><i class="bx bx-plus me-1"></i>Add Category</a>
+                                        
+                                                </div>
+                                                <div class="col-sm-auto ms-auto">
+                                                    <div class="hstack gap-2">
+                                                        
+                                                        <div class="form-group">
+                                                            <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber}}
+                                                                class="form-control select2 w-100">
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                                <option value="10">10</option>
+                                                                <option value="30">30</option>
+                                                                <option value="50">50</option>
+                                                                <option value="100">100</option>
+                                                            </select>
+                                                        </div>
+                            
+                                                        <form autocomplete='off'>
+                                                        <div class="input-group mr-0">
+                                                            <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                                                                class="form-control" aria-label="Recipient's username"
+                                                                aria-describedby="button-addon2">
+                                                            <button class="btn btn-primary" type="button" id="button-addon2">
+                                                                <i class="bx bx-search"></i>
+                                                            </button>
+                                                        </div>
+                                                        </form>
+                            
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="table-rep-plugin">
+                                                <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                                    <table id="Category_Table" class="table table-striped ">
+                                                        <thead>
+                                                            
+                                                                <tr>
+                                                                    <th>Category ID</th>
+                                                                    <th data-priority="1">Category name</th>
+                                                                    <th data-priority="3">Description</th>
+                                                                    <th data-priority="6">Action</th>
+                                                                </tr>
+                                                            
+                                                            
+                                                        </thead>
+                                                        <tbody>
+                                                            {%if page_objects%}
+                                                            {% for category in page_objects %}
+                                                            <tr>
+                                                                <td><a href="javascript: void(0);" class="text-dark fw-medium">{{category.id}}</a> </td>
+                                                                <td>{{category.CategoryName}}</td>
+                                                                <td>{{category.Description}}</td>
+                                                                
+                                                                <td>
+                                                                    <a id="editButtonCat" rowid = {{category.id}}  >   
+                                                                <button type="button" class=" btn-success">
+                                                                    <i class="las la-edit"></i> 
+                                                                </button>
+                                                            </a>
+                                                                
+                                                                <button type="button" class=" btn-danger">
+                                                                    <i class="las la-trash"></i>
+                                                                </button></td>
+                                                            </tr>
+                                                            {%endfor%}
+                                                            {% else %}
+                                                            <tr>
+                                                                <td class='text-center' colspan='6'>No Medicne available</td>
+                                                            </tr>
+                                                            {% endif %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+            
+                                            </div>
+                                            <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+                                                <div activePage = {{ page_objects.number }} class="col-md-6 activePage">
+                                                    
+                                                </div>
+                                                <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                                                            
+                                                    <nav aria-label="...">
+                                                        <ul class="pagination mb-0">
+                                                            <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="1">
+                                                                <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                                                            </li>
+                                                            <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="{% if page_objects.has_previous %}{{ page_objects.previous_page_number }}{% else %}No Page{% endif %}">
+                                                                <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                                                            </li>
+                                                            
+                                                            <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{% if page_objects.has_next %}{{ page_objects.next_page_number }}{% else %}No Page{% endif %}">
+                                                                <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                                                            </li>
+                                                            <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{{ page_objects.paginator.num_pages}}">
+                                                                <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                                                            </li>
+                                                        </ul>
+                                                    </nav>
+                                
+                                
+                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- end card -->
+                                </div> <!-- end col -->
+                            </div> <!-- end row -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <script>document.write(new Date().getFullYear())</script> © Moha nur.
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="text-sm-end d-none d-sm-block">
+                                    Design & Develop by <a href="#!" class="text-decoration-underline">Themesbrand</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+
+
+
+<div id="CategoryModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" data-bs-scroll="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Add Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Start row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            
+                            <div class="card-body">
+                                <form id="categoryForm">
+                                        {% csrf_token %}
+                                    <div class="mb-4">
+                                        <label class="form-label" for="default-input">Category Name</label>
+                                        <input class="form-control" type="text" id="CategoryName" placeholder="category name ">
+                                        <input class="form-control" type="hidden" id="CategoryID" placeholder="category name ">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label" for="default-input">Description</label>
+                                        <input class="form-control" type="text" id="Description" placeholder="description">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end col -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="btn_submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+             {% endcomment %}
+
+
+{% endblock content %}
+{% block scripts %}
+<script src={% static "scripts/APEN/Operations/category.js" %}></script>
+{% endblock scripts %}

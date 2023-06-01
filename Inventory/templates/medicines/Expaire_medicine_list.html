@@ -1,0 +1,145 @@
+{% extends 'base/index.html' %}
+{% load static%}
+
+{% block content %}
+<div class="card">
+    
+
+    <div class="card-body">
+        <div class="row mb-2 g-4 align-items-center">
+
+            <div class="col-sm-3">
+                <h4 class="mb-sm-0 font-size-18">Expired Medicine</h4>
+              
+
+                
+            </div>
+            <div class="col-sm-auto ms-auto">
+                <div class="hstack gap-2">
+                    
+                    <div class="form-group">
+                        <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber}}
+                            class="form-control select2 w-100">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+
+                <form autocomplete='off'>
+                    <div class="input-group mr-0">
+                        <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                            class="form-control" aria-label="Recipient's username"
+                            aria-describedby="button-addon2">
+                        <button class="btn btn-primary" type="button" id="button-addon2">
+                            <i class="bx bx-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                </div>
+            </div>
+        </div>
+       
+        <div class="table-rep-plugin">
+            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                <table id="MedicineOrder" class="table table-bordered nowrap table-striped align-middle" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th data-priority="1">Medicine name</th>
+                            <!-- <th data-priority="1">Type</th> -->
+                            <th data-priority="1">status</th>
+                            <th data-priority="1">Box</th>
+                          
+                            
+                           
+                            <th data-priority="1">Expier date</th>
+                          
+                            
+                        </tr>
+                    </thead>
+                    <tbody >
+                        {%if page_objects %}
+                        {% for MedOrder in page_objects %}
+                        <tr>
+                            <td><a href="" class="text-dark fw-medium">{{MedOrder.id}}</a> </td>
+                            <td>{{MedOrder.MedId.Medicine_name}}</td>
+                            <!-- <td>{{MedOrder.Type}}</td> -->
+                            <td>{{type}}</td>
+                            <!-- <td>{{MedOrder.box}}</td> -->
+                            <td>{{MedOrder.box}} </td>
+                          
+                            
+                            
+                            <td ">{{MedOrder.Expire_date}}</td>
+                          
+                            
+                         
+                           
+                            <td>
+                               
+                                <!-- <button type="button" class=" btn-danger">
+                                    <i class="las la-trash"></i> 
+                                </button> -->
+                            </td>
+                        </tr>
+                    {%endfor%}
+                    {% else %}
+                        <tr>
+                            <td class='text-center' colspan='6'>No Expired medicine available</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+            <div activePage = {{ page_objects.number }} class="col-md-6 activePage">
+                
+            </div>
+            <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                    
+                <nav aria-label="...">
+                    <ul class="pagination mb-0">
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="1">
+                            <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="{% if page_objects.has_previous %}{{ page_objects.previous_page_number }}{% else %}No Page{% endif %}">
+                            <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                        </li>
+                    
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{% if page_objects.has_next %}{{ page_objects.next_page_number }}{% else %}No Page{% endif %}">
+                            <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{{ page_objects.paginator.num_pages}}">
+                            <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+        <!-- start page title -->
+        
+        <!-- end page title -->
+<!--  Large modal example -->
+<!-- /.modal -->
+
+
+
+<!-- /.modal -->
+{% endblock content %}
+{% block scripts %}
+<script src={% static "scripts/Inventory/expire_medicnie_pa.js" %}></script>
+<!-- <script src={% static "scripts/Inventory/approveMedicineOrder.js" %}></script>  -->
+
+{% endblock scripts %}

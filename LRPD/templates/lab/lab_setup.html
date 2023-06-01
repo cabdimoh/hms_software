@@ -1,0 +1,203 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block modal %}
+
+
+<div class="modal fade add_lab_group_modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle">Add Lab Type</h5>
+                <input class="form-control" type="text"  hidden disabled id="lab_group_id">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" id="labGroupForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="mb-3">
+                                <label for="example-text-input" class="form-label">Sample Type</label>
+                                <input class="form-control" type="text" id="sample" value="Blood" readonly>
+                            </div>      
+                        </div>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="mb-3">
+                                <label for="example-text-input" class="form-label">Lab Type Name</label>
+                                <input class="form-control" type="text"  id="lab_group_name">
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="mb-3">
+                                <label for="example-text-input" class="form-label">Lab Type Descriptions</label>
+                                <input class="form-control" type="text"  id="lab_group_description">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+                    <button type="button" id="save_lab_group" class="btn btn-primary ">Save changes</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!--end/jobtitle .modal -->
+<div class="modal fade add_lab_subgroup_modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle">Add Lab Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" id="LabSubgroupForm">
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="mb-3">
+                                <label class="form-label">Select Lab Type </label>
+                                <select class="form-select" id="Choosed_Group">
+                                    <option selected value="">Select</option>
+                                    {% for xgroup in Groups%}
+                                    <option value="{{xgroup.id}}">{{xgroup.GroupName}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>      
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="mb-3">
+                                <input class="form-control" type="text"  hidden disabled id="lab_subgroup_id">
+                                <label for="example-text-input" class="form-label">Lab Category Name</label>
+                                <input class="form-control" type="text"  id="lab_subgroup_name">
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="mb-3">
+                                <label for="example-text-input" class="form-label">Lab Category Descriptions</label>
+                                <input class="form-control" type="text"  id="lab_subgroup_descriptions">
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+                    <button type="button" id="save_lab_subgroup" class="btn btn-primary ">Save changes</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- end/department.modal -->
+
+
+{%endblock%}
+{% block content %}
+{% csrf_token %}
+<div class="row">
+    <div class="col-xl-12 col-12">
+        <div class="card">
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1"></h4>
+                <div class="flex-shrink-0">
+                    <ul class="nav justify-content-end nav-tabs-custom rounded card-header-tabs" role="tablist">
+                       
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#lab_group" role="tab">
+                                <span class="d-block d-sm-none"><i class="las la-home"></i></span>
+                                <span class="d-none d-sm-block">Lab Type</span> 
+                            </a>
+                        </li>
+                       
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#lab_subgroup" role="tab">
+                                <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
+                                <span class="d-none d-sm-block">Lab Category</span>   
+                            </a>
+                        </li>  
+                       
+                    </ul>
+                </div>
+            </div><!-- end card header -->
+            <div class="card-body">
+                <!-- Tab panes -->
+                <div class="tab-content text-muted">
+                  
+                   
+                    <div class="tab-pane active" id="lab_group" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <h5 class="card-title mb-0 mt-1">Lab Type</h5>
+                                <a class="btn btn-primary waves-effect waves-light mt-0 " id='add_lab_group' >
+                                Add Lab Type
+                            </a>
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table  id="lab_group_table" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            
+                                            <th class="col">#ID</th>
+                                            <th class="col">Sample Type</th>
+                                            <th class="col">Lab Type Name</th>
+                                            <th class="col">Lab Type Descriptions </th>                                
+                                            <th class="col text-end">Action</th>                                
+                                    
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- end card body -->
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="lab_subgroup" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <h5 class="card-title mb-0 mt-1">Lab Category</h5>
+                                <a class="btn btn-primary waves-effect waves-light mt-0 " id='add_lab_subgroup' >
+                                Add lab Category
+                            </a>
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table  id="LabSubGroupTable" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            
+                                            <th class="col">#ID</th>
+                                            <th class="col">Sample Type</th>
+                                            <th class="col">Lab Type Name </th>                                
+                                            <th class="col">Lab Category Name</th>
+                                            <th class="col">lab Category Descriptions </th>                                
+                                            <th class="col text-end">action</th>                                
+                                    
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- end card body -->
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end card-body -->
+        </div><!-- end card -->
+    </div><!-- end col -->
+</div><!-- end row -->
+
+            <!-- end main content-->
+{% endblock content %}
+{% block scripts %}
+<script src='{% static "scripts/LRPD/LabTests/lab_setup.js" %}'></script>
+
+
+{% endblock scripts %}

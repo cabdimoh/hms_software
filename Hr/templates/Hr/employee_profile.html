@@ -1,0 +1,1975 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block modal %}
+
+ <!-- basic employee information js -->
+<div class="modal fade editBasicEmpInfo " tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-3 bg-soft-primary">
+                <h5 class="modal-title" id="modaeltitle">Edit  Basic employee information </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" id='employee_form'>
+                    {%csrf_token%}
+              <div class="row">
+
+
+            
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">First Name</label>
+                        <input class="form-control" type="text"  hidden disabled id="employee_id_reader">
+
+                        <input class="form-control" type="text"  id="first_name">
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="example-text-input" class="form-label">father Name</label>
+                            <input class="form-control" type="text"  id="father_name">
+                     
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    
+                        <div class="mb-3">
+                            <label for="example-text-input" class="form-label">Last Name</label>
+                            <input class="form-control" type="text"  id="last_name">
+                    
+                    </div>
+                </div>
+            
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Mother fullname</label>
+                        <input class="form-control" type="text"  id="mother_name">
+                
+                  </div>
+              </div>
+            
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <label for="example-text-input" class="form-label">Gender</label>
+              
+                <select class="form-select mt-1 form-select-md" aria-label="Default select example" id="gender">
+                    <option selected value="">Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+            
+                  </select>
+                </div>
+               
+            
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <label for="example-text-input" class="form-label">Maritial</label>
+                    
+                    <select class="form-select mt-1 form-select-md" aria-label="Default select example" id="maritial">
+                        <option selected value="">Maritial</option>
+                        <option value="Single">Single</option>
+                        <option value="Married">Married</option>
+                        <option value="Divorce">Divorce</option>
+                        <option value="Seprated">Seprated</option>
+                        
+                      </select>
+    
+                    </div>
+            
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <label for="example-text-input" class="form-label">Blood Group</label>
+
+                        <select class="form-select  form-select-md" aria-label="Default select example" id="Blood_Group">
+                            <option value="">Blood Group</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                          </select>
+                        
+                        </div>
+            
+            
+            
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                    
+                            <div class="mb-3">
+                                <label for="example-text-input" class="form-label">DOB</label>
+                                <input class="form-control" type="date"  id="Dob">
+                        
+                        </div>
+                    </div>
+                    
+            
+
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Phone Number</label>
+                        <input class="form-control" type="number"  id="Phone" >
+                
+                </div>
+            </div>
+            
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                    
+                <div class="mb-3">
+                    <label for="example-text-input" class="form-label">Relative Contacts</label>
+                    <input class="form-control" type="number"  id="Emer_contact">
+            
+            </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                    
+                <div class="mb-3">
+                    <label for="example-text-input" class="form-label">Email</label>
+                    <input class="form-control" type="email"  id="email">
+            
+            </div>
+            </div>
+            
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                    
+                <div class="mb-3">
+                    <label for="example-text-input" class="form-label">address</label>
+                    <input class="form-control" type="text"  id="address">
+            
+            </div>
+            </div>
+            
+            
+            <div class="col-lg-12 col-md-6 col-sm-12">
+                    
+                <div class="mb-3">
+                    <label for="example-text-input" class="form-label">job Title</label>
+                    <select name="" id="title" class="form-control">
+                        <option value="">Select Title</option>
+                        {% for item in job_types %}
+                        <option value={{item.id}}>{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+            
+            </div>
+            </div>
+            
+            <div class="col-lg-6 col-md-12 col-sm-12 hidephoto">
+                    
+                <div class="mb-3">
+                    <label for="example-text-input" class="form-label   ">Photo</label>
+                    <label for="example-text-input" class="form-label">address</label>
+
+                    <input class="form-control" type="file"  id="photo">
+            
+            </div>
+            </div>
+            <div class="col-lg-12 col-md-6 col-sm-12">
+                    
+                <div class="mb-3 text-end">
+                    <a href="" data-dismiss= 'modal' class="btn-danger btn">Cancel</a>
+                   <button  type='button' id="btn_save" class="btn-primary btn">Save</button>
+            
+            </div>
+            </div>
+
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- qualification modal -->
+<div class="modal fade AddQualification" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-3 bg-soft-primary">
+                <h5 class="modal-title" id="modaltitle">Add Qualification</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                     {% csrf_token %}
+              <div class="row">
+
+
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Qualification Name</label>
+                        <input class="form-control" type="text"  hidden disabled id="qualifcationIDs">
+                        <input class="form-control" type="text"  id="name">
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Specialization</label>
+                        <input class="form-control" type="text"  id="specialization">
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-6 col-sm-12 hide_doc">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Documents</label>
+                        <input class="form-control" type="file"  id="documents">
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                     
+                       <button  type='button'  data-dismiss="modal" class="btn-danger btn">Cancel</button>
+                       <button  type='button' id="quali_save" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade newExperience" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-3 bg-soft-primary">
+                <h5 class="modal-title" id="modaltitle">Add Experience</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                     {% csrf_token %}
+              <div class="row">
+
+
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Experience Name</label>
+                        <input class="form-control" type="text"  hidden disabled id="Experience_ID">
+                        <input class="form-control" type="text"  id="name_exp">
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Place Name</label>
+                        <input class="form-control" type="text"  id="place_exp">
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Start Day</label>
+                        <input class="form-control" type="date"  id="start_time_exp">
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">End day</label>
+                        <input class="form-control" type="date"  id="end_time_exp">
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-6 col-sm-12 hide_doc">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Documents</label>
+                        <input class="form-control" type="file"  id="documents_exp">
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                     
+                       <button    data-dismiss="modal" class="btn-danger btn">Cancel</button>
+                       <button  type='submit' id="exp_save" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade experience_document" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-3 bg-soft-primary">
+                <h5 class="modal-title" id="myExtraLargeModalLabel">Update Document</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                     {% csrf_token %}
+              <div class="row">
+
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Documents</label>
+                        <input class="form-control" type="text"  hidden disabled id="ExpdocIDs">
+                        <input class="form-control" type="file"  id="updatedocuments_emp">
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                       
+                       <button   data-dismiss="modal" class="btn-danger btn  ">Cancel</button>
+                       <button  type='button' id="update_document_exp" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade updateDocoment" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-3 bg-soft-primary">
+                <h5 class="modal-title" id="myExtraLargeModalLabel">Update Document</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                     {% csrf_token %}
+              <div class="row">
+
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Documents</label>
+                        <input class="form-control" type="text"  hidden disabled id="docIDs">
+                        <input class="form-control" type="file"  id="updatedocuments">
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                       
+                       <button  type='button' id="" class="btn-danger btn">Cancel</button>
+                       <button  type='button' id="update_document" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade AddJobDetail" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-3 bg-soft-primary">
+                <h5 class="modal-title" id="modaltitle">Add Job Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+              <div class="row">
+
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <label for="example-text-input" class="form-label">Choose Employee Type</label>
+                    <select name="" id="empl_type" class="form-control mb-3">
+                        <option value="">Type Of Employee</option>
+                        <option value="General-Director">Hospital Director</option>
+                        <option value="Director-Secretory">Director Secretory</option>
+                        <option value="Department-Head">Department Head</option>
+                        <option value="Section-Head">Section Head</option>
+                        <option value="Employee">Employee</option>
+                    </select>
+                </div>
+
+
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">job Type</label>
+                        <input class="form-control" type="text"  hidden disabled id="job_detail_id">
+                        <select name="" id="job_type" class="form-control">
+                            <option value="">Select title</option>
+                            {% for item in job_type_all %}
+                            <option value={{item.id}}>{{item.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="col-lg-6 col-md-12 col-sm-12 directorClass">
+                    <label for="example-text-input" class="form-label"> Director</label>
+                    <select name="" id="directorate_id" class="form-control mb-3">
+                        <option value="">Select Director</option>
+                        {% for item in diractrates %}
+                        <option value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}        
+                    </select>
+                </div>
+
+                <div class="col-lg-6 col-md-12 col-sm-12 secretoryClass">
+                    <label for="example-text-input" class="form-label"> Secretory</label>
+                    <select name="" id="secretory_id" class="form-control mb-3">
+                       
+                        {% comment %} {% for item in secretory %}
+                        <option value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}         {% endcomment %}
+                    </select>
+                </div>
+
+                <div class="col-lg-6 col-md-12 col-sm-12 departmentClass">
+                    <label for="example-text-input" class="form-label"> Department</label>
+                    <select name="" id="depart_id" class="form-control mb-3">
+                       
+                    </select>
+                </div>
+
+
+                <div class="col-lg-6 col-md-12 col-sm-12 sections">
+                    <label for="example-text-input" class="form-label">Section</label>
+                    <select name="" id="section_id" class="form-control mb3">
+
+                    
+                    </select>
+                </div>
+
+
+                <div class="col-lg-6 col-md-12 col-sm-12 ">
+                    <label for="example-text-input" class="form-label"> Salary</label>
+                    <select name="" id="Jobtype_Salary" class="form-control mb-3">
+                    </select>
+                </div>    
+
+                <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
+                        <label for="example-text-input" class="form-label">Base Salary</label>                 
+                        <input class="form-control" disabled hidden type="text"  id="salary_id">                      
+                        <input class="form-control" disabled type="text"  id="salary">                      
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12 mb-3 fixAllowanceClass">
+                    <label for="example-text-input"  class="form-label">Fix allowance</label>
+                    <input name="" id="fix_alowence"  class="form-control">                          
+               </div>
+
+               <div class="col-lg-6 col-md-12 col-sm-12 mb-3 netpayClass">
+                <label for="example-text-input" class="form-label">Net Pay</label> 
+                <input class="form-control" disabled type="text"  id="netpay">                      
+        </div>
+
+
+                </div>
+
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                        <a href="" data-dismiss="modal" class="btn-danger btn">Cancel</a>
+                       <button  type='button' id="job_detail_save" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade AddBankDetail" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-3 bg-soft-primary">
+                <h5 class="modal-title" id="modaltitle">Add Bank Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                  
+              <div class="row">
+
+
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Employee Banks</label>
+                        <input class="form-control" type="text"  hidden disabled id="empoyee_bank_id">
+                        <select name="" id="banks" class="form-control">
+                            <option value="">Select Bank</option>
+                            {% for item in all_banks %}
+                            <option value={{item.id}}>{{item.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Account Number</label>
+                        <input class="form-control" type="text"  id="Account" autocomplete='off'>
+                    </div>
+                </div>
+
+
+
+
+
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                        <a href="" data-dismiss="modal" class="btn-danger btn">Cancel</a>
+                       <button  type='button' id="save_banks" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade ApproveModel" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            {% if single_employee.Employee_state == True %}
+            <div class="modal-header p-3 bg-soft-primary">
+                <h5 class="modal-title" id="modaltitle"> <span class="text-primary">Approve Detail</span> </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body table-responsive">
+              <table class="table table-borderless my-3">
+             
+
+
+
+                    <tr>
+                        <th>name</th>
+                        <td>{{single_employee.get_full_name}}</td>
+
+                     </tr>
+
+                     <tr>
+
+                        <th>User Approved</th>
+                        <th id = "User_approved">{{request.user.first_name}} {{request.user.last_name}}</th>
+
+                     </tr>
+                     <tr>
+                        <th>Status</th>
+                        <th class="text-success">Approved</th> 
+
+                     </tr>
+    
+
+              </table>
+                
+            </div>
+            <div class="modal-footer">
+               <button type='button' class="btn badge-soft-primary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+            {% else %}
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle"> Confirm to Approve <span class="text-primary"> {{single_employee.get_full_name}}</span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                  
+              <div class="row">
+
+
+                
+            
+
+                <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                    <label for="example-text-input" class="form-label">Approve / Reject </label>
+                    <input type="text" id="employee_id_approve" hidden disabled>
+                  
+                    <select class="form-select mt-1 form-select-md" aria-label="Default select example" id="app_re_employee">
+                       
+                        <option selected value="">Choose</option>
+                        <option value="Approved">Approve</option>
+                        <option value="Rejected">Reject</option>
+                
+                      </select>
+                    </div>
+
+
+
+
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                        <a href="" data-dismiss="modal" class="btn-danger btn">Cancel</a>
+                       <button  type='submit' id="save_state" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+            {% endif %}
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade ProfilePicture" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-top">
+        <div class="modal-content">
+        
+            <div class="modal-header p-3 bg-soft-primary">
+                <h5 class="modal-title" id="modaltitle"> <span class="text-primary">Change Profile Picture</span> </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form action="">
+                     {% csrf_token %}
+              <div class="row">
+
+                <div class="text-center">
+
+                    <div class="position-relative d-inline-block mb-3">
+                        <div class="avatar-xlg p-1">
+                            <div class="avatar-title bg-light ">
+                                <img src="{% static 'assets/images/users/user-dummy-img.jpg' %}"  id="lead-img" imgurls={{single_employee.photo.url}} class="avatar-xlg rounded img-fluid object-cover" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <h5 class="fs-13 mt-3">Lead Image</h5> -->
+                </div>
+                <div class="col-lg-12 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Upload Profile</label>
+                        <input class="form-control" type="text"  hidden disabled id="pictureIDs">
+                        <input class="form-control" type="file" id="lead-image-input" type="file" accept="image/png, image/gif, image/jpeg">
+                        {% comment %} <input class="form-control" type="file"  id="updatedprofile"> {% endcomment %}
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                       
+                       <button  type='button' data-bs-dismiss="modal" class="btn-danger btn">Cancel</button>
+                       <button  type='button' id="update_profile_picture" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+     
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- printEmployee_data modal -->
+<div class="modal fade printPage_modals zoomIn"  tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Switch what to print</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row print_checks">
+
+                <div class="col-6 mb-2 mt-3">
+                    <div class="form-check form-switch form-switch-info">
+                      <input class="form-check-input" type="checkbox" role="switch" id="all">
+                      <label class="form-check-label" for="all">All</label>
+                    </div>
+                  </div>
+
+
+
+
+                <div class="col-6 mb-4 mt-3">
+                  <div class="form-check form-switch form-switch-info">
+                    <input class="form-check-input" type="checkbox" role="switch" id="basicInfo">
+                    <label class="form-check-label" for="basicInfo">Basic Info</label>
+                  </div>
+                </div>
+
+                <div class="col-6 mb-4 ">
+                  <div class="form-check form-switch form-switch-info">
+                    <input class="form-check-input" type="checkbox" role="switch" id="Qualification">
+                    <label class="form-check-label" for="Qualification">Qualification</label>
+                  </div>
+                </div>
+
+                <div class="col-6 mb-4">
+                  <div class="form-check form-switch form-switch-info">
+                    <input class="form-check-input" type="checkbox" role="switch" id="Experience">
+                    <label class="form-check-label" for="Experience">Experience</label>
+                  </div>
+                </div>
+
+                <div class="col-6 mb-4">
+                  <div class="form-check form-switch form-switch-info">
+                    <input class="form-check-input" type="checkbox" role="switch" id="Job">
+                    <label class="form-check-label" for="Job">Job Detail</label>
+                  </div>
+                </div>
+
+                <div class="col-6 mb-4">
+                  <div class="form-check form-switch form-switch-info">
+                    <input class="form-check-input" type="checkbox" role="switch" id="Accounts">
+                    <label class="form-check-label" for="Accounts">Account</label>
+                  </div>
+                </div>
+
+
+
+        
+
+
+
+              </div>
+                
+            </div>
+            <div class="modal-footer">
+                <div class="mx-auto">
+                    <a href="javascript:void(0);" class="btn btn-primary fw-medium " id="process_btn">Print Now <i class="ri-arrow-right-line ms-1 align-middle"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /.modal -->
+
+
+
+{% endblock %}
+{% block content %}
+
+{%if   isError ==  False%}
+
+<!-- end page title -->
+
+
+
+
+        <div class="position-relative mx-n4 mt-n4">
+            <div class="profile-wid-bg profile-setting-img">
+                <img src="{% static 'assets/images/room.jpg' %}" class="profile-wid-img img-fluid" alt="">
+                <div class="overlay-content">
+                    <div class="text-end p-3">
+                        <div class="p-0 ms-auto rounded-circle profile-photo-edit">                         
+                            <a class="btn btn-light" id="printmodalreveal">                                
+                                    <i class="mdi mdi-printer p-0 m-0" style="font-size: 20px; color: rgb(0, 121, 201);"></i>                                  
+                            </a>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xxl-3">
+                <div class="card mt-n5">
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                                <img src="{{single_employee.photo.url}}"  class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+                                <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
+                                    <input id="img_picture_id" type="file" class="profile-img-file-input"  >
+                                    <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
+                                        <span class="avatar-title rounded-circle bg-light text-body">
+                                            <i class="ri-camera-fill" id="change_profile_picture" imgUrls="{{single_employee.photo.url}}"></i>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <h5 class="fs-16 mb-1">{{single_employee.first_name}} {{single_employee.father_name}}</h5>
+                            <p class="text-muted mb-0">{{single_employee.job_type.name}}</p>
+                        </div>
+                    </div>
+                </div>
+                <!--end card-->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-5">
+                            <div class="flex-grow-1">
+                                <h5 class="card-title mb-0">Complete Your Profile</h5>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <div class="col-sm-auto order-1 order-sm-2">
+                                    {% if single_employee.is_terminated == True %}
+                                    <div class="d-flex align-items-start justify-content-end gap-2">
+                                        <div>
+                                            <button type="button" disabled class="btn btn-soft-danger" >Exited</button>
+                                        </div>
+                                    </div>
+                                    {% else %}
+                                    <div class="d-flex align-items-start justify-content-end gap-2">    
+
+                                        <div>
+                                            {%if perms.Hr.Approve_employee %}
+               
+                                            <div class="dropdown  dropdown_btn">
+                                              <a href="javascript:void(0);" class='btn btn-sm btn-soft-{% if single_employee.Employee_state == "Pending" %}primary {% elif single_employee.Employee_state == "Approved" %}success {% else %}danger {% endif %}'   fs-12 data-bs-toggle="dropdown"><i class="ri-edit-box-line align-bottom me-1"  id="employe_state" ></i>{{single_employee.Employee_state}} </a>
+                                               
+                                                <ul class="dropdown-menu dropdown-menu-end approval_list">
+            
+                                                {% if single_employee.Employee_state == "Pending" %}
+                                                    <li><a class="dropdown-item btn  "  id="approve">approve</a></li>
+                                                    <li><a class="dropdown-item btn "  id="reject">Reject</a></li>                              
+                                                    {% elif  single_employee.Employee_state == "Approved" %}
+                                                    <li><a class="dropdown-item btn "  id="reject">Reject</a></li> 
+                                                    {% else %}                                   
+                                                    <li><a class="dropdown-item btn "  id="approve">approve</a></li>
+                                                {% endif %} 
+                                                
+                                                   
+                                                </ul>
+                                            </div>
+                                            {%endif%}
+            
+                                        </div>
+            
+                                    </div>
+                                    {% endif %}
+            
+                                </div>
+                            </div>
+                        </div>
+                        <div class="progress animated-progress custom-progress progress-label">
+                            <div class="progress-bar bg-info" role="progressbar" style="width:{{rate}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                <div class="label"> {{rate}}</div>
+                              
+                            </div>
+                        </div>                       
+                        
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="flex-grow-1">
+                                <h5 class="card-title mb-0">Contacts</h5>
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3 d-flex">
+                            <div class="avatar-xs d-block flex-shrink-0 me-3">
+                                <span class="avatar-title rounded-circle fs-16 bg-primary">
+                                    <!-- <i class="ri-global-fill"></i> -->
+                                    <i class="bx bx-phone-call"></i>
+                                   
+                                </span>
+                            </div>
+                            <input type="text" class="form-control" id="websiteInput" placeholder="www.example.com" value="{{single_employee.phone}} ">
+                        </div>
+                        <div class="mb-3 d-flex">
+                            <div class="avatar-xs d-block flex-shrink-0 me-3">
+                                <span class="avatar-title rounded-circle fs-16 bg-success">
+                                    <i class="bx  bxl-gmail"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control" id="dribbleName" placeholder="Username" value="{{single_employee.email}} ">
+                        </div>
+
+                    </div>
+                </div>
+                <!--end card-->
+            </div>
+            <!--end col-->
+            <div class="col-xxl-9">
+                <div class="card mt-xxl-n5">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#personalDetails" role="tab">
+                                    Personal Details
+                                </a>
+                            </li>
+                            {% if perms.Hr.view_qualification%}
+                            <li class="nav-item">
+                                {% if countQualif <= 0%}
+                                <a class="nav-link text-danger" data-bs-toggle="tab" href="#Qualification_tab" role="tab">Qualification</a>
+                                {% else %}
+                                <a class="nav-link " data-bs-toggle="tab" href="#Qualification_tab" role="tab">Qualification</a>
+                                {% endif %}
+                              
+                            </li>
+                            {% endif %}
+                            {% if perms.Hr.view_experience%}
+                            <li class="nav-item">
+                                {% if countExper <= 0%}
+                                <a class="nav-link text-danger" data-bs-toggle="tab" href="#experience" role="tab">
+                                    Experience
+                                </a>
+                                {% else %}
+                                <a class="nav-link" data-bs-toggle="tab" href="#experience" role="tab">
+                                    Experience
+                                </a>
+                                {% endif %}
+                            </li>
+                            {% endif %}
+
+                            {% if perms.Hr.view_jobdetails%}
+                            <li class="nav-item">
+                                {% if countJob <= 0%}
+                                <a class="nav-link text-danger" data-bs-toggle="tab" href="#Job_Detail_tab" role="tab"> Job Details   </a>
+                                {% else %}
+                                <a class="nav-link" data-bs-toggle="tab" href="#Job_Detail_tab" role="tab"> Job Details   </a>
+                                {% endif %}
+                            </li>
+                            {% endif %}
+                            
+                            {% if perms.Hr.view_employeebank%}
+                            <li class="nav-item">
+                                {% if countAccount <= 0%}
+                                <a class="nav-link text-danger" data-bs-toggle="tab" href="#employee_bank_tab" role="tab">
+                                   Account
+                                </a>
+                                {% else %}
+                                <a class="nav-link" data-bs-toggle="tab" href="#employee_bank_tab" role="tab">
+                                    Account
+                                 </a>
+                                {% endif %}
+                            </li>
+                            {% endif %}
+
+                           
+
+                            <li class="nav-item">    
+                                <a class="nav-link " data-bs-toggle="tab" href="#detail" role="tab">
+                                Details
+                             
+                                </a>                             
+                            </li>
+
+                            <li class="nav-item">    
+                                <a class="nav-link " data-bs-toggle="tab" href="#attendance" role="tab">
+                                Attandance
+                                </a>                             
+                            </li>
+                            
+                        </ul>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="tab-content">
+                            {% if perms.Hr.view_employee %}
+                            <div class="tab-pane active" id="personalDetails" role="tabpanel">
+                              
+                                    <div class="card-header d-flex justify-content-between">
+                                        <h5 class="card-title mt-2">About</h5>
+                                        <div>
+                                            {% if single_employee.is_terminated == True %}
+                
+                                          {% else %}
+                                          {% if perms.Hr.change_employee %}
+                                                <a id="editButtonEmplDate"
+                                                class="btn btn-primary waves-effect waves-light mt-0">
+                                                Edit 
+                                            </a>
+                                            {% endif %}
+                                         {% endif %}
+                                </div>
+                                    </div>
+                                    
+                                    <div class="card-body table-responsive">
+                                        <form action="" id='employee_form'>
+                                            {%csrf_token%}
+                                      <div class="row">
+                        
+                        
+                                    
+                                        <div class="col-lg-3 col-md-6 col-sm-12">
+                                            <div class="mb-3">
+                                                <label for="example-text-input" class="form-label">First Name</label>
+                                                <input class="form-control" type="text"  hidden disabled id="employee_id_reader">
+                        
+                                                <input class="form-control" type="text"  id="d_first_name" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-12">
+                                                <div class="mb-3">
+                                                    <label for="example-text-input" class="form-label">father Name</label>
+                                                    <input class="form-control" type="text"  id="d_father_name" disabled>
+                                             
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-12">
+                                            
+                                                <div class="mb-3">
+                                                    <label for="example-text-input" class="form-label">Last Name</label>
+                                                    <input class="form-control" type="text"  id="d_last_name" disabled>
+                                            
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="col-lg-3 col-md-6 col-sm-12">
+                                            
+                                            <div class="mb-3">
+                                                <label for="example-text-input" class="form-label">Mother fullname</label>
+                                                <input class="form-control" type="text"  id="d_mother_name" disabled>
+                                        
+                                          </div>
+                                      </div>
+                                    
+                                      <div class="col-lg-3 col-md-6 col-sm-12">
+                                        <label for="example-text-input" class="form-label">Gender</label>
+                                      
+                                        <select class="form-select mt-1 form-select-md" aria-label="Default select example" id="d_gender" disabled>
+                                            <option selected value="">Gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                    
+                                          </select>
+                                        </div>
+                                       
+                                    
+                                        <div class="col-lg-3 col-md-6 col-sm-12">
+                                            <label for="example-text-input" class="form-label">Maritial</label>
+                                            
+                                            <select class="form-select mt-1 form-select-md" aria-label="Default select example" id="d_maritial" disabled>
+                                                <option selected value="">Maritial</option>
+                                                <option value="Single">Single</option>
+                                                <option value="Married">Married</option>
+                                                <option value="Divorce">Divorce</option>
+                                                <option value="Seprated">Seprated</option>
+                                                
+                                                
+                                              </select>
+                            
+                                            </div>
+                                    
+                                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                                <label for="example-text-input" class="form-label">Blood Group</label>
+                        
+                                                <select class="form-select  form-select-md" aria-label="Default select example" id="d_Blood_Group" disabled>
+                                                    <option value="">Blood Group</option>
+                                                    <option value="A+">A+</option>
+                                                    <option value="A-">A-</option>
+                                                    <option value="B+">B+</option>
+                                                    <option value="B-">B-</option>
+                                                    <option value="AB+">AB+</option>
+                                                    <option value="AB-">AB-</option>
+                                                    <option value="O+">O+</option>
+                                                    <option value="O-">O-</option>
+                                                  </select>
+                                                
+                                                </div>
+                                    
+                                    
+                                    
+                                                <div class="col-lg-3 col-md-6 col-sm-12">
+                                            
+                                                    <div class="mb-3">
+                                                        <label for="example-text-input" class="form-label">DOB</label>
+                                                        <input class="form-control" disabled type="date"  id="d_Dob">
+                                                
+                                                </div>
+                                            </div>
+                                            
+                                    
+                                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                            
+                                                <div class="mb-3">
+                                                    <label for="example-text-input" class="form-label">join Date</label>
+                                                    <input class="form-control" disabled type="text" value="{{single_employee.created}}" id="d_Joisdn_date">
+                                            
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-12">
+                                            
+                                            <div class="mb-3">
+                                                <label for="example-text-input" class="form-label">Phone Number</label>
+                                                <input class="form-control" disabled type="number"  id="d_Phone">
+                                        
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-lg-3 col-md-6 col-sm-12">
+                                            
+                                        <div class="mb-3">
+                                            <label for="example-text-input" class="form-label">Relative Contacts</label>
+                                            <input class="form-control" disabled type="number"  id="d_Emer_contact" >
+                                    
+                                    </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 col-sm-12">
+                                            
+                                        <div class="mb-3">
+                                            <label for="example-text-input" class="form-label">Email</label>
+                                            <input class="form-control" disabled type="email"  id="d_email">
+                                    
+                                    </div>
+                                    </div>
+                                    
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                            
+                                        <div class="mb-3">
+                                            <label for="example-text-input" class="form-label">address</label>
+                                            <input class="form-control" disabled type="text"  id="d_address">
+                                    
+                                    </div>
+                                    </div>
+                                    
+                                    
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                            
+                                        <div class="mb-3">
+                                            <label for="example-text-input" class="form-label">Job Title</label>
+                                            <select name="" id="d_title" class="form-control" disabled>
+                                                <option value="">Select title</option>
+                                                {% for item in job_types %}
+                                                <option value={{item.id}}>{{item.name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                    
+                                    </div>
+                                    </div>
+                
+                
+                        
+                                      </div>
+                                    </form>
+                                    </div>
+                                    {% if single_employee.is_terminated == True%}
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1">
+                                                    <h5 class="card-title mb-0">Blocked</h5>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <a href="#post">View All</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            this will show all reason and description of employee block action
+                                        </div>
+                    
+                                        <!-- end card body -->
+                                    </div>
+                                    {% endif %}
+                                    <!-- end card body -->
+                    
+                            </div>
+                            {% endif %}
+                            <!--end tab-pane-->
+                            {% if perms.Hr.view_qualification %}
+                            <div class="tab-pane" id="Qualification_tab" role="tabpanel">
+                               
+                                    <div class="card-header d-flex justify-content-between">
+                                        <h5 class="card-title mb-0 mt-1">Qualification</h5>
+                                        {% if single_employee.is_terminated == True %}
+                
+                                    {% else %}
+                                    {% if perms.Hr.add_qualification %}
+                                    <a class="btn btn-primary waves-effect waves-light mt-0" id='add_qualification'>
+                                        Add Qualification 
+                                    </a>
+                                    {% endif %}
+                                    {% endif %}
+                                    </div>
+                                    <div class="card-body table-responsive">
+                                        <table  id="qualification_table"class="table table-borderless my-3  ">
+                                            <thead>
+                                                <tr>
+                                                    <th class="">Name</th>
+                                                    <th class="">specialization </th>                                
+                                                    <th>Decuments</th>
+                                                    <th class="">Action</th>
+                                                </tr>
+                                            </thead>
+                                            
+                                            <tbody>
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- end card body -->
+                 
+                            </div>
+                            {% endif %}
+                            <!--end tab-pane-->
+                            {% if perms.Hr.view_experience %}
+                            <div class="tab-pane" id="experience" role="tabpanel">
+
+                                    <div class="card-header d-flex justify-content-between">
+                                        <h5 class="card-title mb-0 mt-1">Experience</h5>
+                                        {% if single_employee.is_terminated == True %}
+                                       
+                                    {% else %}
+                                    {% if perms.Hr.add_experience %}
+                                    <a class="btn btn-primary waves-effect waves-light mt-0" id='add_Experience'>
+                                        Add Experience 
+                                    </a>
+                                    {% endif %}
+                                    {% endif %}
+                                    </div>
+                                    <div class="card-body table-responsive">
+                                        <table  id="Experience_table"class="table table-borderless my-3  ">
+                                            <thead>
+                                                <tr>
+                                                    <th class="">Name</th>
+                                                    <th class="">Place of work </th>                                
+                                                    <th class="">Start day</th>                                
+                                                    <th class="">End day</th>      
+                                                    <th class="">Decuments</th>
+                                                    <th class="">Action</th>
+                                                </tr>
+                                            </thead>
+                                            
+                                            <tbody>
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- end card body -->
+                 
+                            </div>
+                            {% endif %}
+                            <!--end tab-pane-->
+                            {% if perms.Hr.view_jobdetails %}`
+                            <div class="tab-pane" id="Job_Detail_tab" role="tabpanel"> 
+                                    <div class="d-flex justify-content-between">
+                                        <div></div>
+                                        <div>
+                                            {% if single_employee.is_terminated == True %}
+        
+                                            {% else %}
+                                            {% if perms.Hr.add_jobdetails %}
+                                            <a href='.AddJobDetail' data-bs-toggle="modal" id="newJobDetail"
+                                            class="btn btn-primary text-white waves-effect waves-light mt-0 mb-1" id='add_job'>
+                                            Add job 
+                                        </a>
+                                        {% endif %}
+                                 
+                                         {% endif %}
+                                        </div>
+                                       
+                                    </div>
+                                       
+                                    
+                                        <div class="live-preview ">
+                                            <div class="accordion custom-accordionwithicon custom-accordion-border accordion-border-box accordion-primary" id="accordionBordered">
+                                                <div class="accordion-item ">
+                                                    <h2 class="accordion-header " id="accordionborderedExample1">
+                                                        <button class="accordion-button collapsed bg-soft-primary" type="button" data-bs-toggle="collapse" data-bs-target="#accor_borderedExamplecollapse1" aria-expanded="false" aria-controls="accor_borderedExamplecollapse1">
+                                                           Current Job
+                                                        </button>
+                                                    </h2>
+                                                    <div id="accor_borderedExamplecollapse1" class="accordion-collapse collapse  show " aria-labelledby="accordionborderedExample1" data-bs-parent="#accordionBordered" >
+                                                        <div class="accordion-body ">
+                                                                                     
+                                                                {% for item in job_Details %}
+                                                                <div class="d-flex justify-content-between">
+                                                                    <h5 class="mt-5"><p><b class="fw-bold text-black">Position :</b> <span>{{item.employee_type}}</span></p></h5>
+                                                                
+                                                                   </div>
+                                                                {% endfor %}
+                                                                <table class="w-100">
+                                                                    <tbody>
+                                                                    
+                                                            {% for item in job_Details %}
+                                                            
+                                                                {% if item.employee_type == "General-Director" %}
+                                                                    <tr>
+                                                                    <td class=""><p><b class="fw-bold text-black">Job Type:</b> <span>{{item.job_type.name}}</span></p></td>  
+
+                                                                    <td><p><b class="fw-bold text-black">Basic Pay:</b> <span>${{item.salary.base_salary}}</span></p></td>
+                                                                    <td><p><b class="fw-bold text-black">Allowance :</b> <span>${{item.salary.fixed_allow}}</span></p></td>
+                                                                    <td><p><b class="fw-bold text-black">Net Pay :</b> <span>${{item.base_pay}}</span></p></td>
+                                                                
+                                                                    </tr>
+                    
+                                                                    <tr>
+                                                                    <td><p><b class="fw-bold text-black">Created Time :</b> <span>{{item.created}}</span></p></td>
+                                                                    <td><p><b class="fw-bold text-black">Updated Time :</b> <span>{{item.update}}</span></p></td>
+                                                                    <td><p><b class="fw-bold text-black">Terms Of Service :</b> <span>{{item.TermsOfService}} </span></p></td>
+                                       
+                                                                    </tr>
+                    
+                                                                {% elif item.employee_type == "Director-Secretory" %}
+                                                                       
+                                                                        <tr>
+                                                                        
+                                                                        <td><p><b class="fw-bold text-black">Director Title :</b> <span>{{item.director.name}}</span></p></td> 
+                                                                        <td><p><b class="fw-bold text-black">Secretory Title :</b> <span>{{item.secretory.name}}</span></p></td>
+                                                                        <td class="mt-5"><p><b class="fw-bold text-black">Job Type:</b> <span>{{item.job_type.name}}</span></p></td>  
+                                                                        
+                                                                    </tr>
+                    
+                                                                        <tr>
+                                                                            <td><p><b class="fw-bold text-black">Basic Pay:</b> <span>${{item.salary.base_salary}}</span></p></td>
+                                                                            <td><p><b class="fw-bold text-black">Allowance :</b> <span>${{item.salary.fixed_allow}}</span></p></td>
+                                                                            <td><p><b class="fw-bold text-black mb-5">Total Pay :</b> <span>${{item.base_pay}}</span></p></td>
+                                                                        
+                                                                        </tr>
+                    
+                    
+                    
+                                                                        <tr>
+                                                                            <td><p><b class="fw-bold text-black">Terms Of Service :</b> <span>{{item.TermsOfService}} </span></p></td>
+                                                                            <td><p><b class="fw-bold text-black">Created Time :</b> <span>{{item.created}}</span></p></td>
+                                                                            <td><p><b class="fw-bold text-black">Updated Time :</b> <span>{{item.update}}</span></p></td>
+                    
+                                                                        </tr>
+                                                                {% elif item.employee_type == "Department-Head" %}
+                                                                       
+                                                                            <tr>
+                                                                                <td><p><b class="fw-bold text-black">Director :</b> <span>{{item.director.name}}</span></p></td> 
+                                                                                <td><p><b class="fw-bold text-black">Department :</b> <span>{{item.department_all.department_name}}</span></p></td>
+                                                                            <td class=""><p><b class="fw-bold text-black">Job Type:</b> <span>{{item.job_type.name}}</span></p></td>  
+                                                                            </tr>
+                                                    
+                                                                            <tr>
+                                                                                <td><p><b class="fw-bold text-black">Basic Pay:</b> <span>${{item.salary.base_salary}}</span></p></td>
+                                                                                <td><p><b class="fw-bold text-black">Allowance :</b> <span>${{item.salary.fixed_allow}}</span></p></td>
+                                                                                <td><p><b class="fw-bold text-black">Total Pay :</b> <span>${{item.base_pay}}</span></p></td>
+                                                                            
+                                                                            </tr>
+                                                    
+                                                    
+                                                    
+                                                                            <tr>
+                                                                                <td><p><b class="fw-bold text-black">Terms Of Service :</b> <span>{{item.TermsOfService}} </span></p></td>
+                                                                                <td><p><b class="fw-bold text-black">Created Time :</b> <span>{{item.created}}</span></p></td>
+                                                                                <td><p><b class="fw-bold text-black">Updated Time :</b> <span>{{item.update}}</span></p></td>
+                    
+                                                                            </tr>
+                    
+                                                                {% elif item.employee_type == "Section-Head" %}
+                                                                            <tr>
+                                                                            <td class=""><p><b class="fw-bold text-black">Job Type:</b> <span>{{item.job_type.name}}</span></p></td>  
+                                                                            <td><p><b class="fw-bold text-black">Director :</b> <span>{{item.director.name}}</span></p></td> 
+                                                                            <td><p><b class="fw-bold text-black">Department :</b> <span>{{item.department_all.department_name}}</span></p></td>
+                                                                            <td><p><b class="fw-bold text-black">Section :</b> <span>{{item.depar_section.department_sections}}</span></p></td>
+                                                                            </tr>
+                                                    
+                                                                                <tr>
+                                                                                <td><p><b class="fw-bold text-black">Basic Pay:</b> <span>${{item.salary.base_salary}}</span></p></td>
+                                                                                <td><p><b class="fw-bold text-black">Allowance :</b> <span>${{item.salary.fixed_allow}}</span></p></td>
+                                                                                <td><p><b class="fw-bold text-black">Total Pay :</b> <span>${{item.base_pay}}</span></p></td>
+                                                                                </tr>
+                                                    
+                                                    
+                                                    
+                                                                            <tr>
+                                                                                <td><p><b class="fw-bold text-black">Terms Of Service :</b> <span>{{item.TermsOfService}} </span></p></td>
+                                                                                <td><p><b class="fw-bold text-black mb-5">Created Time :</b> <span>{{item.created}}</span></p></td>
+                                                                                <td><p><b class="fw-bold text-black">Updated Time :</b> <span>{{item.update}}</span></p></td>
+                    
+                                                                            </tr>
+                    
+                                                                {% elif item.employee_type == "Employee" %}
+                                                                    <tr>
+                                                                    <td class=""><p><b class="fw-bold text-black">Job Type:</b> <span>{{item.job_type.name}}</span></p></td>  
+                                                                    <td><p><b class="fw-bold text-black">Director :</b> <span>{{item.director.name}}</span></p></td> 
+                                                                    <td><p><b class="fw-bold text-black">Department :</b> <span>{{item.department_all.department_name}}</span></p></td>
+                                                                    <td><p><b class="fw-bold text-black">Section :</b> <span>{{item.depar_section.department_sections}}</span></p></td>
+                                                                    </tr>
+                                            
+                                                                    <tr>
+                                                                        <td><p><b class="fw-bold text-black">Basic Pay:</b> <span>${{item.salary.base_salary}}</span></p></td>
+                                                                        <td><p><b class="fw-bold text-black">Allowance :</b> <span>${{item.salary.fixed_allow}}</span></p></td>
+                                                                        <td><p><b class="fw-bold text-black">Total Pay :</b> <span>${{item.base_pay}}</span></p></td>
+                                                                    
+                                                                    </tr>
+                    
+                                                                    <tr>
+                                                                        <td><p><b class="fw-bold text-black">Terms Of Service :</b> <span>{{item.TermsOfService}} </span></p></td>
+                                                                        <td><p><b class="fw-bold text-black mb-5">Created Time :</b> <span>{{item.created}}</span></p></td>
+                                                                        <td><p><b class="fw-bold text-black">Updated Time :</b> <span>{{item.update}}</span></p></td>
+                    
+                                                                    </tr>
+                                                                {%else%}
+                    
+                                                                                <tr>
+                                                                                    <td><p><b class="fw-bold text-black">No Job Available</span></p></td>
+                                                                                </tr>
+                                                                {% endif %}
+                                                                    
+                                                            {% endfor %}
+                                                                </tbody>
+                                                            </table>
+                                                            {% if perms.Hr.change_jobdetails%}
+                                                            <div class="text-end">
+                                                                {% for item in job_Details %}
+                                                                        <button class="btn btn-soft-primary h-25" currentID={{item.id}} id="CurrentJobEdit">Edit</button>
+                                                                 {%endfor%}
+                                                            </div>
+                                                            {% endif %}
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="accordion-item">
+                                                    <h2 class="accordion-header" id="accordionborderedExample2">
+                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accor_borderedExamplecollapse2" aria-expanded="false" aria-controls="accor_borderedExamplecollapse2">
+                                                          Previes Jobs
+                                                        </button>
+                                                    </h2>
+                                                    <div id="accor_borderedExamplecollapse2" class="accordion-collapse collapse" aria-labelledby="accordionborderedExample2" data-bs-parent="#accordionBordered" >
+                                                        <div class="accordion-body">                                                
+                                                                <table class="w-100">
+                                                                    <tbody>                    
+                                                    {% for item in job_Details_inactive %}
+                                                                {% for item in job_Details %}
+                                                                <div class="d-flex justify-content-between">
+                                                                 <h5 class="mt-5"><p><b class="fw-bold text-black">Position :</b> <span>{{item.employee_type}}</span></p></h5>
+                                                                </div>
+                                                            {% endfor %}
+                                                           
+                                                                {% if item.employee_type == "General-Director" %}
+                                                                <table class="table table-borderless my-3 " style="border:1px solid black;">                                                
+                                                                    <tr>                                                    
+                                                                        <td><p><b class="fw-bold text-black">Basic Pay:</b> <span>${{item.salary.base_salary}}</span></p></td>
+                                                                        <td><p><b class="fw-bold text-black">Allowance :</b> <span>${{item.salary.fixed_allow}}</span></p></td>
+                                                                        <td><p><b class="fw-bold text-black">Net Pay :</b> <span>${{item.base_pay}}</span></p></td>                                            
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><p><b class="fw-bold text-black">Created Time :</b> <span>{{item.created}}</span></p></td>
+                                                                        <td><p><b class="fw-bold text-black">Updated Time :</b> <span>{{item.update}}</span></p></td>
+                                                                        <td><p><b class="fw-bold text-black mb-5">Terms Of Service :</b> <span>Perminent </span></p></td>                                            
+                                                                    </tr>
+                                                                </table>
+                                                            {% elif item.employee_type == "Director-Secretory" %}
+                                                            <table class="table table-borderless my-3 "  style="border:1px solid black;">
+                                                                    <tr>
+                                                                    <td class="mt-5"><p><b class="fw-bold text-black">Job Type:</b> <span>{{item.job_type.name}}</span></p></td>  
+                                                                    </tr> 
+                                                                    <tr>
+                                                                    
+                                                                    <td><p><b class="fw-bold text-black">Position :</b> <span>{{item.director.name}}</span></p></td> 
+                                                                    <td><p><b class="fw-bold text-black">Secretory :</b> <span>{{item.secretory.name}}</span></p></td>
+                                                                    </tr>
+                    
+                                                                    <tr>
+                                                                        <td><p><b class="fw-bold text-black">Basic Pay:</b> <span>${{item.salary.base_salary}}</span></p></td>
+                                                                        <td><p><b class="fw-bold text-black">Allowance :</b> <span>${{item.salary.fixed_allow}}</span></p></td>
+                                                                        <td><p><b class="fw-bold text-black mb-5">Total Pay :</b> <span>${{item.base_pay}}</span></p></td>
+                                                                    
+                                                                    </tr>
+                    
+                    
+                    
+                                                                    <tr>
+                                                                        <td><p><b class="fw-bold text-black">Terms Of Service :</b> <span>{{item.TermsOfService}} </span></p></td>
+                                                                        <td><p><b class="fw-bold text-black">Created Time :</b> <span>{{item.created}}</span></p></td>
+                                                                        <td><p><b class="fw-bold text-black">Updated Time :</b> <span>{{item.update}}</span></p></td>
+                    
+                                                                    </tr>
+                                                                </table>
+                                                            {% elif item.employee_type == "Department-Head" %}
+                                                                 <table class="table table-borderless my-3 "  style="border:1px solid black;">           
+                                                                        <tr>
+                                                                        <td class=""><p><b class="fw-bold text-black">Job Type:</b> <span>{{item.job_type.name}}</span></p></td>  
+                                                                        <td><p><b class="fw-bold text-black">Director :</b> <span>{{item.director.name}}</span></p></td> 
+                                                                        <td><p><b class="fw-bold text-black">Department :</b> <span>{{item.department_all.department_name}}</span></p></td>
+                                                                        </tr>
+                                                
+                                                                        <tr>
+                                                                            <td><p><b class="fw-bold text-black">Basic Pay:</b> <span>${{item.salary.base_salary}}</span></p></td>
+                                                                            <td><p><b class="fw-bold text-black">Allowance :</b> <span>${{item.salary.fixed_allow}}</span></p></td>
+                                                                            <td><p><b class="fw-bold text-black">Total Pay :</b> <span>${{item.base_pay}}</span></p></td>
+                                                                        
+                                                                        </tr>
+                                                
+                                                
+                                                
+                                                                        <tr>
+                                                                            <td><p><b class="fw-bold text-black">Terms Of Service :</b> <span>{{item.TermsOfService}} </span></p></td>
+                                                                            <td><p><b class="fw-bold text-black">Created Time :</b> <span>{{item.created}}</span></p></td>
+                                                                            <td><p><b class="fw-bold text-black">Updated Time :</b> <span>{{item.update}}</span></p></td>
+                                                                        </tr>
+                                                                    </table>
+                                                            {% elif item.employee_type == "Section-Head" %}
+                                                                     <table class="table table-borderless my-3 " style="border:1px solid black;">
+                                                                            <tr>
+                                                                                <td class=""><p><b class="fw-bold text-black">Job Type:</b> <span>{{item.job_type.name}}</span></p></td>  
+                                                                            </tr>
+                                                                        <tr>
+                                                                        <td class=""><p><b class="fw-bold text-black">Job Type:</b> <span>{{item.job_type.name}}</span></p></td>  
+                                                                        <td><p><b class="fw-bold text-black">Director :</b> <span>{{item.director.name}}</span></p></td> 
+                                                                        <td><p><b class="fw-bold text-black">Department :</b> <span>{{item.department_all.department_name}}</span></p></td>
+                                                                        <td><p><b class="fw-bold text-black">Section :</b> <span>{{item.depar_section.department_sections}}</span></p></td>
+                                                                        </tr>
+                                                
+                                                                            <tr>
+                                                                            <td><p><b class="fw-bold text-black">Basic Pay:</b> <span>${{item.salary.base_salary}}</span></p></td>
+                                                                            <td><p><b class="fw-bold text-black">Allowance :</b> <span>${{item.salary.fixed_allow}}</span></p></td>
+                                                                            <td><p><b class="fw-bold text-black">Total Pay :</b> <span>${{item.base_pay}}</span></p></td>
+                                                                            </tr>
+                                                
+                                                
+                                                
+                                                                        <tr>
+                                                                            <td><p><b class="fw-bold text-black">Terms Of Service :</b> <span>{{item.TermsOfService}} </span></p></td>
+                                                                            <td><p><b class="fw-bold text-black mb-5">Created Time :</b> <span>{{item.created}}</span></p></td>
+                                                                            <td><p><b class="fw-bold text-black">Updated Time :</b> <span>{{item.update}}</span></p></td>
+                    
+                                                                        </tr>
+                                                                    </table>
+                                                            {% elif item.employee_type == "Employee" %}
+                                                                  <table class="table table-borderless my-3 shadow mb">
+                                                            <tr>
+                                                                <td class=""><p><b class="fw-bold text-black">Job Type:</b> <span>{{item.job_type.name}}</span></p></td>  
+                                                            </tr>
+                                                             <tr>
+                                                                <td class=""><p><b class="fw-bold text-black">Job Type:</b> <span>{{item.job_type.name}}</span></p></td>  
+                                                                <td><p><b class="fw-bold text-black">Director :</b> <span>{{item.director.name}}</span></p></td> 
+                                                                <td><p><b class="fw-bold text-black">Department :</b> <span>{{item.department_all.department_name}}</span></p></td>
+                                                                <td><p><b class="fw-bold text-black">Section :</b> <span>{{item.depar_section.department_sections}}</span></p></td>
+                                                                </tr>
+                                        
+                                                                <tr>
+                                                                    <td><p><b class="fw-bold text-black">Basic Pay:</b> <span>${{item.salary.base_salary}}</span></p></td>
+                                                                    <td><p><b class="fw-bold text-black">Allowance :</b> <span>${{item.salary.fixed_allow}}</span></p></td>
+                                                                    <td><p><b class="fw-bold text-black">Total Pay :</b> <span>${{item.base_pay}}</span></p></td>
+                                                                
+                                                                </tr>
+                    
+                                                                <tr>
+                                                                    <td><p><b class="fw-bold text-black">Terms Of Service :</b> <span>{{item.TermsOfService}} </span></p></td>
+                                                                    <td><p><b class="fw-bold text-black mb-5">Created Time :</b> <span>{{item.created}}</span></p></td>
+                                                                    <td><p><b class="fw-bold text-black">Updated Time :</b> <span>{{item.update}}</span></p></td>
+                    
+                                                                </tr>
+                                                          
+                                                           
+                                                           
+                                                           
+                                                            </table>
+                                                    {%else%}
+                                                                            <tr>
+                                                                                <td><p><b class="fw-bold text-black">No Job Available</span></p></td>
+                                                                            </tr>
+                                                        
+                                                            {% endif %}
+                                                                
+                                                            {% endfor %}
+                                                                </tbody>
+                                                            </table>
+                                                            </div>
+                                                       
+                                                    </div>
+                                                </div>
+    
+                                            </div>
+                                        </div>
+    
+                                 
+                            <!-- end card body -->                               
+                            </div>
+                            {% endif %}
+                            {% if perms.Hr.view_employeebank %}
+                            <div class="tab-pane" id="employee_bank_tab" role="tabpanel">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between">
+                                        <h5 class="card-title mb-0 mt-1">Bank Details</h5>
+                                        {% if single_employee.is_terminated == True %}
+                                        
+                                    {% else %}
+                                    {% if perms.Hr.add_banks %}
+                                            <a href='' data-bs-toggle="modal" id="new_Employee_bank"
+                                            class="btn btn-primary waves-effect waves-light mt-0">
+                                            Add Bank 
+                                        </a>
+                                    {% endif %}
+                                    {% endif %}
+                                    </div>
+                                    <div class="card-body table-responsive">
+                                        <table class="table table-borderless my-3  " id="employee_bank_table">
+                                            <thead>
+                                                <tr>
+                                                    
+                                                    <th class="">Bank Name</th>
+                                                    <th class="">Account Name</th>
+                                                    <th class="">Account Number</th>                                 
+                                                    <th class="">Action</th>
+                                            
+                
+                                                </tr>
+                                            </thead>
+                                            
+                                            <tbody>
+                                                
+                                               
+                          
+                  
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="tab-pane" id="detail" role="tabpanel"> 
+                                <div class="card">
+
+                                    <div class="card-body">
+                                    <div class="card-header text-center mb-3">
+                                        <h6 class="card-title ">Basic Information</h6>
+                                    </div>
+                                    <table class="table table-borderless">
+                                        <tr>
+                                        <td class=""><p><b class="fw-bold text-black">Name:</b> <span>{{single_employee.get_full_name}}</span></p></td>  
+                                        <td><p><b class="fw-bold text-black">Mother Name :</b> <span>{{single_employee.mother_name}}</span></p></td> 
+                                        <td><p><b class="fw-bold text-black">date of Birth :</b> <span>{{single_employee.dob}}</span></p></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><p><b class="fw-bold text-black">Gender:</b> <span>{{single_employee.gender}}</span></p></td>
+                                            <td><p><b class="fw-bold text-black">Marital :</b> <span>{{single_employee.marital}}</span></p></td>
+                                            <td><p><b class="fw-bold text-black">Blood group :</b> <span>{{single_employee.Blood_Group}}</span></p></td>
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td><p><b class="fw-bold text-black">Phone :</b> <span>{{single_employee.phone}}</span></p></td>
+                                            <td><p><b class="fw-bold text-black">Relative contacts :</b> <span>{{single_employee.emergency_contect}}</span></p></td>
+                                            <td><p><b class="fw-bold text-black">email :</b> <span>{{single_employee.email}}</span></p></td>
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td><p><b class="fw-bold text-black">Address :</b> <span>{{single_employee.address}}</span></p></td>
+                                            <td><p><b class="fw-bold text-black">Title :</b> <span>{{single_employee.job_type.name}}</span></p></td>
+                                            <td><p><b class="fw-bold text-black">Date join :</b> <span>{{single_employee.created}}</span></p></td>
+                                        
+                                        </tr>
+                                        <tr>
+
+                                            <td><p><b class="fw-bold text-black">Date updated :</b> <span>{{single_employee.update}}</span></p></td>
+                                        
+                                        </tr>
+
+
+
+
+                                        
+                                        </table>
+                                                
+                                        <div class="card-header text-center mb-5 mt-3">
+                                            <h6 class="card-title ">Qualifications</h6>
+                                        </div>
+                                        <table class="table table-borderless">
+                                            {% for item in qualifications %}
+                                            <tr>
+                                            <td class=""><p><b class="fw-bold text-black">Qualification name:</b> <span>{{item.name}}</span></p></td>  
+                                            <td><p><b class="fw-bold text-black">Specialization :</b> <span>{{item.Specialization}}</span></p></td>   
+                                            <td><p><b class="fw-bold text-black">Created time :</b> <span>{{item.created}}</span></p></td>   
+                                            <td><p><b class="fw-bold text-black">Updated Time :</b> <span>{{item.update}}</span></p></td>                                                      
+                                            </tr>
+
+                                            {% endfor %}
+
+
+                                            
+                                            </table>
+
+                                        
+                                                
+                                            <div class="card-header text-center mb-5 mt-5">
+                                                <h6 class="card-title ">Experience</h6>
+                                            </div>
+                                            <table class="table table-borderless">
+                                                {% for item in experiences %}
+                                                <tr>
+                                                <td class=""><p><b class="fw-bold text-black">Experience name:</b> <span>{{item.name}}</span></p></td>  
+                                                <td><p><b class="fw-bold text-black">Place of work :</b> <span>{{item.place}}</span></p></td>   
+                                                <td><p><b class="fw-bold text-black">Start day:</b> <span>{{item.start}}</span></p></td>   
+                                                <td><p><b class="fw-bold text-black">End day :</b> <span>{{item.end}}</span></p></td>  
+                                                                        
+                                                </tr>
+                                                <tr>
+                                                    <td><p><b class="fw-bold text-black">Created time :</b> <span>{{item.created}}</span></p></td>   
+                                                    <td><p><b class="fw-bold text-black">Updated Time :</b> <span>{{item.update}}</span></p></td>  
+                                                </tr>
+
+                                                {% endfor %}
+
+
+                                                
+                                                </table>
+                                            
+                                                <div class="card-header text-center mb-3 mt-1">
+                                                    <h6 class="card-title ">Job Details</h6>
+                                                </div>
+                                                <div>
+                                        {% for item in job_Details %}
+                                        {% if item.employee_type == "General-Director" %}
+                                        <table class="table table-borderless">
+                                            <tr>                                                           
+                                                <h6 class="mt-2 ms-2"><p><b class="fw-bold text-black">Position :</b> <span>{{item.employee_type}}</span></p></h6>
+                                            </tr>
+                                            <tr>
+                                            <td><p><b class="fw-bold text-black">Basic Pay:</b> <span>${{item.salary.base_salary}}</span></p></td>
+                                            <td><p><b class="fw-bold text-black">Allowance :</b> <span>${{item.salary.fixed_allow}}</span></p></td>
+                                            <td><p><b class="fw-bold text-black">Net Pay :</b> <span>${{item.base_pay}}</span></p></td>
+                                        
+                                            </tr>
+
+                                            <tr>
+                                            <td><p><b class="fw-bold text-black">Created Time :</b> <span>{{item.created}}</span></p></td>
+                                            <td><p><b class="fw-bold text-black mb-5">Terms Of Service :</b> <span>Perminent </span></p></td>
+                                        
+                                            </tr>
+                                        </table>
+                                        {% elif item.employee_type == "Director-Secretory" %}
+                                        <table class="table table-borderless">
+                                                <tr>
+                                                    <h6 class="mt-2 ms-2"><p><b class="fw-bold text-black">Position :</b> <span>{{item.employee_type}}</span></p></h6>
+                                                </tr> 
+                                                <tr>
+                                                
+                                                <td><p><b class="fw-bold text-black">Director :</b> <span>{{item.director.name}}</span></p></td> 
+                                                <td><p><b class="fw-bold text-black">Secretory :</b> <span>{{item.secretory.name}}</span></p></td>
+                                                <td class=""><p><b class="fw-bold text-black">Job Type:</b> <span>{{item.job_type.name}}</span></p></td> 
+                                                </tr>
+
+                                                <tr>
+                                                    <td><p><b class="fw-bold text-black">Basic Pay:</b> <span>${{item.salary.base_salary}}</span></p></td>
+                                                    <td><p><b class="fw-bold text-black">Allowance :</b> <span>${{item.salary.fixed_allow}}</span></p></td>
+                                                    <td><p><b class="fw-bold text-black mb-5">Total Pay :</b> <span>${{item.base_pay}}</span></p></td>                            
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td><p><b class="fw-bold text-black">Terms Of Service :</b> <span>Perminent </span></p></td>
+                                                    <td><p><b class="fw-bold text-black">Created Time :</b> <span>{{item.created}}</span></p></td>
+                                                    <td><p><b class="fw-bold text-black">update Time :</b> <span>{{item.update}}</span></p></td>
+                                                </tr>
+
+                                            </table>
+                                        {% elif item.employee_type == "Department-Head" %}
+                                        <table class="table table-borderless">
+                                                <tr>
+                                                    <h6 class="mt-2 ms-2"><p><b class="fw-bold text-black">Position :</b> <span>{{item.employee_type}}</span></p></h6>
+                                                </tr>
+                                                    <tr>
+                                                    <td class=""><p><b class="fw-bold text-black">Job Type:</b> <span>{{item.job_type.name}}</span></p></td>  
+                                                    <td><p><b class="fw-bold text-black">Director :</b> <span>{{item.director.name}}</span></p></td> 
+                                                    <td><p><b class="fw-bold text-black">Department :</b> <span>{{item.department_all.department_name}}</span></p></td>
+                                                    </tr>
+                            
+                                                    <tr>
+                                                        <td><p><b class="fw-bold text-black">Basic Pay:</b> <span>${{item.salary.base_salary}}</span></p></td>
+                                                        <td><p><b class="fw-bold text-black">Allowance :</b> <span>${{item.salary.fixed_allow}}</span></p></td>
+                                                        <td><p><b class="fw-bold text-black">Total Pay :</b> <span>${{item.base_pay}}</span></p></td>
+                                                    
+                                                    </tr>
+                            
+                            
+                            
+                                                    <tr>
+                                                        <td><p><b class="fw-bold text-black">Terms Of Service :</b> <span>Perminent </span></p></td>
+                                                        <td><p><b class="fw-bold text-black">Created Time :</b> <span>{{item.created}}</span></p></td>
+                                                        <td><p><b class="fw-bold text-black">update Time :</b> <span>{{item.update}}</span></p></td>
+                                                    </tr>
+                                                    </table>
+                                        {% elif item.employee_type == "Section-Head" %}
+                                        <table class="table table-borderless">
+                                            <tr>
+                                                <h6 class="mt-2 ms-2"><p><b class="fw-bold text-black">Position :</b> <span>{{item.employee_type}}</span></p></h6>
+                                            </tr>
+                                                    <tr>
+                                                    <td class=""><p><b class="fw-bold text-black">Job Type:</b> <span>{{item.job_type.name}}</span></p></td>  
+                                                    <td><p><b class="fw-bold text-black">Director :</b> <span>{{item.director.name}}</span></p></td> 
+                                                    <td><p><b class="fw-bold text-black">Department :</b> <span>{{item.department_all.department_name}}</span></p></td>
+                                                    <td><p><b class="fw-bold text-black">Section :</b> <span>{{item.depar_section.department_sections}}</span></p></td>
+                                                    </tr>
+                            
+                                                        <tr>
+                                                        <td><p><b class="fw-bold text-black">Basic Pay:</b> <span>${{item.salary.base_salary}}</span></p></td>
+                                                        <td><p><b class="fw-bold text-black">Allowance :</b> <span>${{item.salary.fixed_allow}}</span></p></td>
+                                                        <td><p><b class="fw-bold text-black">Total Pay :</b> <span>${{item.base_pay}}</span></p></td>
+                                                        </tr>
+                            
+                            
+                            
+                                                    <tr>
+                                                        <td><p><b class="fw-bold text-black">Terms Of Service :</b> <span>Perminent </span></p></td>
+                                                        <td><p><b class="fw-bold text-black mb-5">Created Time :</b> <span>{{item.created}}</span></p></td>
+                                                        <td><p><b class="fw-bold text-black">update Time :</b> <span>{{item.update}}</span></p></td>
+                                                    </tr>
+                                                </table>
+                                        {% elif item.employee_type == "Employee" %}
+                                        <table class="table table-borderless">
+                                            <tr>
+                                                <h6 class="mt-2 ms-2"><p><b class="fw-bold text-black">Position :</b> <span>{{item.employee_type}}</span></p></h6>
+                                            </tr>
+                                            <tr>
+                                            <td class=""><p><b class="fw-bold text-black">Job Type:</b> <span>{{item.job_type.name}}</span></p></td>  
+                                            <td><p><b class="fw-bold text-black">Director :</b> <span>{{item.director.name}}</span></p></td> 
+                                            <td><p><b class="fw-bold text-black">Department :</b> <span>{{item.department_all.department_name}}</span></p></td>
+                                            <td><p><b class="fw-bold text-black">Section :</b> <span>{{item.depar_section.department_sections}}</span></p></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><p><b class="fw-bold text-black">Basic Pay:</b> <span>${{item.salary.base_salary}}</span></p></td>
+                                                <td><p><b class="fw-bold text-black">Allowance :</b> <span>${{item.salary.fixed_allow}}</span></p></td>
+                                                <td><p><b class="fw-bold text-black">Total Pay :</b> <span>${{item.base_pay}}</span></p></td>
+                                            
+                                            </tr>
+
+                                            <tr>
+                                                <td><p><b class="fw-bold text-black">Terms Of Service :</b> <span>Perminent </span></p></td>
+                                                <td><p><b class="fw-bold text-black mb-5">Created Time :</b> <span>{{item.created}}</span></p></td>
+                                                <td><p><b class="fw-bold text-black">update Time :</b> <span>{{item.update}}</span></p></td>
+                                            </tr>
+                                        </table>
+                                        {%else%}
+                                                        <tr>
+                                                            <td><p><b class="fw-bold text-black">No Job Available</span></p></td>
+                                                        </tr>
+                                        {% endif %}
+                                            
+                                    {% endfor %}
+                                                </div>
+
+                                                                        
+                                                
+                                            <div class="card-header text-center mb-5 mt-5">
+                                                <h6 class="card-title ">Employee Bank</h6>
+                                            </div>
+                                            <table class="table table-borderless">
+                                                {% for item in employeeBanks %}
+                                                <tr>
+                                                <td class=""><p><b class="fw-bold text-black">Bank name:</b> <span>{{item.banks}}</span></p></td>  
+                                                <td><p><b class="fw-bold text-black">Account Name:</b> <span>{{item.employee.get_full_name}}</span></p></td>   
+                                                <td><p><b class="fw-bold text-black">Account Number:</b> <span>{{item.account_number}}</span></p></td>   
+
+                                                                        
+                                                </tr>
+                                                <tr>
+                                                    <td><p><b class="fw-bold text-black">Created time :</b> <span>{{item.created}}</span></p></td>   
+                                                    <td><p><b class="fw-bold text-black">Updated Time :</b> <span>{{item.update}}</span></p></td>  
+                                                </tr>
+
+                                                {% endfor %}
+
+
+                                                
+                                                </table>
+                                            
+                                                
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            {% if perms.Hr.view_attandence %}
+                            <div class="tab-pane " id="attendance" role="tabpanel"> 
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            
+                                        <div class="col-lg-12 p-2">
+                                            <h5 class="my-4">Absent History</h5>
+
+                                            <table class="table border p-2"  id="AbsentDay">
+                                                <thead>
+                                                    <tr>
+                                                         <th>Shift name</th>
+                                                         <th>Shift type</th>
+                                                         <th>Shift start time</th>
+                                                         <th>Shift end time</th>
+                                                         <th>Absent date</th>
+                                                         <th>Day name</th>
+                                                         <th>State</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                  
+                                                </tbody>
+                                            </table>
+                                          </col-lg-6>
+                                        </div>
+
+                                        <div class="col-lg-12 p-2">
+                                            <h5 class="my-4">Leave History</h5>
+
+                                            <table class="table border p-2"  id="LeaveHistory">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Leave Type</th>
+                                                        <th>assinged days</th>
+                                                        <th>leave start</th>
+                                                        <th>leave end</th>
+                                                        <th>remain day</th>
+                                                        <th>leave state</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                  
+                                                </tbody>
+                                            </table>
+                                          </col-lg-6>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                            <!--end tab-pane-->
+                        </div>
+                            </div>
+                           {%endif%}
+                </div>
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
+
+  
+    <!-- container-fluid -->
+<!-- End Page-content -->
+
+{%else %}
+{{Message}}
+{%endif%}
+{% endblock  %}
+
+
+
+{% block scripts %}
+
+<script type="text/javascript"> 
+     var employee_id = '{{id}}' 
+     const change_employe = '{{  perms.Hr.change_banks }}'
+</script>
+
+<script src='{% static "scripts/hr/employee/qualification.js" %}'></script>
+<script src='{% static "scripts/hr/employee/Experience.js" %}'></script>
+<script src='{% static "scripts/hr/employee/Job_Detail.js" %}'></script>
+<script src='{% static "scripts/hr/employee/BankDetail.js" %}'></script>
+<script src='{% static "scripts/hr/employee/Update_Employee.js" %}'></script>
+<script src='{% static "scripts/hr/employee/employeeprint.js" %}'></script>
+<script src={% static "scripts/HospitalSetting/dashboard.js" %}></script>
+<script src={% static "assets/js/pages/form-pickers.init.js" %}></script>
+<script src={% static "assets/libs/@simonwep/pickr/pickr.min.js" %}></script>
+
+
+
+
+{% endblock scripts %}
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRM | {{pageTitle}}</title>
+    <link rel="shortcut icon" href= {% static  "assets/images/nisa.png" %}>
+    <!-- Bootstrap Css -->
+    <link href={% static "assets/css/bootstrap.min.css"%} rel="stylesheet" type="text/css" />
+
+    <!-- Icons Css -->
+    <link href={% static "assets/css/icons.min.css"%} rel="stylesheet" type="text/css" />
+    <style>
+        .watermark {
+            position: fixed;
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* center the image horizontally and vertically */
+            opacity: 0.09; /* adjust opacity to your liking */
+            width:95%;
+            height:auto;
+          }
+
+          body{
+            background-color:white;
+            color:black;
+            font-weight:400;
+          }
+
+          
+    </style>
+    {% block cssStyle %}
+    
+    {% endblock %}
+</head>
+
+<body>
+
+<img src={% static  "assets/images/somalilogo.png" %} class="watermark">
+
+       
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card-header border-bottom-dashed p-4">
+                <div class="d-flex">
+                    <div class="flex-grow-1">
+                        <img src="{% static "assets/images/somalilogo.png" %}" style="width: 20%;" alt="" height="60" class="card-logo card-logo-dark" alt="logo dark" height="15">
+                        <!-- <img src="{% static "assets/images/images.jpeg" %}" style="width: 100%;" class="card-logo card-logo-light" alt="logo light" height="17"> -->
+                        <div class="mt-sm-5 ">
+                            <h6 class="text-muted text-uppercase fw-semibold mt-2">Address</h6>
+                            <p class="text-muted mb-1" id="address-details"> Mugadishu , Somalia</p>                           
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 mt-sm-0 mt-3">
+                        </span><span id="legal-register-no">GOVERMENT HOSPITAL </span></h6>
+                        <h6><span class="text-muted fw-normal">Email:</span><span id="email">Nation.local@gmail.com</span></h6>
+                        <h6><span class="text-muted fw-normal">Website:</span> <a href="www.NationalHospital.com" class="link-primary" target="_blank" id="website">www.NationalHospital.com</a></h6>
+                        <h6 class="mb-0"><span class="text-muted fw-normal">Contact No: </span><span id="contact-no"> +252 0615667788</span></h6>
+                    </div>
+                </div>
+            </div>
+         
+        </div><!--end col-->
+        
+                
+  
+    </div>
+          
+
+    {% block printData %}
+
+
+            
+
+     
+<!-- end card body -->                               
+
+    {% endblock %}
+
+
+        <!-- Script Statements -->
+    <script>
+        {% comment %} let BASE_URL = 'http://127.0.0.1:8000/'; {% endcomment %}
+    </script>
+    {% block scriptsJS %}
+    
+    {% endblock %}
+
+  
+</body>
+</html>

@@ -1,0 +1,340 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header d-flex ">
+        <h4 class="card-title">Admission Orders </h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-2 g-4 align-items-center">
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-auto ms-auto">
+                <div class="hstack gap-2">
+                    
+                    <div class="form-group">
+                        <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber}}
+                            class="form-control select2 w-100">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+
+                <form autocomplete='off'>
+                    <div class="input-group mr-0">
+                        <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                            class="form-control" aria-label="Recipient's username"
+                            aria-describedby="button-addon2">
+                        <button class="btn btn-primary" type="button" id="button-addon2">
+                            <i class="bx bx-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered dt-responsive nowrap table-striped align-middle" id="ordered_admission" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th data-priority="1">Patient FullName</th>
+                    <th data-priority="1">Ordered By</th>
+                    <th data-priority="3">Admission Date</th>
+                    <th data-priority="3">Priority Level </th>
+                    <th data-priority="6">Action</th>
+                
+                </tr>
+            </thead>
+            <tbody>
+                {%if page_objects %}
+                {% for order in page_objects %}
+                <tr>
+                    <td>{{order.id}}</td>
+                  
+                    <td>  {% if order.Visit == NULL%} {{order.Appointment.Patient.get_fullName}} {%else%} {{order.Visit.Patient.get_fullName}}{%endif%}</td>
+                    <td>{{order.Ordered_by}}</td>
+                    <td>{{order.AdmissionDate}}</td>
+                    <td>{% if order.patient_priority == "Emergency"%} <span class=" btn btn-sm btn-danger"> {{order.patient_priority}}</span>  {%elif order.patient_priority == "Urgent"%} <span class="btn btn-sm btn-warning"> {{order.patient_priority}}</span> {%else%}  <span class="btn btn-sm btn-primary"> {{order.patient_priority}}</span> {%endif%}</td>
+                   
+                    <td>
+                        <a href="#" rowid={{order.id}} id="admitpatient" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#admitPatient">  <i class="ri-check-double-line"></i> Admit</a>
+                        <a href="#" rowid={{order.id}} id="viewOrderedAdmisson" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#viewOrderedadmisson">  <i class="las la-eye"></i>  </a>
+                   
+                    </td>
+                </tr>
+            {%endfor%}
+            {% else %}
+                <tr>
+                    <td class='text-center' colspan='6'>No Patients is available</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+            <div activePage = {{ page_objects.number }} class="col-md-6 activePage">
+                
+            </div>
+            <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                    
+                <nav aria-label="...">
+                    <ul class="pagination mb-0">
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="1">
+                            <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="{% if page_objects.has_previous %}{{ page_objects.previous_page_number }}{% else %}No Page{% endif %}">
+                            <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                        </li>
+                    
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{% if page_objects.has_next %}{{ page_objects.next_page_number }}{% else %}No Page{% endif %}">
+                            <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{{ page_objects.paginator.num_pages}}">
+                            <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="admitPatient" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myExtraLargeModalLabel">Admission Form</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+           
+                <div class="card-body">
+                    <form id="admissionform">
+                        {% csrf_token %}
+                        <h6><u>Personal Info</u></h6>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div>
+                                    <input class="form-control" type="hidden"  id="hidden_btn" >
+                                    <div class="mb-1">
+                                        <label for="PatientFirstName" class="form-label">Patient FullName</label>
+                                        <input class="form-control" type="text" id="patient" placeholder="Magaca Bukaanka " autocomplete="off" disabled>
+                                    </div>
+                                    <div class="mb-1">
+                                        <label for="PatientAge" class="form-label">Patient Age</label>
+                                        <input class="form-control" type="Number"  id="age" placeholder="Da'da Bukaanka" autocomplete="off" disabled>
+                                    </div>
+                                    <div class="mb-1">
+                                        <label for="PatientMiddleName" class="form-label">Address</label>
+                                        <input class="form-control" type="text" id="address" placeholder="Magaca Aabaha Bukaanka" autocomplete="off" disabled>
+                                    </div>
+                                    <div class="mb-1">
+                                        <label for="PatientMiddleName" class="form-label">Attending Doctor</label>
+                                        <input class="form-control" type="text" id="doctor" placeholder="Magaca Aabaha Bukaanka" autocomplete="off" disabled>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="col-lg-6">
+                                <div class="mb-1">
+                                    <label class="form-label">Patient Gender</label>
+                                    <input class="form-control" type="text" id="gender" placeholder="Mobile Number-ka Bukaanka" autocomplete="off" disabled>
+                                </div>
+                                <div class="mb-1">
+                                    <label for="PatientMobileNo" class="form-label">Patient Mobile Number</label>
+                                    <input class="form-control" type="number" id="mobileNo" placeholder="Mobile Number-ka Bukaanka" autocomplete="off" disabled>
+                                </div>
+                                <div class="mb-1">
+                                    <label for="PatientMobileNo" class="form-label">Admission Date</label>
+                                    <input class="form-control" type="date" id="admissionDate" placeholder="Mobile Number-ka Bukaanka" autocomplete="off" disabled>
+                                </div>
+                             
+                            </div>
+                        </div>
+                        <h6><u>Bed Info</u></h6>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div>
+                                    <input class="form-control" type="hidden"  id="hidden_btn" >
+                                    <div class="mb-2">
+                                        <label for="PatientFirstName" class="form-label">Room Category</label>
+                                        <select class="form-select" id="Room_category">
+                                            <option value="" selected>Select a Room Category</option>
+        
+                                            {% for category in room_category %}
+                                            <option value="{{category.id}}">{{category.Category_name}}</option>
+                                            {% endfor %}
+                                        </select>                                    
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Bed</label>
+                                        <select class="form-select" id="bed">
+                                            <option value="" selected>Select a bed</option>
+        
+                                          
+                                        </select>
+                                    </div>
+                                 
+                                </div>
+                            </div>
+        
+                            <div class="col-lg-6">
+                                <div class="mb-2">
+                                    <label class="form-label">Room</label>
+                                    <select class="form-select" id="room">
+                                        <option value="" selected>Select a Room</option>
+    
+                                      
+                                    </select>
+                                </div>
+                              
+                              
+                            </div>
+                        </div>
+                        <h6><u>Guardian Info</u></h6>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div>
+                                    <div class="mb-2">
+                                        <input type="hidden" id="hidden_admission_order">
+                                        <label for="PatientFirstName" class="form-label">Guardian Name</label>
+                                        <input class="form-control" type="text" id="guardianName" placeholder="Magaca Bukaanka " autocomplete="off">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="PatientFirstName" class="form-label">Guardian Relationship</label>
+                                        <input class="form-control" type="text" id="guardianrelation" placeholder="Magaca Bukaanka " autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="col-lg-6">
+                               
+                                <div class="mb-2">
+                                    <label for="PatientMobileNo" class="form-label">Guardian Mobile Number</label>
+                                    <input class="form-control" type="number" id="guardianMobileNo" placeholder="Mobile Number-ka Bukaanka" autocomplete="off">
+                                </div>
+                                <div class="mb-2">
+                                    <label for="PatientMobileNo" class="form-label">Guardian Address</label>
+                                    <input class="form-control" type="text" id="guardianAddress" placeholder="Mobile Number-ka Bukaanka" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-6 col-sm-12">
+                            <div class="mb-2 text-end">
+                            <button  type='button'  data-bs-dismiss="modal" class="btn-danger btn">Cancel</button>
+                            <button  type='button' id="submit_admission" class="btn-primary btn">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                      
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="viewOrderedadmisson" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myExtraLargeModalLabel">Admission Order Letter</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+           
+                <div class="card-body">
+                    <form id="admissionform">
+                        {% csrf_token %}
+                        <table id="tech-companies-1" class="table table-bordered table-sm ">
+                            <form id="labresult">
+
+                                <thead>
+                                    <tr>
+                                        <th class="text-dark fw-medium"> Full Name</th>
+                                        <td><input type="text" id="patient_view" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                        <th class="text-dark fw-medium">Age</th>
+                                        <td><input type="text" id="age_view" value="{{Appointment.AppointmentNumber}}" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-dark fw-medium"> Gender</th>
+                                        <td><input type="text" id="gender_view"  style="border:0;outline:0;background-color: white;" disabled ></td>
+                                        <th class="text-dark fw-medium">Doctor</th>
+                                        <td><input type="text" id="doctor_view" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <th class="text-dark fw-medium">Address</th>
+                                        <td><input type="text" id="address_view" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                        <th class="text-dark fw-medium">Mobile No</th>
+                                        <td><input type="text" id="mobileNo_view" style="border:0;outline:0;background-color: white;" disabled ></td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        
+                                        <th class="text-dark fw-medium">Admission Date</th>
+                                        <td><input type="text" id="admissionDate_view"  style="border:0;outline:0;background-color: white;" disabled ></td>
+                                        <th class="text-dark fw-medium">Ordered By</th>
+                                        <td><input type="text" id="orderedBy_view"  style="border:0;outline:0;background-color: white;" disabled ></td>
+                                    
+                                    </tr>
+                                    <tr>
+                                        
+                                        <th class="text-dark fw-medium">Patient Priority</th>
+                                        <td><input type="text" id="patientPriority_view"  style="border:0;outline:0;background-color: white;" disabled ></td>
+                                      
+                                    </tr>
+                                </thead>
+                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th >Admission Reason</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody >  
+                                    <td style="background-color:white;">  <span id="admissonReason_view"></span></td>
+                                </tbody>
+                            </table>
+    
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th >Admission Note</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody >  
+                                    <td style="background-color:white;">  <span id="Note_view"></span></td>
+                                </tbody>
+                            </table>
+    
+                        </div>
+                       
+                    </form>
+                </div>
+                      
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{% endblock content %}
+{% block scripts %}
+<script src={% static "scripts/APEN/Patients/orderedAdmission.js" %}></script>
+{% endblock scripts %}

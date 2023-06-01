@@ -1,0 +1,294 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block modal %}
+
+<div class="modal fade add_view_Employee_modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle">View Death Exited Employee</h5>
+                <input class="form-control" type="text"  hidden disabled id="ddepartments_id">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               
+            </div>
+            <div class="modal-body">
+                <form action="" id="job_t">
+                    {% csrf_token %}
+              <div class="row">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                   
+                    <label for="Category" class="form-label">Search Name</label>
+
+                    <input type="text" class="form-control ui-autocomplete-input" id="dsearch" placeholder="Search Employee" autocomplete="off" disabled>
+                    <input type="text" class="form-control" id="userIDs" hidden disabled>
+
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <label for="example-text-input" class="form-label">Exit Category</label>
+                    <select name="" id="dexit_cotegory_id" class="form-control mb-3" disabled>
+                        <option value="">Choose Cotegory</option>
+                        {% for item in exit_cotegory %}
+                        <option value={{item.id}}>{{item.category_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                
+
+<div class=" Classify-exit  ">
+    
+    <div class=" death ">
+        <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+            <label for="Category" class="form-label">Date of Death</label>
+            <input type="date" class="form-control " id="ddate_death" disabled
+                placeholder="Enter Category name">
+
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+            <label for="time" class="form-label">Time of Death</label>
+            <input type="time" class="form-control " id="dtime_death" disabled>
+        </div>
+    </div>
+
+</div>
+
+{% comment %} Death col {% endcomment %}
+
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Reason</label>
+                        <textarea class="form-control" type="text"  id="dexit_reason" rows="6" disabled></textarea>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-12 col-sm-12 fileClass">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Document</label>
+                        <input class="form-control" type="file"  id="dexit_Documents" disabled>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 col-md-12 col-sm-12 CreatedClass mt-2">                   
+                    <label for="example-text-input" class="form-label">Created Time</label>
+                    <input type="text" class="form-control " id="dCreated"  autocomplete="off" disabled> 
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12 CreatedClass mt-2">                   
+                    <label for="example-text-input" class="form-label">State</label>
+                    <input type="text" class="form-control " id="dExistState"  autocomplete="off" disabled> 
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 ApprovedClass mt-2">                   
+                    <label for="example-text-input" class="form-label">Approved By</label>
+                    <input type="text" class="form-control " id="dApprovedBy"  autocomplete="off" disabled> 
+                </div>
+
+
+
+
+
+
+                <div class="col-lg-12 col-md-6 col-sm-12 mt-3">
+        
+                    <div class="mb-3 text-end">
+                        <a href="" data-dismiss="modal" class="btn-danger btn">Cancel</a>
+                        <button type="button" class="btn btn-info" aria-label="Close">Print</button>
+                       
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- end/department.modal -->
+
+
+{%endblock%}
+{% block content %}
+ {% csrf_token %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Death Employee</h4>
+
+
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+            <div class="row mb-2 g-4 align-items-center">
+
+                    <div class="col-sm-auto ms-auto">
+                        <div class="hstack gap-2">
+                            
+
+        
+                            
+
+                            <div class="form-group">
+                                <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber}}
+                                    class="form-control select2 w-100">
+
+                             
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="30">30</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+
+                                </select>
+                            </div>
+
+                           <form autocomplete='off'>
+                            <div class="input-group mr-0">
+                                <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                                    class="form-control" aria-label="Recipient's username"
+                                    aria-describedby="button-addon2">
+                                <button class="btn btn-primary" type="button" id="button-addon2">
+                                    <i class="bx bx-search"></i>
+                                </button>
+                            </div>
+                          </form>
+
+                        </div>
+                    </div>
+            </div>
+            <div class="row table-responsive">
+                <div class="col-md-12 mt-3">
+                    <table id="exit_employee_table" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Employee ID</th>                                
+                                <th>Employee Name</th>
+                                <th>Exit Name</th>
+                                <th>Reason </th>
+                                <th>Day of Death</th>
+                                <th>Time of Death</th>
+                                <th>Document</th>
+                                <th>Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if page_obj %}
+                            {% for item in page_obj %}
+                            
+                            {% if item.exit_emp_category.category_name == 'Death' %}
+
+                          
+                            <tr>
+                               
+                                <td >{{item.exit_emp.emp_number}}</td>
+                                <td ><a id="employeID" href="{{item.exit_emp.get_absolute_url}}">{{item.exit_emp.get_full_name}}</a></td>
+                                <td>{{item.exit_emp_category.category_name}} </td>
+                                <td >{{item.reason | slice:'30' }}...</td>
+                                <td >{{item.dayHappen}}</td>
+                                <td >{{item.timeHappen}}</td>                               
+                                <td ><a href="{{item.uploadedfile_url}}">{{item.get_document_detail.name}}</a>  </td>
+
+                                <td class='d-flex '> 
+                                    {% if perms.Hr.Approve_employee  or  perms.Hr.view_exited_employee %}
+                                    <div class="dropdown confirmDropdown">
+                                        {% if perms.Hr.Approve_employee  %}
+                                        <a class="btn btn-info btn-sm  bg-success" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-check-all" style="font-size: 13px;"></i>                                      
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-start mt-3 approval_list ">
+                                        {% if item.exit_state == "Pending"  %}
+                                        <li><a class="dropdown-item btn  " exitID="{{item.id}}"  id="Confirmed">Confirm</a></li>
+                                        <li><a class="dropdown-item btn " exitID="{{item.id}}"  id="Rejected">Reject</a></li>                              
+                                        {% elif  item.exit_state == "Confirmed" %}
+                                        <li><a class="dropdown-item btn " exitID="{{item.id}}"  id="Returned">Not Dead</a></li> 
+                                        {% else %}                                   
+                                        <li><a class="dropdown-item btn " exitID="{{item.id}}"  id="Confirmed">Confirm</a></li>
+                                        {% endif %} 
+
+                                        </ul>
+                                        {% endif %}
+                                       
+                                      </div>
+                                      {% if perms.Hr.view_exited_employee %}
+                                      <button type="button" jobdetailID="{{item.id}}" class="btn btn-sm btn-info ms-2" id='pendingjobView' >
+                                        <i class="mdi mdi-eye" ></i>
+                                    </button>
+                                    {% endif %}
+                                    {% endif %}
+                                </td>
+                              
+                                
+                                <td >
+                                    {% if item.exit_state == "Returned" %}
+                                    <button   class="btn btn-sm pe-none  text-white fw-bolder bg-{% if item.exit_state == "Pending" %}info {% elif item.exit_state == "Confirmed" %}success {% else %}info {% endif %} ">Not Dead</button>
+                                    {% else %}
+                                    <button   class="btn btn-sm pe-none  text-white fw-bolder bg-{% if item.exit_state == "Pending" %}info {% elif item.exit_state == "Confirmed" %}success {% else %}info {% endif %} ">Death {{item.exit_state}}</button>
+
+                                    {% endif %}
+                                </td>
+                             
+                               
+                            </tr>
+                           
+                         
+             
+                            {% endif %}
+
+                            {% endfor %}
+
+
+                            {% else %}
+                   
+                                <td class='text-center' colspan='12'>No death employee report available</td>
+                  
+                            {% endif %}
+
+                      
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+                    <div activePage = {{ page_obj.number }} class="col-md-6 activePage">
+                      
+                    </div>
+                
+                    <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                               
+                        <nav aria-label="...">
+                            <ul class="pagination mb-0">
+                                <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}" page="1">
+                                    <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                                </li>
+                                <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}" page="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}No Page{% endif %}">
+                                    <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                                </li>
+                               
+                                <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}" page="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}No Page{% endif %}">
+                                    <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                                </li>
+                                <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}" page="{{ page_obj.paginator.num_pages}}">
+                                    <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                                </li>
+                            </ul>
+                        </nav>
+
+
+
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+</div> 
+
+{% endblock content %}
+{% block scripts %}
+<script src='{% static "scripts/hr/employee/DeathEmploye.js" %}'></script>
+<script src='{% static "scripts/hr/employee/deathEmployeesconfi.js" %}'></script>
+{% endblock scripts %}

@@ -1,0 +1,417 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block modal %}
+
+<div class="modal fade ShowDetailAtten_modla" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle">New Shift Assigning</h5>
+                <input class="form-control" type="text"  hidden disabled id="departments_id">                
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action=""  method="POST">
+                    {% csrf_token %}
+              <div class="row">
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <label for="example-text-input" class="form-label">Departments Name</label>
+                    <select name="" id="" name="singleDepartment" class="form-control mb-3">
+                        {% for item in departlist %}
+                        <option value='{{item.id}}' >{{item.department_name}}</option>  
+                        {% endfor %}
+                    </select>
+                </div>
+
+
+
+                    </div>
+
+
+                            <div class="col-lg-12 col-md-6 col-sm-12">
+
+                                <div class="mb-3 text-end">
+                                    <a href="" data-dismiss="modal" class="btn-danger btn">Cancel</a>
+                                    <button  type='button' id="save_workshift" class="btn-primary btn">Save</button>
+
+                            </div>
+                            </div>
+                            
+                        </div>
+                        </form>
+                        </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- endmodal -->
+<div class="modal fade EditDays_modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle">days of the shift</h5>
+                <input class="form-control" type="text"  hidden disabled id="work_shift_id">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" id="job_t">
+                  
+              <div class="row">
+
+                <input class="form-check-input" type="checkbox" value="" id="IDshift" disabled hidden>
+
+
+
+                <div class="col-12 d-flex my-2">
+                    <div class="row days">
+                        <div class="col-4">
+                            <div class="form-check" >
+                              
+                                <input class="form-check-input" type="checkbox" value="" id="Saturday">
+                                <label class="form-check-label" for="Saturday">
+                                  Saturday
+                                </label>
+                              </div>
+                        </div>               
+                        
+                        <div class="col-4">
+                            <div class="form-check" >
+                                <input class="form-check-input" type="checkbox" value="" id="Sunday">
+                                <label class="form-check-label" for="Sunday">
+                                  Sunday    
+                                </label>
+                              </div>
+                        </div>    
+                        
+                        <div class="col-4">
+                            <div class="form-check" >
+                                <input class="form-check-input" type="checkbox" value="" id="Monday">
+                                <label class="form-check-label" for="Monday">
+                                  Monday
+                                </label>
+                              </div>
+                        </div>        
+                        
+                        <div class="col-4 ">
+                            <div class="form-check" >
+                                <input class="form-check-input" type="checkbox" value="" id="Tuesday">
+                                <label class="form-check-label" for="Tuesday">
+                                  Tuesday
+                                </label>
+                              </div>
+                        </div>        
+                        
+                        <div class="col-4 ">
+                            <div class="form-check" >
+                                <input class="form-check-input" type="checkbox" value="" id="Wednesday">
+                                <label class="form-check-label" for="Wednesday">
+                                  Wednesday
+                                </label>
+                              </div>
+                        </div>         
+                        
+                        <div class="col-4">
+                            <div class="form-check" >
+                                <input class="form-check-input" type="checkbox" value="" id="Thursday">
+                                <label class="form-check-label" for="Thursday">
+                                  Thursday
+                                </label>
+                              </div>
+                        </div>  
+                        
+                        <div class="col-4 fridayclass">
+                            <div class="form-check" >
+                                <input class="form-check-input" type="checkbox" value="" id="Friday">
+                                <label class="form-check-label" for="Friday">
+                                  Friday
+                                </label>
+                              </div>
+                        </div>      
+                    </div>
+
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+        
+                    <div class="mb-3 text-end">
+                        <a href="" data-dismiss="modal" class="btn-danger btn">Cancel</a>                    
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- end/workshift modal -->
+{%endblock%}
+
+{% block content %}
+{% csrf_token %}
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Attending employee </h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Shifts</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-2 g-4 align-items-center">
+                    
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+
+                        <div class="hstack gap-2">
+
+                            <div class="form-group mr-3">
+                                {% if perms.Approve_employee%}
+                              {% if attendings == "Absent" %}
+                                <button type='button' id='presentday'
+                                    class="btn btn-primary waves-effect waves-light d-none Approved Pending">
+                                    Present
+                                </button>
+                                {% elif attendings == "Present" %}
+                                <button type='button' id='ubsentDay'
+                                    class="btn btn-warning waves-effect waves-light d-none Approved Pending">
+                                    Absent
+                                </button>
+                                {% else %}
+                                <button type='button' id=''
+                                class="btn btn-danger waves-effect waves-light d-none Approved Pending">
+                              Choose state
+                            </button>
+                                {% endif %}
+                                
+                                {% endif %}
+                            </div>
+<!--                           
+                                <div class="col-3">
+                                    {% if perms.Hr.add_employee %}
+                                    <div>
+                                        <a data-bs-toggle='modal'   id="attendanceDetail" class="btn btn-info">Details</i></a>
+                                    </div>
+                                    {% endif %}
+                                </div> -->
+                           
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-6 col-md-6 d-flex justify-content-end">
+                        <div class="hstack gap-2">
+
+                            <div class="form-group">
+                                <select id="depName" name="depName" depName={{depName}}
+                                    class="form-control select2 w-100">                                                            
+                                    <option value='All' select>Departments</option>        
+                                    {% for item in department_all %}                          
+                                    <option value='{{item.id}}' >{{item.department_name}}</option>   
+                                    {% endfor %}                                   
+                                </select>
+                            </div>
+                            
+
+                           <div class="form-group">
+                            <select id="attendings" name="attendings" attendings={{attendings}}
+                                class="form-control select2 w-100">                                                            
+                                <option value='All' select>State</option>                                    
+                                <option value='1' select>Present</option>                                    
+                                <option value='0' >Absent</option>                                    
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                           
+                                <div>
+                                                             
+                                    {% comment %} <input type="date"  class="form-control" data-provider="flatpickr" data-date-format="d M, Y" placeholder='Choose Date'> {% endcomment %}
+                                    <input type="date"  class="form-control" id="datechoose" name="datechoose" datechoose={{datechoose}} >
+                                </div>
+                          
+                        
+                        </div>
+                            <div class="form-group">
+                                <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber }}
+                                    class="form-control select2 w-100">
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="30">30</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                    <option value="1000">1000</option>
+                                    <option value="10000">10000</option>
+                                </select>
+                            </div>
+
+                            <form autocomplete='off'>
+                                <div class="input-group mr-0">
+                                    <input id="SearchQuery" type="text" placeholder="Search..."
+                                        value='{{SearchQuery}}' class="form-control"
+                                        aria-label="Recipient's username" aria-describedby="button-addon2">
+                                    <button class="btn btn-primary" type="button" id="button-addon2">
+                                        <i class="bx bx-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row table-responsive">
+                    <div class="col-md-12">
+                        <table id="manage_shift_table" class="table table-striped">
+                            <thead>
+                                <tr>
+                                  
+                                    
+                                    
+                                    <th scope="col">ID</th>
+                                    <th scope="col">name</th>
+                                    <th scope="col">Departments</th>
+                                    <th scope="col">Shift name</th>                                   
+                                    <th scope="col">Shift type</th>                                      
+                                    <th scope="col">Shift days</th>                                      
+                                    <th scope="col">
+                                        <!-- Custom Checkboxes Color -->
+                                        <div class="form-check">
+                                        
+                                            <label class="form-check-label" for="employee_check"> <span class="">Status</span> 
+                                            </label>
+                                        </div>
+                                    </th>
+                                                                    
+                                                               
+                                  
+                                    
+                                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if page_obj %}
+                            
+                                {% for item in page_obj %}
+
+                                <tr>
+                                    
+                                        
+                                        <!-- Custom Checkboxes Color -->
+                                      
+                                       
+                                        {% comment %} <td >{{item.employee.emp_number}}</td> {% endcomment %}
+                                        <td >{{item.employee.emp_number}}</td>
+                                        
+                                        <td><a href={{item.employee.get_absolute_url}}>{{item.employee.get_full_name}}</a></td>  
+                                
+                                        <td>{{item.shift.department.department_name}}</td>
+                                        <td>{{item.shift.shift_name}}</td>
+                                        <td>{{item.shift.shift_type}}</td>                                      
+                                        <td> <button type="button" mngeshiftID="{{item.id}}" class="btn btn-sm btn-primary ms-2" id='viewmngeshift' >
+                                            <i class="mdi mdi-eye" ></i>
+                                        </button></td>
+                                        <td>
+                                            <div class="form-check mb-3">
+                                                {% if item.state == '1' %}
+                                                
+                                                <label class="form-check-label" for="employee_check"> <span class="px-2 py-1 rounded-3 bg-soft-success text-black">Present</span>
+                                                {% else %}
+                                               
+                                                <label class="form-check-label" for="employee_check"> <span class="px-2 py-1  rounded-3 bg-soft-danger   text-black">Absent</span>
+                                                {% endif %}
+                                                
+                                                </label>
+                                            </div>
+                                             </td>
+                                
+
+                                       
+                                      <!-- <td >
+                                    {% if item.getAttendingOne == True %}
+                                    <button   class='btn btn-sm pe-none btn-success'>Present</button>
+                                    {% else %}
+                                    <button   class='btn btn-sm pe-none btn-{% if item.getAttendingOne == True %}primary {% else %}danger {% endif %} '>Ubsent</button>
+                                     {% endif %}
+                                </td> -->
+
+
+                                    </td>
+
+
+                                    
+
+                                    
+                                     </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td class='text-center' colspan='12'>No employee </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+                        <div activePage={{ page_obj.number }} class="col-md-6 activePage">
+
+                        </div>
+                        <div class="col-md-6 d-flex justify-content-end align-items-center">
+                            <ul class="pagination listjs-pagination">
+                                <a class="cursor-pointer page-item pagination-prev {% if not page_obj.has_previous %}disabled{% endif %}"
+                                    page="1">
+                                    <i class="bx bx-chevrons-left"></i>
+                                </a>
+                                <a class="cursor-pointer page-item pagination-prev {% if not page_obj.has_previous %}disabled{% endif %}"
+                                    page="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}No Page{% endif %}">
+                                    Previous
+                                </a>
+
+
+
+                                <a class="cursor-pointer page-item pagination-next {% if not page_obj.has_next %}disabled{% endif %}"
+                                    page="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}No Page{% endif %}">
+                                    Next
+                                </a>
+                                <a class="cursor-pointer page-item pagination-next {% if not page_obj.has_next %}disabled{% endif %}"
+                                    page="{{ page_obj.paginator.num_pages}}">
+                                    <i class="bx bx-chevrons-right"></i>
+                                </a>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock  %}
+
+
+
+{% block scripts %}
+<script>
+{% comment %} const shift ={{get_shift.id}}    
+const shiftdepid ={{get_shift.department.id}}     {% endcomment %}
+
+</script>
+
+<script src={% static "scripts/Management/attendingemployee.js" %}></script>
+<script src={% static "scripts/Management/newShiftMngmet.js" %}></script>
+<script src='{% static "assets/js/uijquery.js" %}'></script> 
+<script src="{% static 'assets/js/pages/form-pickers.init.js' %}    "></script>
+
+{% endblock scripts %}

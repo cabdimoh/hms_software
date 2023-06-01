@@ -1,0 +1,199 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block modal %}
+<div class="modal fade IncomeSource" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle">Add Income Source</h5>
+                <input class="form-control" type="text"  hidden disabled id="departments_id">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" id="job_t">
+                    {% csrf_token %}
+              <div class="row">
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Income Source Name</label>
+                        <input class="form-control" type="text"  id="name">
+                        <input class="form-control" type="text" hidden disabled  id="incomeidHidden">
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 ">        
+                    <div class="mb-3 text-end">
+                        <a href="" data-dismiss="modal" class="btn-danger btn">Cancel</a>
+                       <button  type='button' id="save_income_source" class="btn btn-primary ">Save</button>                
+                </div>
+
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- end/.modal -->
+{% endblock %}
+{% block content %}
+ {% csrf_token %}
+ {% if isError == False %}
+
+ <div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+             <h4 class="mb-sm-0 font-size-18">Income Source</h4>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+            <div class="row mb-2 g-4 align-items-center">
+                {% if perms.Hr.Approve_employee%}
+                    <div class="col-sm-3">
+                        <a class="btn btn-info waves-effect waves-light mt-0 " id='create_income_source' >
+                       Create Source
+                        </a>
+           
+                    </div>
+                    {% endif %}
+                    <div class="col-sm-auto ms-auto">
+                        <div class="hstack gap-2">
+                            
+
+        
+                            
+
+                            <div class="form-group">
+                                <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber}}
+                                    class="form-control select2 w-100">
+
+
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="30">30</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
+
+                           <form autocomplete='off'>
+                            <div class="input-group mr-0">
+                                <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                                    class="form-control" aria-label="Recipient's username"
+                                    aria-describedby="button-addon2">
+                                <button class="btn btn-primary" type="button" id="button-addon2">
+                                    <i class="bx bx-search"></i>
+                                </button>
+                            </div>
+                          </form>
+
+                        </div>
+                    </div>
+            </div>
+            <div class="row table-responsive">
+                <div class="col-md-12 mt-3">
+                    <table id="income_source_table" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                        <thead>
+                            <tr>
+
+                                <th>ID</th>                               
+                                <th>Account Name</th>                                
+                                <th>created</th>
+                                <th>updated</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if page_obj %}
+                            {% for item in page_obj %}
+                            
+                            
+                            <tr>
+                                
+                                <td >{{item.id}}</td>  
+                                <td>{{item.name}}</td>                              
+                                <td>{{item.created}}</td>
+                                <td>{{item.get_modified_date}}</td>
+
+                                <td> 
+                                    <button type="button" incomesourceids="{{item.id}}" class="btn btn-sm btn-info ms-2" id='incomesourceid' >
+                                    <i class="mdi mdi-pen" ></i>
+                                     </button></td>
+
+                                
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td class='text-center' colspan='6'>No Category available</td>
+                            </tr>
+                            {% endif %}
+
+                      
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+                    <div activePage = {{ page_obj.number }} class="col-md-6 activePage">
+                      
+                    </div>
+                
+                    <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                               
+                        <nav aria-label="...">
+                            <ul class="pagination mb-0">
+                                <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}" page="1">
+                                    <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                                </li>
+                                <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}" page="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}No Page{% endif %}">
+                                    <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                                </li>
+                               
+                                <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}" page="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}No Page{% endif %}">
+                                    <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                                </li>
+                                <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}" page="{{ page_obj.paginator.num_pages}}">
+                                    <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                                </li>
+                            </ul>
+                        </nav>
+
+
+
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+{% endif %}
+
+
+           
+{% endblock content %}
+{% block scripts %}
+<script src='{% static "scripts/Finance/income/incomesourcepag.js" %}'></script>
+<script src='{% static "scripts/Finance/income/createincomesource.js" %}'></script>
+
+{% endblock scripts %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

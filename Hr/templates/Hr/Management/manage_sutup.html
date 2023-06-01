@@ -1,0 +1,484 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block modal %}
+<div class="modal fade add_location_modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle">New Location  </h5>
+                <input class="form-control" type="text"  hidden disabled id="job_type_id">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" id="job_t">
+                  
+              <div class="row">
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12 ">
+
+                    <select name="" id="department_id" class="form-control">
+                        <option value="">Select Department</option>
+                        {% for item in department_all %}
+                        <option value={{item.id}}>{{item.department_name}}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Location Name</label>
+                        <input class="form-control" type="text"  id="location_name">
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12 ">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Descriptions</label>
+                        <input class="form-control" type="text"  id="descriptions">
+                    </div>
+                </div>
+
+
+             
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                        <a href="" data-dismiss="modal" class="btn-danger btn">Cancel</a>
+                       <button  type='button' id="save_location" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- end/jobtype.modal -->
+
+<div class="modal fade add_specialization_modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle">Add Doctor Specialization</h5>              
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" id="specializationss">
+                  
+              <div class="row">
+
+
+            
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Administrator Name</label>
+                        <input class="form-control" type="text"  id="spec_name">
+                        <input class="form-control" type="text"  id="speci_detail_ids" disabled hidden>
+                    </div>
+                </div>    
+                
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Description</label>
+                        <input class="form-control" type="text"  id="description_spec">
+                     
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                        <a href="" data-dismiss="modal" class="btn-danger btn">Cancel</a>
+                       <button  type='button' id="save_specialization" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- end/Sepcialization .modal -->
+<div class="modal fade add_Section_modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle">Add Section</h5>
+                <input class="form-control" type="text"  hidden disabled id="departments_id">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" id="job_t">
+                  
+              <div class="row">
+
+
+            
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <select name="" id="depart_ID" class="form-control mb-3">
+                        <option value="">Select Department</option>
+                        {% for item in departments %}
+                        <option value={{item.id}}>{{item.department_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Section Name</label>
+                        <input class="form-control" type="text"  id="section_name">
+                        <input class="form-control" type="text"  id="section_detail_ids" disabled hidden>
+                    </div>
+                </div>    
+                
+   
+
+
+
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                        <a href="" data-dismiss="modal" class="btn-danger btn">Cancel</a>
+                       <button  type='button' id="Save_section" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- end/section.modal -->
+<div class="modal fade newSecretary" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle">Add  Secretory</h5>
+                <input class="form-control" type="text"  hidden disabled id="job_title_ids">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" >
+                  
+              <div class="row">
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <label for="example-text-input" class="form-label">Director name</label>
+                    <select name="" id="director_name" class="form-control mb-3">
+                       
+                        <option value="">Select Director</option>
+                        {% for item in directarate_all %}
+                        <option value={{item.id}}>{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">secretary name</label>
+                        <input class="form-control" type="text"  id="secretary_name">
+                    </div>
+                </div>
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Descriptions</label>
+                       
+                        <input class="form-control" type="text"  id="descriptions_director">
+                        <input class="form-control" type="text" id='SecretoryIDS' hidden disabled>
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                        <a href="" data-dismiss="modal" class="btn-danger btn">Cancel</a>
+                       <button  type='button' id="save_secretary" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!--end/jobtitle .modal -->
+<div class="modal fade add_Department_modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle">Add Departments</h5>
+                <input class="form-control" type="text"  hidden disabled id="departments_id">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" id="job_t">
+                  
+              <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <label for="example-text-input" class="form-label">Director Name</label>
+                    <select name="" id="director_id" class="form-control mb-3">
+                        <option value="">Select Director</option>
+                        {% for item in directarate_all %}
+                        <option value={{item.id}}>{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 ">
+
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Department Name</label>
+                        <input class="form-control" type="text"  id="Department_name">
+                    </div>
+
+                </div>
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Descriptions</label>
+                        <input class="form-control" type="text"  id="department_descriptions">
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                        <a href="" data-dismiss="modal" class="btn-danger btn">Cancel</a>
+                       <button  type='button' id="save_department" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- end/department.modal -->
+
+
+{%endblock%}
+{% block content %}
+{% csrf_token %}
+<div class="row">
+    <div class="col-xl-12 col-12">
+        <div class="card">
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1"></h4>
+                <div class="flex-shrink-0">
+                    <ul class="nav justify-content-end nav-tabs-custom rounded card-header-tabs" role="tablist">
+
+                         
+                        <li class="nav-item ">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#Administrator" role="tab">
+                              
+                                <span class="d-none d-sm-block">Administrator</span>   
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#secretary_tab" role="tab">
+                               
+                                <span class="d-none d-sm-block">Secretary</span> 
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#Departments_tab" role="tab">
+                                {% comment %} hadhow waa inan badala envelope badan ee small viewpoint soo baxaaya {% endcomment %}
+                                
+                                <span class="d-none d-sm-block">Departments</span>   
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#Sections" role="tab">
+                                <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
+                                <span class="d-none d-sm-block">Section</span>   
+                            </a>
+                        </li>     
+                        
+                        
+
+                     
+
+                    </ul>
+                </div>
+            </div><!-- end card header -->
+            
+            <div class="card-body">
+               
+                <!-- Tab panes -->
+                <div class="tab-content text-muted">
+                    <div class="tab-pane active " id="Administrator" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <h5 class="card-title mb-0 mt-1">Administrator </h5>
+                                {% if perms.Hr.add_directorate %}
+                                <a class="btn btn-primary waves-effect waves-light mt-0 " id='Add_Specialization_button' >
+                                 New Administrator
+                                 </a>
+                                {% endif %} 
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table  id="Specialition_table" class="table table-borderless ">
+                                    <thead>
+                                        <tr>
+                                            
+                                            <th class="col">ID</th>
+                                            <th class="col">Administrator Name</th>  
+                                            <th class="col">Description</th>  
+                                            <th class="col text-end">action</th>                                
+                                    
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- end card body -->
+                        </div>
+                    </div>
+
+                    <div class="tab-pane " id="secretary_tab" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <h5 class="card-title mb-0 mt-1">Secretary</h5>
+                                {% if perms.Hr.add_secretary%}
+                                <a class="btn btn-primary waves-effect waves-light mt-0 " id='add_Secretary' >
+                                Add Secretary
+                            </a>
+                            {% endif %}
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table  id="Secretary_table" class="table table-borderless ">
+                                    <thead>
+                                        <tr>
+                                            
+                                            <th class="col">id</th>
+                                            <th class="col">Director</th>
+                                            <th class="col">Name</th>
+                                            <th class="col">Descriptions </th>                                
+                                            <th class="col text-end">action</th>                                
+                                    
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- end card body -->
+                        </div>
+                    </div>
+                    <div class="tab-pane " id="Sections" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <h5 class="card-title mb-0 mt-1"> Salary </h5>
+                                {% if perms.Hr.add_depart_sections %}
+                                <a class="btn btn-primary waves-effect waves-light mt-0 " id='Add_Section_button' >
+                                  Add  Section
+                            </a>
+                            {% endif %}
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table  id="Section_Table" class="table table-borderless ">
+                                    <thead>
+                                        <tr>
+                                            
+                                            <th class="col">ID</th>
+                                            <th class="col">Department</th>                                           
+                                            <th class="col">Section Name</th>
+                                            <th class="col text-end">action</th>                                
+                                    
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- end card body -->
+                        </div>
+                    </div>
+                    <div class="tab-pane " id="Departments_tab" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <h5 class="card-title mb-0 mt-1">Hospital Departments</h5>
+                                <a class="btn btn-primary waves-effect waves-light mt-0 " id='add_department_button_modal' >
+                                Add Departments
+                            </a>
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table  id="hospital_department_table" class="table table-borderless ">
+                                    <thead>
+                                        <tr>
+                                            
+                                            <th class="col">id</th>
+                                            <th class="col">Director Name</th>
+                                            <th class="col">Department Name</th>
+                                            <th class="col">Descriptions </th>                                
+                                            <th class="col text-end">action</th>                                
+                                    
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- end card body -->
+                        </div>
+                    </div>
+
+
+                </div>
+            </div><!-- end card-body -->
+        </div><!-- end card -->
+    </div><!-- end col -->
+
+
+</div><!-- end row -->
+
+            <!-- end main content-->
+{% endblock content %}
+{% block scripts %}
+
+<script src='{% static "scripts/hr/prerequest/jobtitle.js" %}'></script>
+<script src='{% static "scripts/hr/prerequest/hosdepartments.js" %}'></script>
+<script src='{% static "scripts/hr/prerequest/Specialization.js" %}'></script>
+<script src='{% static "scripts/hr/prerequest/Section.js" %}'></script>
+
+
+
+{% endblock scripts %}

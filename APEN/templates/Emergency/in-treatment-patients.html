@@ -1,0 +1,135 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block content %}
+{% csrf_token %}
+<div class="card">
+    <div class="card-header d-flex ">
+        <h4 class="card-title">Emergency Triage</h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-2 g-4 align-items-center">
+            <div class="col-sm-3">
+                
+            </div>
+            <div class="col-sm-auto ms-auto">
+                <div class="hstack gap-2">
+                    
+                    <div class="form-group">
+                        <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber}}
+                            class="form-control select2 w-100">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+
+                <form autocomplete='off'>
+                    <div class="input-group mr-0">
+                        <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                            class="form-control" aria-label="Recipient's username"
+                            aria-describedby="button-addon2">
+                        <button class="btn btn-primary" type="button" id="button-addon2">
+                            <i class="bx bx-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Patient FullName</th>
+                    <th data-priority="1">Patient Age</th>
+                    <th data-priority="3">Patient Gender</th>
+                    <th data-priority="3">Patient Mobile NO</th>
+                    <th data-priority="3">Patient Address</th>
+                    <th data-priority="3">Triage Category</th>
+                    <th data-priority="6">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%if page_objects %}
+                {% for visit in page_objects %}
+                <tr>
+                    <td>{{visit.VisitNumber}}</td>
+                    <td><a href="{{visit.get_absolute_url}}" >{{visit.Patient.get_fullName}} </a></td>
+                    <td>{{visit.Patient.PatientAge}}</td>
+                    <td>{{visit.Patient.PatientGender}}</td>
+                    {% if visit.Patient.PatientMobileNo %}
+                    <td>{{visit.Patient.PatientMobileNo}}</td>
+                    {%else%}
+                    <td>Unknown</td>
+                    {%endif%}
+                    {% if visit.Patient.PatientVillage %}
+                    <td>{{visit.Patient.PatientVillage}}, {{visit.Patient.PatientDistrict}}, Mogadishu</td>
+                    {%else%}
+                    <td>Unknown</td>
+                    {%endif%}
+                    {% for triagecat in visit.emergencytriage_set.all%}
+                    <td>{% if triagecat.TriageCategory == "Immediate"%} <span class=" btn btn-sm btn-danger"> {{triagecat.TriageCategory}}</span>  
+                        {%elif triagecat.TriageCategory == "Emergent"%} <span class="btn btn-sm btn-warning"> {{triagecat.TriageCategory}}</span> 
+                        {%elif triagecat.TriageCategory == "Urgent"%} <span class="btn btn-sm btn-soft-danger"> {{triagecat.TriageCategory}}</span> 
+                        {%else%}  <span class="btn btn-sm btn-soft-warning"> {{triagecat.TriageCategory}}</span> {%endif%}</td>
+                    {%endfor%}
+                  
+                    <td>
+                        <a href="{{visit.get_absolute_url}}" >
+                            <button type="button" class="btn btn-sm btn-primary">
+                                <i class="las la-eye"></i>
+                            </button>
+                        </a> 
+                   </td>
+                </tr>
+                {%endfor%}
+                {% else %}
+                <tr>
+                    <td class='text-center' colspan='8'>No Emergency Patient available</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+            <div activePage = {{ page_objects.number }} class="col-md-6 activePage">
+                
+            </div>
+            <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                    
+                <nav aria-label="...">
+                    <ul class="pagination mb-0">
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="1">
+                            <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="{% if page_objects.has_previous %}{{ page_objects.previous_page_number }}{% else %}No Page{% endif %}">
+                            <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                        </li>
+                    
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{% if page_objects.has_next %}{{ page_objects.next_page_number }}{% else %}No Page{% endif %}">
+                            <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{{ page_objects.paginator.num_pages}}">
+                            <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+    <script src='{% static "scripts/APEN/Emeergency/intreatment_emergency.js" %}'></script>
+{% endblock scripts %}

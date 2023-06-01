@@ -1,0 +1,285 @@
+{% extends 'base/index.html' %}
+{% load static%}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex ">
+        <h4 class="card-title">Lab Test Res</h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-2 g-4 align-items-center">
+            <div class="col-sm-3">
+                <h4 class="mb-sm-0 font-size-18">Lab Test Results</h4>
+            </div> 
+            <div class="col-sm-auto ms-auto">
+                <div class="hstack gap-2">
+                    
+                    <div class="form-group">
+                        <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber}}
+                            class="form-control select2 w-100">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+
+                <form autocomplete='off'>
+                    <div class="input-group mr-0">
+                        <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                            class="form-control" aria-label="Recipient's username"
+                            aria-describedby="button-addon2">
+                        <button class="btn btn-primary" type="button" id="button-addon2">
+                            <i class="bx bx-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Order Ref.</th>
+                    <th data-priority="1">Patient Name</th>
+                    <th data-priority="1">Reference Doctor</th>
+                    <th data-priority="6">Ordered By</th>
+                    <th data-priority="6">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%if page_objects %}
+                {% for LabOrder in page_objects %}
+                <tr>
+                    <td><a href="{{LabOrder.get_absolute_url}}" class="text-dark fw-medium">{{LabOrder.TestOrderNumber}}</a> </td>
+                    {% if LabOrder.Admission %}
+                        {% if LabOrder.Admission.Admission_order.Visit %}
+                        <td><a href="{{LabOrder.get_absolute_url}}">{{ LabOrder.Admission.Admission_order.Visit.Patient.get_fullName }}</a></td>
+                        <td>{{ LabOrder.Admission.Admission_order.Visit.emergencytriage_set.first.Doctor.get_full_name  }}</td>
+                        <td>
+                            <a href="{{LabOrder.get_absolute_url}}">
+                                <button type="button" class="btn btn-sm btn-primary">
+                                    <i class="las la-eye"></i>
+                                </button>
+                            </a> 
+                            <a href="{% url 'update-lab-result-form' LabOrder.id %}"> 
+                                <button type="button" class="btn btn-sm btn-success">
+                                    <i class="las la-edit"></i>
+                                </button>
+                            </a> 
+                        </td>
+                        {% else %}
+                        <td><a href="{{LabOrder.get_absolute_url}}">{{ LabOrder.Admission.Admission_order.Appointment.Patient.get_fullName }}</a></td>
+                        <td>{{ LabOrder.Admission.Admission_order.Appointment.Doctor.get_full_name }}</td>
+                        <td>
+                            <a href="{{LabOrder.get_absolute_url}}">
+                                <button type="button" class="btn btn-sm btn-primary">
+                                    <i class="las la-eye"></i>
+                                </button>
+                            </a> 
+                            <a href="{% url 'update-lab-result-form' LabOrder.id %}"> 
+                                <button type="button" class="btn btn-sm btn-success">
+                                    <i class="las la-edit"></i>
+                                </button>
+                            </a> 
+                        </td>
+                        {% endif %}
+                        <td><div class="badge text-bg-warning">{{LabOrder.Ordered_by}}</div></td>
+
+                    {% elif  LabOrder.Appointment  %}
+                        <td><a href="{{LabOrder.get_absolute_url}}">{{ LabOrder.Appointment.Patient.get_fullName }}</a></td>
+                        <td>{{ LabOrder.Appointment.Doctor.get_full_name }}</td>
+                        <td><div class="badge text-bg-primary">{{LabOrder.Ordered_by}}</div></td>
+                        <td>
+                            <a href="{{LabOrder.get_absolute_url}}">
+                                <button type="button" class="btn btn-sm btn-primary">
+                                    <i class="las la-eye"></i>
+                                </button>
+                            </a> 
+                            <a href="{% url 'update-lab-result-form' LabOrder.id %}"> 
+                                <button type="button" class="btn btn-sm btn-success">
+                                    <i class="las la-edit"></i>
+                                </button>
+                            </a> 
+                        </td>
+
+                    {%else%}
+                        <td><a href="{{LabOrder.get_absolute_url}}">{{LabOrder.Visit.Patient.get_fullName}}</a></td>
+                        <td>{{LabOrder.Visit.emergencytriage_set.first.Doctor.get_full_name}}</td>
+                        <td><div class="badge text-bg-danger">{{LabOrder.Ordered_by}}</div></td>
+                        <td>
+                            <a href="{{LabOrder.get_absolute_url}}">
+                                <button type="button" class="btn btn-sm btn-primary">
+                                    <i class="las la-eye"></i>
+                                </button>
+                            </a> 
+                            <a href="{% url 'update-lab-result-form' LabOrder.id %}"> 
+                                <button type="button" class="btn btn-sm btn-success">
+                                    <i class="las la-edit"></i>
+                                </button>
+                            </a> 
+                        </td>
+                        
+                    {%endif%}
+                   
+                </tr>
+                {%endfor%}
+                {% else %}
+                <tr>
+                    <td class='text-center' colspan='6'>No Tests have been ordered</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+            <div activePage = {{ page_objects.number }} class="col-md-6 activePage">
+                
+            </div>
+            <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                    
+                <nav aria-label="...">
+                    <ul class="pagination mb-0">
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="1">
+                            <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="{% if page_objects.has_previous %}{{ page_objects.previous_page_number }}{% else %}No Page{% endif %}">
+                            <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                        </li>
+                    
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{% if page_objects.has_next %}{{ page_objects.next_page_number }}{% else %}No Page{% endif %}">
+                            <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{{ page_objects.paginator.num_pages}}">
+                            <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  Large modal example -->
+ <div class="modal fade bs-example-modal-lg" id="ViewLabResult" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myLargeModalLabel">Large modal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm m-0 table-borderless">
+                            <form id="labresult">
+                                {% csrf_token %}
+                                <thead>
+                                    <tr>
+                                        <th>Order No</th>
+                                        <td><span id="order_id"></span></td>
+                                        <th class="text-dark fw-medium">Appointment ID</th>
+                                        <td><span id="Appoint_id"></span></td>
+                                        <th class="text-dark fw-medium">Result ID</th>
+                                        <td><span id="result_id"></span></td>
+                                        <th class="text-dark fw-medium">Reference Doctor</th>
+                                        <td><span id="doctor"></span></td>
+                                    </tr>
+                                    <tr>
+                                    
+                                        <th class="text-dark fw-medium">Patient Name</th>
+                                        <td><span id="patient"></span></td>
+                                        <th class="text-dark fw-medium">Patient Gender</th>
+                                        <td><span id="gender"></span></td>
+                                        <th class="text-dark fw-medium">Patient Age</th>
+                                        <td><span id="age"></span></td>
+                                        <th class="text-dark fw-medium">Patient MobileNo</th>
+                                        <td><span id="mobileNo"></span></td>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th class="text-dark fw-medium">Patient Address</th>
+                                        <td><span id="address"></span></td>
+                                        <th class="text-dark fw-medium">Collected by</th>
+                                        <td><span id="collected_by"></span></td>
+                                        <th class="text-dark fw-medium">Collection Date</th>
+                                        <td><span id="collection_date"></span></td>
+                                        <th class="text-dark fw-medium">Result Date</th>
+                                        <td><span id="result_date"></span></td>
+                                    </tr>
+                                </thead>
+                            </form>
+                        </table>
+                    </div>
+                    <br>
+                    <div class="table-responsive">
+                        <table class="table table table-striped">
+                            <thead>
+                                <tr>
+                                    <th >Group</th>
+                                    <th >Sub Group</th>
+                                    <th >Test Name</th>
+                                    <th >Report Value</th>
+                                    <th >Flag</th>
+                                    <th>Normal Range</th>
+                                    <th>Test Unit</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody_blood">  
+                            </tbody>
+                        </table>
+
+                    </div>
+                  
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th >Name</th>
+                                    <th >Type</th>
+                                    <th >Parameter</th>
+                                    <th >Report Value</th>
+                                  
+                                </tr>
+                            </thead>
+                            <tbody id="tbody">  
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <br>
+                    <div class="table-responsive">
+                        <table class="table table-sm m-0 table-borderless">
+                            <thead>
+                                <tr>
+                                    <th >Comments</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody >  
+                                <td style="background-color:white;">  <span id="Comment"></span></td>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+                <button type="button" class="btn btn-primary ">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+       
+{% endblock content %}
+{% block scripts %}
+<script src={% static "scripts/LRPD/LabTests/labResultPagination.js" %}></script>
+<script src={% static "scripts/LRPD/LabTests/Addlabresult.js" %}></script>
+{% endblock scripts %}

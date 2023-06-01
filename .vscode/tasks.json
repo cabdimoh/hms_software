@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "build:es:watch",
+			"path": "static/assets/libs/sortablejs",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: build:es:watch - static/assets/libs/sortablejs",
+			"detail": "set NODE_ENV=es&& rollup -w -c ./scripts/esm-build.js"
+		}
+	]
+}

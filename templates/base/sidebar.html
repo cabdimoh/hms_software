@@ -1,0 +1,604 @@
+{% load static%}
+<div class="app-menu navbar-menu">
+   <!-- LOGO -->
+   <div class="navbar-brand-box">
+    <!-- Dark Logo-->
+    <div class="text-center mt-sm-3  ">
+        <div>
+            <a href="{% url 'dashboard' %}" class="d-inline-block auth-logo">
+                <img src="{% static 'assets/images/somalilogo.png' %}" alt="" height="60">
+            </a>
+        </div>
+        <p class="mt-sm-1 fs-16 fw-high "  style="color: #fffefe;">Hospital M System<b> -HMS</b></p>
+    </div>
+    
+    <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+        <i class="ri-record-circle-line"></i>
+    </button>
+</div>
+
+    <div id="scrollbar">
+        <div class="container-fluid">
+
+            <div id="two-column-menu">
+            </div>
+            <ul class="navbar-nav" id="navbar-nav">
+              
+               
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{% url 'dashboard' %}">
+                        <i data-feather="home" class="icon-dual"></i> <span data-key="t-dashboards">Dashboards</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#Appointments" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMultilevel">
+                        <i class="las la-wheelchair"></i> <span data-key="t-multi-level">Appointments</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="Appointments">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{% url 'Appointment-list' %}" class="nav-link" data-key="t-level-1.1">Appointments</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'cancelled-Appointment' %}" class="nav-link" data-key="t-level-1.1">Cancelled Appointments</a>
+                            </li>
+                          
+                        
+                        </ul>
+                    </div>
+                </li>
+                
+             
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#Patients" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMultilevel">
+                        <i class="las la-wheelchair"></i> <span data-key="t-multi-level">Patients</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="Patients">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{% url 'Outpatient-list' %}" class="nav-link" data-key="t-level-1.1">Patients</a>
+                            </li>
+                          
+                            <li class="nav-item">
+                                <a href="#inpatients" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="inpatients" data-key="t-level-1.2"> Inpatients
+                                </a>
+                                <div class="collapse menu-dropdown" id="inpatients">
+                                    <ul class="nav nav-sm flex-column"> 
+                                        <li class="nav-item">
+                                            <a href="{% url 'admission-order' %}" class="nav-link" data-key="t-cover"> Admission Orders </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'Inpatient-list' %}" class="nav-link" data-key="t-cover1"> Inpatients List </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'discharged-inpatients' %}" class="nav-link" data-key="t-cover1"> Discharged Inpatients </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#Laboratory" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMultilevel">
+                        <i class=" las la-microscope"></i> <span data-key="t-multi-level">Laboratory</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="Laboratory">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{% url 'Lab-Test-Orders' %}" class="nav-link" data-key="t-level-1.111">Tests Orders </a>
+                            </li>
+                          
+                            <li class="nav-item">
+                                <a href="#tests" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAccount" data-key="t-level-1.2"> Tests
+                                </a>
+                                <div class="collapse menu-dropdown" id="tests">
+                                    <ul class="nav nav-sm flex-column">
+                                       
+                                        
+                                        <li class="nav-item">
+                                            <a href="{% url 'LabTests-list' %}" class="nav-link" data-key="t-cover"> Register Test </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'view-lab-setup' %}" class="nav-link" data-key="t-cover1"> Setup </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#labstore" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAccount" data-key="t-level-1.2"> Lab Store
+                                </a>
+                                <div class="collapse menu-dropdown" id="labstore">
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="{% url 'lab-equipment-order' %}" class="nav-link" data-key="t-cover"> Orders</a>
+                                        </li>
+                                      
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#Radiology" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMultilevel">
+                        <i class="las la-x-ray"></i> <span data-key="t-multi-level">Radiology</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="Radiology">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{% url 'radiology-Exam-Orders' %}" class="nav-link" data-key="t-level-1.1">Exam Orders </a>
+                            </li>
+                          
+                            <li class="nav-item">
+                                <a href="#exams" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAccount" data-key="t-level-1.2"> Exams
+                                </a>
+                                <div class="collapse menu-dropdown" id="exams">
+                                    <ul class="nav nav-sm flex-column">
+                                       
+                                        <li class="nav-item">
+                                            <a href="{% url 'exam_category' %}" class="nav-link" data-key="t-cover1"> Exam Category </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'RadiologyExam-list' %}" class="nav-link" data-key="t-cover"> Register Exam </a>
+                                        </li>
+                                       
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#labstore" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAccount" data-key="t-level-1.2"> Radiology Store
+                                </a>
+                                <div class="collapse menu-dropdown" id="labstore">
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="{% url 'radiology-equipment-order' %}" class="nav-link" data-key="t-cover"> Orders</a>
+                                        </li>
+                                      
+                                    </ul>
+                                </div>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#Operations" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMultilevel">
+                        <i  class="bx bx-knife"></i> <span data-key="t-multi-level">Operations</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="Operations">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{% url 'operations_category' %}"  class="nav-link" data-key="t-level-1.1">Operation Category</a>
+                            </li>
+                          
+                            <li class="nav-item">
+                                <a href="{% url 'operations'%}" class="nav-link" data-key="t-level-1.1">Register Operation</a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#rooms" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMultilevel">
+                        <i class="las la-landmark"></i> <span data-key="t-multi-level">Rooms and Beds</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="rooms">
+                        <ul class="nav nav-sm flex-column">
+                           
+                            <li class="nav-item">
+                                <a href="{% url 'room-category' %}" class="nav-link" data-key="t-level-1.1">Room Category</a>
+                            </li>
+                            
+                            <li class="nav-item">
+                                <a href="{% url 'add-room' %}" class="nav-link" data-key="t-level-1.1">Add Room</a>
+                            </li>
+                            
+                            <li class="nav-item">
+                                <a href="{% url 'add-bed' %}" class="nav-link" data-key="t-level-1.1">Add Bed</a>
+                            </li>
+                          
+                          
+                           
+                        </ul>
+                        
+                       
+                        
+                    </div>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#pharmacy" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMultilevel">
+                        <i class="las la-capsules"></i> <span data-key="t-multi-level">pharmacy</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="pharmacy">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{% url 'medicine-list' %}" class="nav-link" data-key="t-level-1.1">Medicine List </a>
+                            </li>
+                          
+                           
+                        </ul>
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{% url 'doctor-order' %}" class="nav-link" data-key="t-level-1.1">Prisciptions </a>
+                            </li>
+                          
+                           
+                        </ul>
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{% url 'print-pharmacy' %}" class="nav-link" data-key="t-level-1.1">print </a>
+                            </li>
+                          
+                           
+                        </ul>
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{% url 'order-medicine' %}" class="nav-link" data-key="t-level-1.1">Make Order</a>
+                            </li>
+                          
+                           
+                        </ul>
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{% url 'Expaire-medicine-pharmacy' %}" class="nav-link" data-key="t-level-1.1">Expired Medicines</a>
+                            </li>
+                          
+                           
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#Inventory" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMultilevel">
+                        <i class="las la-hospital"></i> <span data-key="t-multi-level">Inventory</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="Inventory">
+                        <ul class="nav nav-sm flex-column">
+                            
+                          
+                            <li class="nav-item">
+                                <a href="#medicine" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAccount1" data-key="t-level-1.2">Medicine
+                                </a>
+                                <div class="collapse menu-dropdown" id="medicine">
+                                    <ul class="nav nav-sm flex-column">
+                                       
+                                        <li class="nav-item">
+                                            <a href="{% url 'Medicine_category' %}" class="nav-link"> Medicine Category
+                                            </a>
+                                            
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'medicines' %}" class="nav-link"> Add Medicine
+                                            </a>
+                                            
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'Expaire-medicine-list' %}" class="nav-link"> Expired Medicine
+                                            </a>
+                                            
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'medicine-order' %}" class="nav-link"> Medicine Order 
+                                            </a>
+                                            
+                                        </li>
+                                        
+                                        
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#equipment" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAccount" data-key="t-level-1.2"> Equipment
+                                </a>
+                                <div class="collapse menu-dropdown" id="equipment">
+                                    <ul class="nav nav-sm flex-column">
+                                       
+                                        <li class="nav-item">
+                                            <a href="{% url 'equipment_categories' %}" class="nav-link"> equipment category
+                                            </a>
+                                            
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'equipment' %}" class="nav-link"> add equipment
+                                            </a>
+                                            
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'equipment-order' %}" class="nav-link"> Equipment Order
+                                            </a>
+                                            
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'lost-and-dameged' %}" class="nav-link"> Lost And Dameged
+                                            </a>
+                                            
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+           
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#Emergency" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMultilevel">
+                        <i class="las la-ambulance"></i> <span data-key="t-multi-level">Emergency</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="Emergency">
+                        <ul class="nav nav-sm flex-column">
+                         
+                            <li class="nav-item">
+                                <a href="{% url 'emergency-queue' %}" class="nav-link" data-key="t-level-1.1">Emergency Queue</a>
+                            </li>
+                           
+                            <li class="nav-item">
+                                <a href="{% url 'in-treatment-patients' %}" class="nav-link" data-key="t-level-1.1">In-Treatment Patients</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'emergency-discharged-patients' %}" class="nav-link" data-key="t-level-1.1">Discharged Patients</a>
+                            </li>
+                          
+                        </ul>
+                    </div>
+                </li>
+
+               {% if perms.Hr.view_manage_shift or perms.Hr.view_attandence %}
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#Nurses" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMultilevel">
+                        <i class="las la-user-nurse"></i> <span data-key="t-multi-level">Attandence</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="Nurses">
+                        <ul class="nav nav-sm flex-column">
+                            {% if  perms.Hr.view_work_shift%}
+                            <li class="nav-item">
+                                <a href="{% url 'createshift' %}" class="nav-link" data-key="t-level-1.1">Shift </a>
+                            </li>
+                            {% endif %}
+                            {% if perms.Hr.view_manage_shift %}
+                            <li class="nav-item">
+                                <a href="{% url 'attendance_list' %}" class="nav-link" data-key="t-level-1.1">Attendance</a>
+                            </li>
+                            {% endif %}
+                            {% if perms.Hr.view_attandence %}
+                                <li class="nav-item">
+                                    <a href="{% url 'attendance_report' %}" class="nav-link" data-key="t-level-1.1">Report</a>
+                                </li>
+                            {% endif %}
+                          
+                            
+                        </ul>
+                    </div>
+                </li>
+                
+                {% endif %}
+               <li class="nav-item">
+                    <a class="nav-link menu-link" href="#Finance" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMultilevel">
+                        <i class="las la-money-bill"></i> <span data-key="t-multi-level">Finance</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="Finance">
+                        <ul class="nav nav-sm flex-column">
+                         
+                            <li class="nav-item">
+                                <a href="#sidebarAccount" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAccount" data-key="t-level-1.2"> Income
+                                </a>
+                                <div class="collapse menu-dropdown" id="sidebarAccount">
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="{% url 'main_account' %}" class="nav-link" data-key="t-level-3.1"> Hosptital Account</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'incomeSource' %}" class="nav-link" data-key="t-level-3.2">Income source</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'cashtransfer' %}" class="nav-link" data-key="t-level-3.2">transfer Cash</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="auth-signin-cover.html" class="nav-link" data-key="t-cover"> Setup </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li> 
+
+                {% if perms.Hr.view_employee  or perms.Hr.view_employee or perms.Hr.Approve_employee %}
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#Hrms" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMultilevel">
+                            <i class="las la-users"></i> <span data-key="t-Hrm">Hrm</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="Hrms">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="{% url 'employees' %}" class="nav-link" data-key="t-employee_list">Employee list </a>
+                                </li>
+                                
+                                <li class="nav-item">
+                                    <a href="{% url 'Pending_employee_list' %}" class="nav-link" data-key="t-pending"> Pending employee </a>
+                                </li>
+                                {% if perms.Hr.view_departments or perms.Hr.Approve_employee %}
+                                <li class="nav-item">
+                                    <a href="#Department" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAccount" data-key="t-level-1.2">Managements
+                                    </a>
+                                    <div class="collapse menu-dropdown" id="Department">
+                                        <ul class="nav nav-sm flex-column">
+                                            {% if perms.Hr.view_departments %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'all_departments' %}" class="nav-link" data-key="t-level-1.1">Directors</a>
+                                            </li>
+                                            {% endif %}
+                                            {% if perms.Hr.view_departments %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'all_departments' %}" class="nav-link" data-key="t-level-1.1">Heads</a>
+                                            </li>
+                                            {% endif %}
+                                            {% if perms.Hr.view_departments %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'all_departments' %}" class="nav-link" data-key="t-level-1.1">Sections</a>
+                                            </li>
+                                            {% endif %}
+                                            {% if perms.Hr.Approve_employee  %}
+                                            <li class="nav-item">
+                                                <a href="{% url 'Manageemnt_setup' %}" class="nav-link" data-key="t-level-1.1">Pre-requirement</a>
+                                            </li>
+                                            {% endif %}
+
+                                        </ul>
+                                    </div>
+                                </li>
+                                {% endif %}
+                                <li class="nav-item">
+                                    <a href="{% url 'employees_galery' %}" class="nav-link" data-key="t-galery">Employee galery  </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'view_PendingJobs' %}" class="nav-link" data-key="t-pending">jobs Approve</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#Exitemployee" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAccount" data-key="t-level-1.2"> Exit employee
+                                    </a>
+                                    <div class="collapse menu-dropdown" id="Exitemployee">
+                                        <ul class="nav nav-sm flex-column">
+
+                                            <li class="nav-item">
+                                                <a href="{% url 'view_exit_employee' %}" class="nav-link" data-key="t-cover"> Exit employee </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{% url 'view_Death_employee' %}" class="nav-link" data-key="t-cover"> Death employee </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{% url 'view_exit_cotegory' %}" class="nav-link" data-key="t-cover"> Exit category </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#leave" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAccount" data-key="t-level-1.2">Employee Leave
+                                    </a>
+                                    <div class="collapse menu-dropdown" id="leave">
+                                        <ul class="nav nav-sm flex-column">
+
+                                            <li class="nav-item">
+                                                <a href="{% url 'view_leave_employee' %}" class="nav-link" data-key="t-cover">Employee leave</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{% url 'view_leave_cotegory' %}" class="nav-link" data-key="t-cover"> Leave Category</a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </li>
+
+                                {% comment %} <li class="nav-item">
+                                    <a href="{% url 'viewPayroll' %}" class="nav-link" data-key="t-pending">Payroll</a>
+                                </li> {% endcomment %}
+                                
+                                <li class="nav-item">
+                                    <a href="{% url 'prequirements' %}" class="nav-link" data-key="t-pending">Pre-requirements</a>
+                                </li>
+
+
+                             
+                            </ul>
+                        </div>
+                    </li>
+                {% endif %}
+
+             
+                {% if  perms.auth.view_permission or perms.auth.change_group  or  perms.auth.add_group or perms.auth.view_permission or perms.Users.add_users  or perms.Users.view_users  %}
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#Settings" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMultilevel">
+                        <i class="las la-cog"></i> <span data-key="t-multi-level">Settings</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="Settings">
+                        <ul class="nav nav-sm flex-column">
+                            {% if perms.Users.add_users or perms.view.add_users  or perms.change.add_users  %}
+                            <li class="nav-item">
+                                <a class="nav-link menu-link" href="#Users" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMultilevel">
+                                   <span data-key="t-multi-level">Users</span>
+                                </a>
+                                <div class="collapse menu-dropdown" id="Users">
+                                    <ul class="nav nav-sm flex-column">
+                                      
+                                        <li class="nav-item">
+                                            <a href="{% url 'Users' %}" class="nav-link" data-key="t-level-1.1">Create User</a>
+                                        </li>
+            
+                                        <li class="nav-item">
+                                            <a href="{% url 'UsersList' %}" class="nav-link" data-key="t-level-1.1">User List</a>
+                                        </li>
+                                       
+                                    </ul>
+                                </div>
+                            </li>
+                            {%endif%}
+                            {% if perms.auth.view_permission or perms.auth.change_group  or  perms.auth.add_group or perms.auth.view_permission or perms.auth.change_permission %}
+                            <li class="nav-item">
+                               
+                            
+                                <a class="nav-link menu-link" href="#Usrs" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMultilevel">
+                                </i> <span data-key="t-multi-level">Manage Role</span>
+                                </a>
+                                <div class="collapse menu-dropdown" id="Usrs">
+                                    <ul class="nav nav-sm flex-column">
+                                        {% if perms.auth.change_permission  %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'SingleRoles' %}" class="nav-link" data-key="t-level-1.1">Assign Roles</a>
+                                        </li>
+                                        {% endif %}
+
+                                        {% if perms.auth.change_group  %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'GroupRoles' %}" class="nav-link" data-key="t-level-1.1">Assign Group</a>
+                                        </li>
+                                        {% endif %}
+                                        {% if perms.auth.add_group  %}
+                                        
+                                        <li class="nav-item">
+                                            <a href="{% url 'ManageGroup' %}" class="nav-link" data-key="t-level-1.1">Create Group</a>
+                                        </li>
+                                        {% endif %}
+                                        {% if perms.auth.view_permission  %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'UserRolesReport' %}" class="nav-link" data-key="t-level-1.1">User-role report</a>
+                                        </li>
+                                        {% endif %}
+                                       
+                                    </ul>
+                                </div>
+                            </li>
+                            {% endif %}
+                            {% if perms.Users.view_audittrials %}
+                                <li class="nav-item">
+                                    <a href="{% url 'AuditTrials' %}" class="nav-link" data-key="t-cover"> Audit Trial </a>
+                                </li>
+                            {% endif %}
+                            {% if  perms.Users.view_errorlogs  %}
+                            <li class="nav-item">
+                                <a href="{% url 'ErrorLogs' %}" class="nav-link" data-key="t-cover"> Error Logs </a>
+                            </li>
+                            {% endif %}
+                         
+                        </ul>
+                    </div>
+                </li>
+                {% endif %}
+              
+
+               </ul>
+        </div>
+        <!-- Sidebar -->
+    </div>
+
+    <div class="sidebar-background"></div>
+</div>

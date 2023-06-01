@@ -1,0 +1,375 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block content %}
+
+{%csrf_token%}
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0">CRM</h4>
+
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboards</a></li>
+                        <li class="breadcrumb-item active">CRM</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card crm-widget ">
+                <div class="card-body p-0">
+                    <div class="row row-cols-xxl-5 row-cols-md-3 row-cols-1 g-0">
+                        
+                        <div class="col">
+                            <div class="mt-3 mt-md-0 py-4 px-3">
+                                <h5 class="text-muted text-uppercase fs-13">Appointments<i class=" las la-user-md text-success fs-18 float-end align-middle"></i></h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <i class="las la-user-md display-6 text-muted"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h2 class="mb-0"><span class="counter-value" data-target="{{appointments}}">0</span></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- end col -->
+                        <!-- end col -->
+                        <div class="col">
+                            <div class="mt-3 mt-md-0 py-4 px-3">
+                                <h5 class="text-muted text-uppercase fs-13">Emergency <i class="las la-ambulance  text-danger fs-18 float-end align-middle"></i></h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <i class="las la-ambulance display-6 text-muted"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h2 class="mb-0"><span class="counter-value" data-target="{{emrgency}}">0</span></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- end col -->
+                        <div class="col">
+                            <div class="mt-3 mt-md-0 py-4 px-3">
+                                <h5 class="text-muted text-uppercase fs-13">Doctors <i class="las la-stethoscope text-primary fs-18 float-end align-middle"></i></h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <i class="las la-stethoscope display-6 text-muted"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                <h2 class="mb-0"><span class="counter-value" data-target="{{DoctorCount}}"></span></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- end col -->
+                        <div class="col">
+                            <div class="mt-3 mt-lg-0 py-4 px-3">
+                                <h5 class="text-muted text-uppercase fs-13">All Staff <i class="las la-users text-success fs-18 float-end align-middle"></i></h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <i class="las la-users display-6 text-muted"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h2 class="mb-0"><span class="counter-value" data-target="{{EmployeeCount}}">0</span></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- end col -->
+                        <div class="col">
+                            <div class="mt-3 mt-lg-0 py-4 px-3">
+                                <h5 class="text-muted text-uppercase fs-13">Expenses<i class=" ri-money-dollar-circle-line text-danger fs-18 float-end align-middle"></i></h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <i class=" ri-money-dollar-circle-line display-6 text-muted"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h2 class="mb-0">$<span class="counter-value" data-target="269">0</span>k</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+                </div><!-- end card body -->
+            </div><!-- end card -->
+        </div><!-- end col -->
+    </div><!-- end row -->
+
+    <div class="row">
+        <div class="col-xl-8">
+            <div class="card">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1"> Appointments</h4>
+                    <div class="flex-shrink-0">
+                            
+                        <div class="col-sm-auto order-1 order-sm-2">
+                           
+                            <div class="d-flex align-items-start justify-content-end gap-2">    
+
+       
+                                <div class="dropdown dropdown_btn">
+                                    <a href="javascript:void(0);" class="btn btn-sm fs-12 dropdown-toggle" data-bs-toggle="dropdown">
+                                        <span class="text-muted" id="selected_year"></span>
+                                         
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end year_list">
+                                    </ul>
+                                </div>
+                                    
+                            </div>
+    
+                        </div>
+                    </div>
+                   
+                </div><!-- end card header -->
+
+                <div class="card-body">
+                    <div id="column_chart1" data-colors='["--vz-success", "--vz-primary", "--vz-danger"]' class="apex-charts" dir="ltr"></div>
+                </div><!-- end card-body -->
+            </div><!-- end card -->
+        </div>
+        <!-- end col -->
+
+        <div class="col-xl-4">
+            <div class="card" style="width:490px;height:439px;">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-1 flex-grow-1">Popular By Speciality</h4>
+                   
+                </div><!-- end card header -->
+        
+                <div class="table-responsive px-3 mb-4" data-simplebar style="max-height: 352px;">
+                    <table class="table align-middle table-nowrap table-borderless">
+                        <tbody>
+                           
+                        {% for key, value in spclty_with_appoint_count.items %}
+                        <tr>
+                            <td style="width: 50px;">
+                                <div class="font-size-22 text-success">
+                                    <i class="bx bx-right-arrow-circle d-block"></i>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div>
+                                    <h5 class="font-size-14 mb-1">{{key}}</h5>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="text-end">
+                                    <h5 class="font-size-14 mb-0">{{value}}</h5>
+                                </div>
+                            </td>
+
+                          
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- end card body -->
+            </div>
+            <!-- end card -->
+        </div>
+        <!-- end col -->
+    </div>
+
+
+    
+   
+
+    <div class="row">
+        <div class="col-xl-10">
+            <div class="card" style="width:1280px;height:253px;">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Recent Appointments</h4>
+                    
+                </div><!-- end card header -->
+
+                <div class="card-body">
+                    <div class="table-responsive table-card">
+                        <table class="table table-borderless table-hover table-nowrap align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Appointment ID</th>
+                                    <th data-priority="1">Patient FullName</th>
+                                    <th data-priority="3">Speciality</th>
+                                    <th data-priority="1">Doctor</th>
+                                    <th data-priority="3">Appointment Date </th>
+                                    <th data-priority="6">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% if AppointmentList %}
+                                {% for Appoint in AppointmentList %}
+                                
+                                
+                                <tr>
+                                    <td><a href="{% url 'patient-view' Appoint.id %}" class="text-dark fw-medium">{{Appoint.AppointmentNumber}}</a> </td>
+                                    <td>{{Appoint.Patient.get_fullName}}</td>
+                                    <td>{{Appoint.jobtypes.name}}</td>
+                                    <td>{{Appoint.Doctor.get_full_name}}</td>
+                                    <td>{{Appoint.AppointmentDate}}</td>
+                                    <td>{{Appoint.Status}}</td>
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td class='text-center' colspan='6'>No employees available</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table><!-- end table -->
+                    </div><!-- end table responsive -->
+                </div><!-- end card body -->
+            </div><!-- end card -->
+        </div><!-- end col -->
+
+        <div class="col-xl-2 col-md-6">
+            <!-- card -->
+            
+            <!-- end card -->
+            <div class="card card-h-50">
+                <!-- card body -->
+                <div class="col">
+                    <div class="mt-3 mt-md-0 py-4 px-3">
+                        <h5 class="text-muted text-uppercase fs-13">New Patients<i class="  las la-user-plus text-success fs-18 float-end align-middle"></i></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <i class="las la-user-plus  display-6 text-muted"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <span class="counter-value" data-target="{{new_patients}}">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- end col -->
+            </div>
+             <!-- card -->
+             <div class="card card-h-50">
+                <!-- card body -->
+                <div class="col">
+                    <div class="mt-3 mt-md-0 py-4 px-3">
+                        <h5 class="text-muted text-uppercase fs-13">Old Patients<i class="las la-user-nurse text-success fs-18 float-end align-middle"></i></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <i class="las la-user-nurse display-6 text-muted"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <span class="counter-value" data-target="{{old_patients}}">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- end col -->
+            </div>
+            <!-- end card -->
+            
+        </div>
+    </div>
+    <!-- end row -->
+
+    
+
+
+
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="card">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1"> Medicine </h4>
+                    <div class="flex-shrink-0">
+                            
+                        <div class="col-sm-auto order-1 order-sm-2">
+                           
+                            <div class="d-flex align-items-start justify-content-end gap-2">    
+
+       
+                                    <div class="dropdown  dropdown_btn">
+                                      <a href="javascript:void(0);" class='btn btn-sm'  fs-12 data-bs-toggle="dropdown"><span class="text-muted">06 May 2022 to 06 May 2023<i class="mdi mdi-chevron-down ms-1"></i></span></a>
+                                       
+                                        <ul class="dropdown-menu dropdown-menu-end medicinechart_year_list">
+    
+                                     
+                                            <li><a class="dropdown-item btn  " active  id="2023">2023</a></li>
+                                            <li><a class="dropdown-item btn "  id="2022">2022</a></li>                              
+                                            <li><a class="dropdown-item btn "  id="2021">2021</a></li> 
+                                            <li><a class="dropdown-item btn "  id="2020">2020</a></li>
+                                        
+                                           
+                                        </ul>
+                                    </div>
+    
+    
+                            </div>
+    
+                        </div>
+                    </div>
+                   
+                </div><!-- end card header -->
+
+                <div class="card-body">
+                    <div id="medicinechart" data-colors='["--vz-primary", "--vz-primary-rgb, 0.85", "--vz-primary-rgb, 0.70", "--vz-primary-rgb, 0.55", "--vz-primary-rgb, 0.40"]' class="apex-charts" dir="ltr"></div>
+                </div><!-- end card-body -->
+            </div><!-- end card -->
+        </div>
+        <!-- end col -->
+
+        
+        <!-- end col -->
+
+        <div class="col-xl-6">
+            <div class="card">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1"> Equipment</h4>
+                    <div class="flex-shrink-0">
+                            
+                        <div class="col-sm-auto order-1 order-sm-2">
+                           
+                            <div class="d-flex align-items-start justify-content-end gap-2">    
+
+       
+                                    <div class="dropdown  dropdown_btn">
+                                      <a href="javascript:void(0);" class='btn btn-sm'  fs-12 data-bs-toggle="dropdown"><span class="text-muted">06 May 2022 to 06 May 2023<i class="mdi mdi-chevron-down ms-1"></i></span></a>
+                                       
+                                        <ul class="dropdown-menu dropdown-menu-end equipment_year_list">
+    
+                                     
+                                            <li><a class="dropdown-item btn  " active  id="2023">2023</a></li>
+                                            <li><a class="dropdown-item btn "  id="2022">2022</a></li>                              
+                                            <li><a class="dropdown-item btn "  id="2021">2021</a></li> 
+                                            <li><a class="dropdown-item btn "  id="2020">2020</a></li>
+                                        
+                                           
+                                        </ul>
+                                    </div>
+    
+    
+                            </div>
+    
+                        </div>
+                    </div>
+                   
+                </div><!-- end card header -->
+
+                <div class="card-body">
+                    <div id="equipmentchart" data-colors='["--vz-primary", "--vz-primary-rgb, 0.85", "--vz-primary-rgb, 0.70", "--vz-primary-rgb, 0.55", "--vz-primary-rgb, 0.40"]' class="apex-charts" dir="ltr"></div>
+                </div><!-- end card-body -->
+            </div><!-- end card -->
+        </div>
+    </div>
+
+   
+    
+
+        
+{% endblock content %}
+{% block scripts %}
+<script src={% static "scripts/HospitalSetting/dashboard.js" %}></script>
+
+
+{% endblock scripts %}

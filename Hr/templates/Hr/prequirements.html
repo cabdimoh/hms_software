@@ -1,0 +1,423 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block modal %}
+<div class="modal fade add_job_type_modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle">Add Job  </h5>
+                <input class="form-control" type="text"  hidden disabled id="job_type_id">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" id="job_t">
+                  
+              <div class="row">
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Job Type Name</label>
+                        <input class="form-control" type="text"  id="job_type_name">
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12 ">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Descriptions</label>
+                        <input class="form-control" type="text"  id="descriptions">
+                    </div>
+                </div>
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12 my-2 relateAppointClass  ">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="relateAppoint">
+                        <label class="form-check-label" for="relateAppoint">
+                         Relate Appointment
+                        </label>
+                      </div>
+                </div>
+
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                        <a href="" data-dismiss="modal" class="btn-danger btn">Cancel</a>
+                       <button  type='button' id="save_job_type" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- end/jobtype.modal -->
+<div class="modal fade Title_modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle">Add Title  </h5>
+                <input class="form-control" type="text"  hidden disabled id="job_title_id">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" id="job_t">
+                  
+              <div class="row">
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Title Name</label>
+                        <input class="form-control" type="text"  id="title_names">
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12 ">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Descriptions</label>
+                        <input class="form-control" type="text"  id="title_dis">
+                    </div>
+                </div>
+
+
+
+                
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                        <a href="" data-dismiss="modal" class="btn-danger btn">Cancel</a>
+                       <button  type='button' id="save_title" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- end/jobtype.modal -->
+<div class="modal fade add_banks_modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle">Add Bank</h5>
+                <input class="form-control" type="text"  hidden disabled id="departments_id">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" id="job_t">
+                  
+              <div class="row">
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Bank Name</label>
+                        <input class="form-control" type="text"  id="Bank_name">
+                        <input class="form-control" type="text"  id="Bank_detail_ids" disabled hidden>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Descriptions</label>
+                        <input class="form-control" type="text"  id="Bank_descriptions">
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                        <a href="" data-dismiss="modal" class="btn-danger btn">Cancel</a>
+                       <button  type='button' id="save_Bank" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- end/bank  modal -->
+<div class="modal fade add_Salary_modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modaltitle">Add Salary</h5>
+                <input class="form-control" type="text"  hidden disabled id="departments_id">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" id="job_t">
+                  
+              <div class="row">
+
+
+            
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <select name="" id="jobtype_salary" class="form-control mb-3">
+                        <option value="">Select job types</option>
+                        {% for item in all_jobtypes %}
+                        <option value={{item.id}}>{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">name</label>
+                        <input class="form-control" type="text"  id="name">
+                     
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Base Salary</label>
+                        <input class="form-control" type="text"  id="base_salary">
+                        <input class="form-control" type="text"  id="Base_Salar_detail_ids" disabled hidden>
+                    </div>
+                </div>    
+                
+
+
+
+
+
+                <div class="col-lg-12 col-md-6 col-sm-12">
+        
+                    <div class="mb-3 text-end">
+                        <a href="" data-dismiss="modal" class="btn-danger btn">Cancel</a>
+                       <button  type='button' id="save_salary" class="btn-primary btn">Save</button>
+                
+                </div>
+                </div>
+                
+              </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- end/salary.modal -->
+
+
+
+{%endblock%}
+{% block content %}
+{% csrf_token %}
+<div class="row">
+    <div class="col-xl-12 col-12">
+        <div class="card">
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1"></h4>
+                <div class="flex-shrink-0">
+                    <ul class="nav justify-content-end nav-tabs-custom rounded card-header-tabs" role="tablist">
+                        
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#Jobtype_tab" role="tab">
+                                <span class="d-block d-sm-none"><i class="las la-home"></i></span>
+                                <span class="d-none d-sm-block">Job Types</span> 
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " data-bs-toggle="tab" href="#Title" role="tab">
+                                <span class="d-block d-sm-none"><i class="las la-home"></i></span>
+                                <span class="d-none d-sm-block">Title</span> 
+                            </a>
+                        </li> 
+                       
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#Banks" role="tab">
+                                <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
+                                <span class="d-none d-sm-block">Banks</span>   
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#Salary" role="tab">
+                                <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
+                                <span class="d-none d-sm-block">Salary</span>   
+                            </a>
+                        </li>
+                      
+                         
+                        
+
+                       
+       
+
+                    </ul>
+                 </div> 
+            </div><!-- end card header -->
+            
+            <div class="card-body">
+               
+                <!-- Tab panes -->
+                <div class="tab-content text-muted">
+                    <div class="tab-pane active" id="Jobtype_tab" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <h5 class="card-title mb-0 mt-1">Job Types</h5>
+                                {% if perms.Hr.add_jobtype%}
+                                <a class="btn btn-primary waves-effect waves-light mt-0 " id='add_Jobtype' >
+                                       Add Job 
+                                 </a>
+                            {% endif %}
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table  id="Jobtype_table"class="table table-borderless  ">
+                                    <thead>
+                                        <tr>
+                                            
+                                            <th class="col">id</th>
+                                            <th class="col">Name</th>
+                                            <th class="col">Descriptions </th>                                
+                                            <th class="col">action</th>                                
+                                    
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- end card body -->
+                        </div>
+                    </div>
+                    <div class="tab-pane " id="Title" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <h5 class="card-title mb-0 mt-1"> Title</h5>
+                                {% if perms.Hr.add_title%}
+                                <a class="btn btn-primary waves-effect waves-light mt-0 " id='add_title' >
+                                Add Title 
+                            </a>
+                            {% endif %}
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table  id="Title_table"class="table table-borderless  ">
+                                    <thead>
+                                        <tr>
+                                            
+                                            <th class="col">id</th>
+                                            <th class="col">Name</th>
+                                            <th class="col">Descriptions </th>                                
+                                            <th class="col">action</th>                                
+                                    
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- end card body -->
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="Banks" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                {% if perms.Hr.add_banks%}
+                                <h5 class="card-title mb-0 mt-1"> Banks </h5>
+                                <a class="btn btn-primary waves-effect waves-light mt-0 " id='Add_bank_button' >
+                                  Add Banks
+                            </a>
+                            {%endif%}
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table  id="Banks_table" class="table table-borderless ">
+                                    <thead>
+                                        <tr>
+                                            
+                                            <th class="col">ID</th>
+                                            <th class="col">Bank Name</th>
+                                            <th class="col">Descriptions</th>                                           
+                                            <th class="col text-end">action</th>                                
+                                    
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- end card body -->
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="Salary" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <h5 class="card-title mb-0 mt-1"> Salary </h5>
+                                {% if perms.Hr.add_salary%}
+                                <a class="btn btn-primary waves-effect waves-light mt-0 " id='Add_Salary_button' >
+                                  Add Salary
+                                  </a>
+                             {% endif %}
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table  id="Salary_table" class="table table-borderless ">
+                                    <thead>
+                                        <tr>
+                                            
+                                            <th class="col">ID</th>
+                                            <th class="col">Job Type</th>                                           
+                                            <th class="col">Name</th>
+                                            <th class="col">Base Salary</th>
+                                            <th class="col text-end">action</th>                                
+                                    
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- end card body -->
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+            </div><!-- end card-body -->
+        </div><!-- end card -->
+    </div><!-- end col -->
+
+
+</div><!-- end row -->
+
+            <!-- end main content-->
+{% endblock content %}
+{% block scripts %}
+
+<script src='{% static "scripts/hr/prerequest/jobtype.js" %}'></script>
+<script src='{% static "scripts/hr/prerequest/Banks.js" %}'></script>
+<script src='{% static "scripts/hr/prerequest/Salary.js" %}'></script>
+<script src='{% static "scripts/hr/prerequest/title.js" %}'></script>
+
+{% endblock scripts %}

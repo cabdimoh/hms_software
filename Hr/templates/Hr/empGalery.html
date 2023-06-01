@@ -1,0 +1,170 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block modal %}
+
+{%endblock%}
+
+{% block content %}
+
+
+
+
+
+
+<div class="row align-items-center">
+    <div class="col-md-6">
+        <div class="mb-3">
+            <h5 class="card-title">Employee List <span class="text-muted fw-normal ms-2">({{employeeNumber}})</span></h5>
+        </div>
+    </div>
+
+</div>
+<!-- end row -->
+
+
+<!-- end row -->
+
+
+
+        <div class="row">
+
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                    <div class="row mb-2 g-4 align-items-center">
+                        {% if perms.Hr.add_employee %}
+
+                            {% endif %}
+                            <div class="col-sm-auto ms-auto">
+                                <div class="hstack gap-2">
+                                    
+        
+                                    <div class="form-group">
+                                        <select id="Jobtitle" name="Jobtitle" Jobtitle={{Jobtitle}}
+                                            class="form-control select2 w-100">
+                                            <option value='All'>All</option>
+                                            {% for item in job_types %}
+                                            <option value={{item.id}}>{{item.name}}</option>
+                                            {% endfor %}
+        
+                                        </select>
+                                    </div>
+                                    
+        
+                                    <div class="form-group">
+                                        <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber }}
+                                            class="form-control select2 w-100">
+        
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="30">30</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                    </div>
+        
+                                   <form autocomplete='off'>
+                                    <div class="input-group mr-0">
+                                        <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                                            class="form-control" aria-label="Recipient's username"
+                                            aria-describedby="button-addon2">
+                                        <button class="btn btn-primary" type="button" id="button-addon2">
+                                            <i class="bx bx-search"></i>
+                                        </button>
+                                    </div>
+                                  </form>
+        
+                                </div>
+                            </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-12  ">
+                            <div class="row">
+                            {% if page_obj %}
+                            {% for item in page_obj %}
+
+                               <div class="col-xl-3 col-lg-6 ">
+                                   <div class="card ribbon-box right overflow-hidden me-2">
+                                       <div class="card-body text-center p-4">
+                                           <div class="ribbon ribbon-info ribbon-shape trending-ribbon"><i class="ri-thumb-up-line text-white align-bottom"></i> <span class="trending-ribbon-text">{{item.emp_number}}</span></div>
+                                           <a href={{item.get_absolute_url}}> <img src="{{item.photo.url}} " alt="" class="avatar-xl rounded-circle img-thumbnail"> </a>
+                                           <h5 class="mb-1 mt-4"><a href={{item.get_absolute_url}} class="link-primary">{{item.get_full_name}}</a></h5>
+                                           <p class="text-muted mb-4">{{item.job_type.name}}</p>               
+                                           <div class="mt-4">
+
+                                            <a href={{item.get_absolute_url}} class="btn btn-light w-100">View Details</a>
+
+                                           </div>
+                                       </div>
+                                     </div>
+                                   </div>
+
+                                   {%endfor %}
+                            {% else %}
+                          
+                                <h4 class='text-center' colspan='12'>No employees available </h4>
+                            
+                
+                            
+                            {% endif %} 
+                        </div>
+                        </div>
+        
+                        <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+                            <div activePage = {{ page_obj.number }} class="col-md-6 activePage">
+                              
+                            </div>
+                        
+                            <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                                       
+                                <nav aria-label="...">
+                                    <ul class="pagination mb-0">
+                                        <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}" page="1">
+                                            <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                                        </li>
+                                        <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}" page="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}No Page{% endif %}">
+                                            <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                                        </li>
+                                       
+                                        <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}" page="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}No Page{% endif %}">
+                                            <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                                        </li>
+                                        <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}" page="{{ page_obj.paginator.num_pages}}">
+                                            <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                                        </li>
+                                    </ul>
+                                </nav>
+        
+        
+        
+                            </div>
+                        </div>
+
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+
+    
+
+
+
+
+            {% endblock  %}
+
+
+{% block scripts %}
+
+<script src={% static "scripts/hr/employee/employgalery.js" %}></script>
+<script src={% static "scripts/hr/employee/register_employee.js" %}></script>
+
+
+
+{% endblock scripts %}

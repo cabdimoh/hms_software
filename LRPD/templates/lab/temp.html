@@ -1,0 +1,46 @@
+{%if page_objects %}
+{% for LabOrder in page_objects %}
+<tr>
+    <td><a href="{{LabOrder.get_absolute_url}}" class="text-dark fw-medium">{{LabOrder.id}}</a> </td>
+    {% if LabOrder.Admission %}
+    {% if LabOrder.Admission.Admission_order.Visit %}
+    <td>{{ LabOrder.Admission.Admission_order.Visit.Patient.get_fullName }}</td>
+    <td>{{ LabOrder.Admission.Admission_order.Visit.Patient.PatientGender }}</td>
+    {% else %}
+    <td>{{ LabOrder.Admission.Admission_order.Appointment.Patient.get_fullName }}</td>
+    <td>{{ LabOrder.Admission.Admission_order.Appointment.Doctor.get_full_name }}</td>
+    {% endif %}
+    {% elif  LabOrder.Admission  %}
+    <td>{{ LabOrder.Admission.id}}</td>
+
+        {% if LabOrder.Admission.Admission_order.Visit %}
+        <td>{{ LabOrder.Admission.Admission_order.Visit.Patient.get_fullName }}</td>
+        <td>{{ LabOrder.Admission.Admission_order.Visit.Patient.PatientGender }}</td>
+        {% else %}
+        <td>{{ LabOrder.Admission.Admission_order.Appointment.Patient.get_fullName }}</td>
+        <td>{{ LabOrder.Admission.Admission_order.Appointment.Doctor.get_full_name }}</td>
+        {% endif %}
+    {%else%}
+        <td>{{LabOrder.Visit.Patient.get_fullName}}</td>
+        <td>{{LabOrder.Visit.Doctor.get_full_name}}</td>
+    {%endif%}
+    <td>
+        <a href="#" rowid={{LabOrder.id}} id="addLabResult"  data-bs-toggle="modal" data-bs-target="#AddLabResult">
+            <button type="button" class=" btn-primary">
+                <i class="las la-plus"></i>
+            </button>
+        </a> 
+        <button type="button" class=" btn-success">
+            <i class="las la-edit"></i> 
+        </button>
+        <button type="button" class=" btn-danger">
+            <i class="las la-trash"></i> 
+        </button>
+    </td>
+</tr>
+{%endfor%}
+{% else %}
+<tr>
+    <td class='text-center' colspan='6'>No Tests available</td>
+</tr>
+{% endif %}

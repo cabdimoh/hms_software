@@ -1,0 +1,166 @@
+{% extends 'base/index.html' %}
+{% load static%}
+
+{% block content %}
+<div class="card">
+    
+
+    <div class="card-body">
+        <div class="row mb-2 g-4 align-items-center">
+            <div class="col-sm-3">
+                <h4 class="mb-sm-0 font-size-18">Equipment Oder</h4>
+              
+
+                
+            </div>
+            <div class="col-sm-auto ms-auto">
+                <div class="hstack gap-2">
+                    
+                    <div class="form-group">
+                        <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber}}
+                            class="form-control select2 w-100">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+
+                    <form autocomplete='off'>
+                        <div class="input-group mr-0">
+                            <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                                class="form-control" aria-label="Recipient's username"
+                                aria-describedby="button-addon2">
+                            <button class="btn btn-primary" type="button" id="button-addon2">
+                                <i class="bx bx-search"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+       
+        <div class="table-rep-plugin">
+            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                <table id="MedicineOrder" class="table table-bordered nowrap table-striped align-middle" style="width:100%">
+                                                        
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            
+                            <th data-priority="1">Equipment Name</th>
+                            <th data-priority="1">Equipment category</th>
+                            
+                            <th data-priority="1">Quentity</th>
+                            <th data-priority="1">Order Date</th>
+                            <th data-priority="1">Status</th>
+
+                            <th data-priority="6">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%if page_objects %}
+                        {% for MedOrder in page_objects %}
+                        <tr>
+                            <td><a href="javascript: void(0);" class="text-dark fw-medium">{{MedOrder.id}}</a> </td>
+                            <td>{{MedOrder.Item.category.category_name}}</td>
+                            <td>{{MedOrder.Item}}</td>
+                            <td>{{MedOrder.Quantity}}</td>
+                            <td>{{MedOrder.Order_date}}</td>
+                            
+                            {% if MedOrder.Status == status %}
+                            <td style="color: rgb(10, 184, 48);">{{MedOrder.Status}}</td>
+                            {% else %}
+                            <td style="color: rgb(204, 33, 33);">{{MedOrder.Status}}</td>
+                            {% endif %}
+                        
+                            <td>
+                                <a href="#" rowid={{MedOrder.id}} id="orderview"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    <button type="button" class="btn btn-sm btn-primary waves-effect waves-light"><i class="r ri-eye-fill"></i></button>
+                                </a>
+                            </td>
+                        </tr>
+                    {%endfor%}
+                    {% else %}
+                    
+                        <tr>
+                            <td class='text-center' colspan='6'>No Tests available</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+            <div activePage = {{ page_objects.number }} class="col-md-6 activePage">
+                
+            </div>
+            <div div class="col-md-6 d-flex justify-content-end align-items-center">
+                                    
+                <nav aria-label="...">
+                    <ul class="pagination mb-0">
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="1">
+                            <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="{% if page_objects.has_previous %}{{ page_objects.previous_page_number }}{% else %}No Page{% endif %}">
+                            <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                        </li>
+                    
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{% if page_objects.has_next %}{{ page_objects.next_page_number }}{% else %}No Page{% endif %}">
+                            <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{{ page_objects.paginator.num_pages}}">
+                            <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+                
+            </div>
+        
+        </div>
+    </div>
+</div>
+        
+
+
+
+
+<div class="modal-body">
+    
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form id="approveform">
+                        {% csrf_token %}
+                    <div class="modal-header">
+                        <input class="form-control" type="hidden" id="OrderId" placeholder="category name ">
+                        <h5 class="modal-title" id="staticBackdropLabel">Approve</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p> Do you wont to approve.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button id="approveiquipmentbottun" type="button" class="btn btn-primary">Approve</button>
+                    </div>
+                </form>
+                </div>
+
+
+            </div>
+        </div>
+</div>
+
+{% endblock content %}
+{% block scripts %}
+ <script src={% static "scripts/Inventory/GetEquipmentOrderPag.js" %}></script>
+<script src={% static "scripts/Inventory/approveIquipmentOrder.js" %}></script> -->
+{% endblock scripts %}

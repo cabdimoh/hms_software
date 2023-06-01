@@ -1,0 +1,471 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block content %}
+{% csrf_token %}
+<div class="card">
+    <div class="card-header d-flex ">
+        <h4 class="card-title">Emergency Triage</h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-2 g-4 align-items-center">
+            <div class="col-sm-3">
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#emergencypatient"><i class="bx bx-plus me-1"></i>Add Patient</a>
+            </div>
+            <div class="col-sm-auto ms-auto">
+                <div class="hstack gap-2">
+                    
+                    <div class="form-group">
+                        <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber}}
+                            class="form-control select2 w-100">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+
+                <form autocomplete='off'>
+                    <div class="input-group mr-0">
+                        <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                            class="form-control" aria-label="Recipient's username"
+                            aria-describedby="button-addon2">
+                        <button class="btn btn-primary" type="button" id="button-addon2">
+                            <i class="bx bx-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Patient FullName</th>
+                    <th data-priority="1">Patient Age</th>
+                    <th data-priority="3">Patient Gender</th>
+                    <th data-priority="3">Patient Mobile NO</th>
+                    <th data-priority="3">Patient Address</th>
+                    <th data-priority="3">Triage Category</th>
+                    <th data-priority="6">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%if page_objects %}
+                {% for visit in page_objects %}
+                <tr>
+                    <td>{{visit.VisitNumber}}</td>
+                    <td><a href="{{visit.get_absolute_url}}" >{{visit.Patient.get_fullName}} </a></td>
+                    <td>{{visit.Patient.PatientAge}}</td>
+                    <td>{{visit.Patient.PatientGender}}</td>
+                    {% if visit.Patient.PatientMobileNo %}
+                    <td>{{visit.Patient.PatientMobileNo}}</td>
+                    {%else%}
+                    <td>Unknown</td>
+                    {%endif%}
+                    {% if visit.Patient.PatientVillage %}
+                    <td>{{visit.Patient.PatientVillage}}, {{visit.Patient.PatientDistrict}}, Mogadishu</td>
+                    {%else%}
+                    <td>Unknown</td>
+                    {%endif%}
+                    {% for triagecat in visit.emergencytriage_set.all%}
+                    <td>{% if triagecat.TriageCategory == "Immediate"%} <span class=" btn btn-sm btn-danger"> {{triagecat.TriageCategory}}</span>  
+                        {%elif triagecat.TriageCategory == "Emergent"%} <span class="btn btn-sm btn-warning"> {{triagecat.TriageCategory}}</span> 
+                        {%elif triagecat.TriageCategory == "Urgent"%} <span class="btn btn-sm btn-soft-danger"> {{triagecat.TriageCategory}}</span> 
+                        {%else%}  <span class="btn btn-sm btn-soft-warning"> {{triagecat.TriageCategory}}</span> {%endif%}</td>
+                    {%endfor%}
+                  
+                    <td>
+                        <a href="{{visit.get_absolute_url}}" >
+                            <button type="button" class="btn btn-sm btn-primary">
+                                <i class="las la-eye"></i>
+                            </button>
+                        </a> 
+                   </td>
+                </tr>
+                {%endfor%}
+                {% else %}
+                <tr>
+                    <td class='text-center' colspan='8'>No Emergency Patient available</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+            <div activePage = {{ page_objects.number }} class="col-md-6 activePage">
+                
+            </div>
+            <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                    
+                <nav aria-label="...">
+                    <ul class="pagination mb-0">
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="1">
+                            <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="{% if page_objects.has_previous %}{{ page_objects.previous_page_number }}{% else %}No Page{% endif %}">
+                            <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                        </li>
+                    
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{% if page_objects.has_next %}{{ page_objects.next_page_number }}{% else %}No Page{% endif %}">
+                            <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{{ page_objects.paginator.num_pages}}">
+                            <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="emergencypatient" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header p-3">
+                <h5 class="modal-title text-uppercase" id="exampleModalLabel">Triage Form</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="emergencypatient" class="checkout-tab">
+                <div class="modal-body p-0">
+                    <div class="step-arrow-nav">
+                        <ul class="nav nav-pills nav-justified custom-nav" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link p-3 active" id="personal-info-tab" data-bs-toggle="pill" data-bs-target="#personal-info" type="button" role="tab" aria-controls="personal-info" aria-selected="true">Personal Info</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link p-3" id="VitalnComplaint-tab" data-bs-toggle="pill" data-bs-target="#VitalnComplaint" type="button" role="tab" aria-controls="VitalnComplaint" aria-selected="false">Signs & Complaint</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link p-3" id="allergic-medication-tab" data-bs-toggle="pill" data-bs-target="#allergic-medication" type="button" role="tab" aria-controls="allergic-medication" aria-selected="false">Allergic & Medications</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link p-3" id="medical-history-tab" data-bs-toggle="pill" data-bs-target="#medical-history" type="button" role="tab" aria-controls="medical-history" aria-selected="false">Medical History</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link p-3" id="nurse-assessment-tab" data-bs-toggle="pill" data-bs-target="#nurse-assessment" type="button" role="tab" aria-controls="nurse-assessment" aria-selected="false">Nurse Assessment</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link p-3" id="final-tab" data-bs-toggle="pill" data-bs-target="#final-form" type="button" role="tab" aria-controls="final-tab" aria-selected="false">Finish Form</button>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+                <!--end modal-body-->
+                <div class="modal-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="personal-info" role="tabpanel" aria-labelledby="personal-info-tab">
+                            <div class="row g-3">
+                                <div class="col-lg-6">
+                                    <div>
+                                        <input class="form-control" type="hidden"  id="hidden_btn" >
+                                        <div class="mb-3">
+                                            <label for="PatientFirstName" class="form-label"><sup style="color:red">*</sup>Patient FirstName</label>
+                                            <input class="form-control" type="text" id="PatientFirstName" placeholder="Magaca Bukaanka " autocomplete="off">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="PatientLastName" class="form-label"><sup style="color:red">*</sup>Patient LastName</label>
+                                            <input class="form-control" type="text" id="PatientLastName" placeholder="Magaca Bukaanka o Seddexan" autocomplete="off">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="PatientAge" class="form-label"><sup style="color:red">*</sup>Patient Age</label>
+                                            <input class="form-control" type="Number"  id="PatientAge" placeholder="Da'da Bukaanka" autocomplete="off">
+                                        </div>
+                                    
+                                        <div class="mb-3">
+                                            <label for="PatientVillage" class="form-label">Patient Village</label>
+                                            <input class="form-control" type="text" id="PatientVillage" placeholder="Xaafada Bukaanka" autocomplete="off">
+                                        </div>
+                                       
+                                        
+                                        <div class="mb-3">
+                                            <label for="PatientVillage" class="form-label">Emergency Contact Name</label>
+                                            <input class="form-control" type="text" id="EmergencyName" placeholder="Xaafada Bukaanka" autocomplete="off">
+                                        </div>              
+                                    </div>
+                                </div>
+            
+                                <div class="col-lg-6">
+                                    <div class="mt-3 mt-lg-0">
+                                        <div class="mb-3">
+                                            <label for="PatientMiddleName" class="form-label"><sup style="color:red">*</sup>Patient Middle Name</label>
+                                            <input class="form-control" type="text" id="PatientMiddleName" placeholder="Magaca Aabaha Bukaanka" autocomplete="off">
+                                        </div>
+                                    
+                                        <div class="mb-3">
+                                            <label class="form-label"><sup style="color:red">*</sup>Patient Gender</label>
+                                            <select class="form-select" id="PatientGender">
+                                                <option value="" selected>Select a Gender</option>
+            
+                                                {% for gender in Genders %}
+                                                <option value="{{gender}}">{{gender}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="PatientMobileNo" class="form-label">Patient Mobile Number</label>
+                                            <input class="form-control" type="number" id="PatientMobileNo" placeholder="Mobile Number-ka Bukaanka" autocomplete="off">
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label">Patient District</label>
+                                            <select class="form-select" id="PatientDistrict">
+                                                <option value="" selected>Select a District</option>
+            
+                                                {% for district in districts %}
+                                                <option value="{{district}}">{{district}}</option>
+                                                {% endfor %}
+            
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="PatientMobileNo" class="form-label">Emergency Contact Number</label>
+                                            <input class="form-control" type="number" id="EmergencyNumber" placeholder="Mobile Number-ka qofka Bukaanka la socda..." autocomplete="off">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-lg-12">
+                                    <div class="d-flex align-items-start gap-3 mt-3">
+                                        <button type="button" class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="VitalnComplaint-tab"><i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i> Next Step</button>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                            </div>
+                            <!--end row-->
+                        </div>
+                        <!-- end tab pane -->
+
+                        <div class="tab-pane fade" id="VitalnComplaint" role="tabpanel" aria-labelledby="VitalnComplaint-tab">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <label for="PatientLastName" class="form-label"><sup style="color:red">*</sup>Blood pressure</label>
+                                        <input class="form-control" type="text" id="bloodPressure" placeholder="Blood Pressure mmHg" autocomplete="off">
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label for="PatientLastName" class="form-label"><sup style="color:red">*</sup>Heart rate</label>
+                                        <input class="form-control" type="text" id="HeartRate" placeholder="Heart rate beats per minute" autocomplete="off">
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label for="PatientLastName" class="form-label"><sup style="color:red">*</sup>Respiratory rate</label>
+                                        <input class="form-control" type="text" id="RespiratoryRate" placeholder="Respiratory rate breaths per minute" autocomplete="off">
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label for="PatientLastName" class="form-label"><sup style="color:red">*</sup>Temperature</label>
+                                        <input class="form-control" type="text" id="Temperature" placeholder="Blood Pressure Fahrenheit" autocomplete="off">
+                                    </div>
+                                </div>
+                              
+                                <div id="show_complaint">
+                                    <div class="row" id="row1">
+                                        <div class="col-lg-11 mb-3 mt-3">
+                                            <label for="PatientFirstName" class="form-label"><sup style="color:red">*</sup>Chief Complaint:</label>
+                                            <input type="text" class="form-control" id="cheifComplaint1" placeholder="Add Chief Complaint..... " autocomplete="off">
+                                        </div>
+                                        <div class=" col-lg-1 mb-3 mt-3">
+                                            <label class="form-label">Add</label>
+                                            <button type="button" class="btn btn-primary add_complaint" >
+                                                <i class="las la-plus"></i> 
+                                            </button>
+                                        </div>                                                       
+                                    </div>
+                                </div>
+                                <!--end col-->
+                            
+                                <!--end col-->
+                               
+                                <!--end col-->
+                               
+                                <!--end col-->
+                                <div class="col-lg-12">
+                                    <div class="hstack align-items-start gap-3 mt-4">
+                                        <button type="button" class="btn btn-light btn-label previestab" data-previous="personal-info-tab"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Back to Personal Info</button>
+                                        <button type="button" class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="allergic-medication-tab"><i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Next Step</button>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                            </div>
+                        </div>
+                        <!-- end tab pane -->
+
+                        <div class="tab-pane fade" id="allergic-medication" role="tabpanel" aria-labelledby="allergic-medication-tab">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div id="show_allergies">
+                                        <div class="row" id="row1">
+                                            <div class="col-lg-10 mb-3">
+                                                <label for="PatientFirstName" class="form-label">Any Allergies</label>
+                                                <input type="text" class="form-control" id="Allergies1" placeholder="Add Allergies..... " autocomplete="off">
+                                            </div>
+                                            <div class=" col-lg-1 mb-3">
+                                                <label class="form-label">Add</label>
+                                                <button type="button" class="btn btn-primary add_allergies" >
+                                                    <i class="las la-plus"></i> 
+                                                </button>
+                                            </div>   
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div id="show_medications">
+                                        <div class="row" id="row1">
+                                            <div class="col-lg-10 ">
+                                                <div class="mb-3">
+                                                    <label for="PatientFirstName" class="form-label">Current Medications</label>
+                                                    <input type="text" class="form-control" id="Medications1" placeholder="Add Current Medications..... " autocomplete="off">
+                                                </div>
+                                            
+                                            </div>
+                                            <div class=" col-lg-1">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Add</label>
+                                                    <button type="button" class="btn btn-primary add_medications" >
+                                                        <i class="las la-plus"></i> 
+                                                    </button>
+                                                </div>
+                                            </div>   
+                                        </div>
+                                    </div>
+                                </div>
+                                                                                
+                            </div>
+                            <!-- end dropzon-preview -->
+                            <div class="d-flex align-items-start gap-3 mt-4">
+                                <button type="button" class="btn btn-light btn-label previestab" data-previous="VitalnComplaint-tab"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Back to Chief Complaint</button>
+                                <button type="button" class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="medical-history-tab"><i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Next Step</button>
+                            </div>
+                        </div>
+                        <!-- end tab pane -->
+                        <div class="tab-pane fade" id="medical-history" role="tabpanel" aria-labelledby="medical-history-tab">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div id="show_medical_history">
+                                        <div class="row" id="row1">
+                                            <div class="col-lg-10 mb-3">
+                                                <label for="PatientFirstName" class="form-label">Medical history</label>
+                                                <input type="text" class="form-control" id="pastHistory1" placeholder="Add Medical History.... " autocomplete="off">
+                                            </div>
+                                            <div class=" col-lg-1 mb-3">
+                                                <label class="form-label">Add </label>
+                                                <button type="button" class="btn btn-primary add_history" >
+                                                    <i class="las la-plus"></i> 
+                                                </button>
+                                            </div>    
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div id="show_family_history">
+                                        <div class="row" id="row1">
+                                            <div class="col-lg-10 mb-3">
+                                                <label for="PatientFirstName" class="form-label">Family Medical history</label>
+                                                <input type="text" class="form-control" id="familyHistory1" placeholder="Add Family Medical History..... " autocomplete="off">
+                                            </div>
+                                            <div class=" col-lg-1 mb-3">
+                                                <label class="form-label">Add </label>
+                                                <button type="button" class="btn btn-primary add_family_history" >
+                                                    <i class="las la-plus"></i> 
+                                                </button>
+                                            </div>      
+                                        </div>
+                                    </div>
+                                </div>
+                                                                                
+                            </div>
+                            <!-- end dropzon-preview -->
+                            <div class="d-flex align-items-start gap-3 mt-4">
+                                <button type="button" class="btn btn-light btn-label previestab" data-previous="allergic-medication-tab"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Back to Allergic and Medications</button>
+                                <button type="button" class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="nurse-assessment-tab"><i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Next Step</button>
+                       
+                            </div>
+                        </div>
+                        <!-- end tab pane -->
+                        <div class="tab-pane fade" id="nurse-assessment" role="tabpanel" aria-labelledby="nurse-assessment-tab">
+                            <div class="row">
+                                <div id="show_assessment">
+                                    <div class="row" id="row1">
+                                        <div class="col-lg-11 mb-3">
+                                            <label for="PatientFirstName" class="form-label"><sup style="color:red">*</sup>Assessment</label>
+                                            <input type="text" class="form-control" id="NurseAssessment1" placeholder="Add Nurse Assessment.... " autocomplete="off">
+                                        </div>
+                                        <div class=" col-lg-1 mb-3">
+                                            <label class="form-label">Add More</label>
+                                            <button type="button" class="btn btn-primary add_Assessment" >
+                                                <i class="las la-plus"></i> 
+                                            </button>
+                                        </div>                                                    
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end dropzon-preview -->
+                            <div class="d-flex align-items-start gap-3 mt-4">
+                                <button type="button" class="btn btn-light btn-label previestab" data-previous="medical-history-tab"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Back to Medical History</button>
+                                <button type="button" class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="final-tab"><i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Next Step</button>
+                            </div>
+                        </div>
+                        <!-- end tab pane -->
+                        <div class="tab-pane fade" id="final-form" role="tabpanel" aria-labelledby="final-tab">
+                            <div class="row">
+                                <div class="mb-3">
+                                    <label for="PatientVillage" class="form-label"><sup style="color:red">*</sup>Date and time of Triage </label>
+                                    <input class="form-control" type="datetime-local" id="triageDate" autocomplete="off">
+                                </div>
+                                <div class=" mb-3">
+                                    <label for="PatientVillage" class="form-label"><sup style="color:red">*</sup>Triage Category</label>
+                                    <select class="form-select" id="triageCategory">
+                                        <option value="" selected>Select</option>
+                                        <option value="Immediate" >Immediate</option>
+                                        <option value="Emergent" >Emergent</option>
+                                        <option value="Urgent" >Urgent</option>
+                                        <option value="nonUrgent" >Non-Urgent</option>
+                                    </select>
+                                </div>
+                                        <div class="mb-3">
+                                            <label for="PatientVillage" class="form-label"><sup style="color:red">*</sup>Doctor</label>
+                                            <select class="form-select" id="Doctor">
+                                                <option value="" selected>Select a Doctor</option>
+                
+                                                {% for doctor in Doctors %}
+                                                <option value="{{doctor.id}}">{{doctor.get_full_name}}</option>
+                                                {% endfor %}
+                
+                                            </select>
+                                        </div>
+                                <div class="mb-3">
+                                    <label for="PatientVillage" class="form-label">Comment</label>
+                                    <textarea class="form-control" id="Comments" autocomplete="off" placeholder="Add Comment ...."></textarea>
+                                </div>                                       
+                            </div>
+                            <!-- end dropzon-preview -->
+                            <div class="d-flex align-items-start gap-3 mt-4">
+                                <button type="button" class="btn btn-light btn-label previestab" data-previous="nurse-assessment-tab"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Back to Nurse Assessment</button>
+                                <button type="button"  id="submit_triage_form" class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="pil-tab"><i class="ri-save-line label-icon align-middle fs-16 ms-2"></i>Submit</button>
+                            </div>
+                        </div>
+                        <!-- end tab pane -->
+                    </div>
+                    <!-- end tab content -->
+                </div>
+                <!--end modal-body-->
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+    <script src='{% static "scripts/APEN/Emeergency/triageForm.js" %}'></script>
+    <script src='{% static "scripts/APEN/Emeergency/emergency_queue.js" %}'></script>   
+
+{% endblock scripts %}
+

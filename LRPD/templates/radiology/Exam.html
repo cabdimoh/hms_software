@@ -1,0 +1,156 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex ">
+        <h4 class="card-title">Radiology Exam</h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-2 g-4 align-items-center">
+            <div class="col-sm-3">
+                <a href="#" class="btn btn-primary" id='add_radiology_exam' data-bs-toggle="modal" data-bs-target="#RadiologyExamModal"><i class="bx bx-plus me-1"></i>Add Exam</a>
+            </div>
+            <div class="col-sm-auto ms-auto">
+                <div class="hstack gap-2">
+                    
+                    <div class="form-group">
+                        <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber}}
+                            class="form-control select2 w-100">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+
+                <form autocomplete='off'>
+                    <div class="input-group mr-0">
+                        <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+                            class="form-control" aria-label="Recipient's username"
+                            aria-describedby="button-addon2">
+                        <button class="btn btn-primary" type="button" id="button-addon2">
+                            <i class="bx bx-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%" id="RadiologyTable">
+                <thead>
+                    <tr>
+                        <th>Exam ID</th>
+                        <th>Exam Type</th>
+                        <th data-priority="1">Exam Name</th>
+                        <th data-priority="3">Exam Description</th>
+                        <th data-priority="3">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%if page_objects %}
+                    {% for Exam in page_objects %}
+                    <tr>
+                        <td><a href="javascript: void(0);" class="text-dark fw-medium">{{Exam.ExamNumber}}</a> </td>
+                        <td>{{Exam.Category.CategoryName}}</td>
+                        <td>{{Exam.ExamName}}</td>
+                      
+                        <td>{{Exam.ExamDescription}}</td>
+                        <td>
+                            <a href="#" rowid = {{Exam.id}}  id="edit_exam" data-bs-toggle="modal" data-bs-target="#RadiologyExamModal">
+                                <button type="button" class="btn btn-sm btn-success">
+                                    <i class="las la-edit"></i>
+                                </button>
+                            </a> 
+                        </td>
+                    </tr>
+                    {%endfor%}
+                    {% else %}
+                    <tr>
+                        <td class='text-center' colspan='6'>No Radiology Exam has been saved</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+            <div activePage = {{ page_objects.number }} class="col-md-6 activePage">
+                
+            </div>
+            <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                    
+                <nav aria-label="...">
+                    <ul class="pagination mb-0">
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="1">
+                            <span class="page-link"><i class="bx bx-chevrons-left"></i></span>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_previous %}disabled{% endif %}" page="{% if page_objects.has_previous %}{{ page_objects.previous_page_number }}{% else %}No Page{% endif %}">
+                            <span class="page-link"><i class="bx bx-chevron-left"></i></span>
+                        </li>
+                    
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{% if page_objects.has_next %}{{ page_objects.next_page_number }}{% else %}No Page{% endif %}">
+                            <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
+                        </li>
+                        <li class="page-item {% if not page_objects.has_next %}disabled{% endif %}" page="{{ page_objects.paginator.num_pages}}">
+                            <a class="page-link" href="#"><i class="bx bx-chevrons-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="RadiologyExamModal" class="modal fade add_radiology_exam" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" data-bs-scroll="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Add Exam</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="RadiologyExamForm">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="examcategory" class="form-label">Radiology Exam</label>
+                        <select class="form-select" id="category">
+                            <option value="">Select Category</option>
+                            {% for category in examcategory %}
+                            <option value='{{category.id}}'>{{category.CategoryName}}</option>
+                            {% endfor %}
+                        </select>                                   
+                    </div>
+                    <div class="mb-3">
+                        <label for="ExamName" class="form-label">Exam Name</label>
+                        <input class="form-control" type="text" id="ExamName" name="ExamName" placeholder="Test Name" autocomplete="off">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="ExamDescription" class="form-label">Exam Description</label>
+                        <input class="form-control" type="text" id="ExamDescription" name="ExamDescription" placeholder="Test Description" autocomplete="off">
+                    </div>
+                    <input class="form-control" type="text"  hidden disabled id="ExamID">
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+                    <button type="button" id="SubmitRadiologyTest" class="btn btn-primary ">Save changes</button>
+                </div>
+            </form>
+          
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{% endblock content %}
+{% block scripts %}
+<script src={% static "scripts/LRPD/RadiologyExam/RadiologyExamPagination.js" %}></script>
+<script src={% static "scripts/LRPD/RadiologyExam/AddRadiologyExam.js" %}></script>
+
+{% endblock scripts %}

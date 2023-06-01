@@ -1,0 +1,299 @@
+{% extends 'base/index.html' %}
+{% load static%}
+{% block content %}
+
+
+
+<!-- /.modal -->
+
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Pharmcy Details</h4>
+        </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-xxl-3">
+        <div class="card shadow-sm " >
+            <div class="card-body p-4">
+                <div>
+                    <div class="flex-shrink-0 avatar-md mx-auto">
+                        <div class="avatar-title bg-light rounded">
+                            <img src="{% static "assets/images/clipar.png" %}" style="width: 200%;" alt="" height="100" />
+                        </div>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <h5 class="mb-1"> Medicine </h5>
+                        <br>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table mb-0 table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th><span class="fw-medium">ID</span></th>
+                                    <td>{{pharmcy_medicine.id}}</td>
+                                </tr>
+                                <tr>
+                                    <th><span class="fw-medium">Medicine name</span></th>
+                                    <td>{{pharmcy_medicine.Medicine_name.Medicine_name}}</td>
+                                </tr>
+                                <tr>
+                                    <th><span class="fw-medium">Box</span></th>
+                                    <td>{{pharmcy_medicine.box}}</td>
+                                </tr>
+                                <tr>
+                                    <th><span class="fw-medium">Quantity</span></th>
+                                    <td>{{pharmcy_medicine.quantity}}</td>
+                                </tr>
+                                <tr>
+                                    <th><span class="fw-medium">Total</span></th>
+                                    <td>{{pharmcy_medicine.Total_quantity}}</td>
+                                </tr>
+                                <tr>
+                                    <th><span class="fw-medium">Category</span></th>
+                                    <td>{{pharmcy_medicine.Medicine_categories}}</td>
+                                </tr>
+                                <tr>
+                                  <th><span class="fw-medium">ExpireDate</span></th>
+                                  {% if pharmcy_medicine.is_expired1 %}
+                                  <td style="color: red;">{{pharmcy_medicine.Expire_date}}</td>
+                                  {% else %}
+                                  <td>{{pharmcy_medicine.Expire_date}}</td>
+                                  {% endif %}
+
+                              </tr>
+                             
+                            
+                          <tr>
+                            <th><span class="fw-medium">Status</span></th>
+                            <td>{{pharmcy_medicine.status}}</td>
+                        </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!--end card-body-->
+            
+            <!--end card-body-->
+            
+            <!--end card-body-->
+        </div>
+        <!--end card-->
+    </div>
+    <!--end col-->
+  
+    <div class="col-xxl-9">
+        <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">medicine</h4>
+            </div><!-- end card header -->
+           <!-- end card header -->
+            <div class="card-body p-0 pb-2">
+                <div>
+                    <ul class="nav nav-pills arrow-navtabs nav-soft-primary bg-soft-primary mb-3" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#home1" role="tab">
+                                <span class="d-block d-sm-none"><i class="mdi mdi-home-variant"></i></span>
+                                <span class="d-none d-sm-block">In Pharmcy</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#settings1" role="tab">
+                                <span class="d-block d-sm-none"><i class="mdi mdi-account"></i></span>
+                                <span class="d-none d-sm-block">Out Pharmcy</span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                    
+                    <div class="tab-content p-3 text-muted">
+                      <div class="tab-pane active" id="home1" role="tabpanel">
+                          <br>
+                          <br>
+                          
+                          <!-- <h2 style="align-items: self-end; color: rgba(2, 2, 8, 0.466);">Purcase Transection </h2>  -->
+                                  <table id="transactiontable" class="table table-bordered nowrap table-striped align-middle" style="width:100%">
+                                      <thead >
+                                        <tr>
+                                         
+                                          <th scope="col">ID </th>
+                                          <th scope="col">Type </th>
+                                          <th scope="col">Bach_no</th>
+                                          <th scope="col">Box </th>
+                                          <th scope="col">Qty</th>
+                                          <th scope="col">Manufacturing date</th>
+                                          <th scope="col">ExpireDate </th>
+                                          <th scope="col">Expire </th>
+                                          <th scope="col">Days untill</th>
+                                          <th scope="col">Sulplier price </th>
+                                          <th scope="col">Date</th>
+                                        
+                                        </tr>
+                                      </thead>
+                                      <tbody id="tbody">
+                                       
+                                        {% for med in transection %}
+                                        {% if med.Type == "our_order" %}
+                                        <tr>
+                                        
+                                        <td>{{med.id}}</td>
+                                        <td>{{med.Type}}</td>
+                                        <td>{{med.BatchNO}}</td>
+                                        <td>{{med.box}}</td>
+                                        <td>{{med.quantity}}</td>
+                                        <td>{{med.manufacturing_date}}</td>
+                                        {% if med.is_expired %}
+                                        <td style="color: red;" aria-disabled="true">{{med.Expire_date}}</td>
+                                        <td style="color: red;">Yes</td>
+                                        {% else %}
+                                        <td>{{med.Expire_date}}</td>
+                                        <td>No</td>
+                                        {% endif %}
+                                        <td>{% if not med.is_expired %}{{ med.days_until_expiry }}{% endif %}</td>
+                                        
+                                        <td>{{med.supplier_price}}</td>
+                                       
+                                        <td>{{med.date}}</td>
+                                        </tr>
+                                        
+                                        {% endif %}
+                                        {%endfor%}
+                                       
+                                       
+                                      </tbody>
+                                    </table>
+                      </div>
+                      
+                      
+                      <div class="tab-pane" id="settings1" role="tabpanel">
+                          <br>
+                          <br>
+                          <!-- <h2 style="align-items: self-end; color: rgba(2, 2, 8, 0.466);">Refill Transection</h2>  -->
+                                  <table id="transactiontable2" class="table table-bordered solid">
+                                      <thead>
+                                        <tr>
+                                         
+                                          <th scope="col">ID </th>
+                                          <th scope="col">Type </th>
+                                          <th scope="col">Bach_no</th>
+                                          <th scope="col">Dispensed qty </th>
+                                          <!-- <th scope="col">Qty</th> -->
+                                          <th scope="col">Manufacturing date</th>
+                                          <th scope="col">ExpireDate </th>
+                                          <th scope="col">Expire </th>
+                                          <th scope="col">Days untill</th>
+                                          <th scope="col">Sulplier price </th>
+                                          <th scope="col">Date</th>
+                                        
+                                        </tr>
+                                      </thead>
+                                      <tbody id="tbody">
+                                      
+                                        {% for med in transection %}
+                                        {% if med.Type == "Dispensed" %}
+                                        <tr>
+                                        
+                                        <td>{{med.id}}</td>
+                                        <td>{{med.Type}}</td>
+                                        <td>{{med.BatchNO}}</td>
+                                        <td>{{med.box}}</td>
+                                        <!-- <td>{{med.quantity}}</td> -->
+                                        <td>{{med.manufacturing_date}}</td>
+                                        {% if med.is_expired %}
+                                        <td style="color: red;">{{med.Expire_date}}</td>
+                                        <td style="color: red;">Yes</td>
+                                        {% else %}
+                                        <td>{{med.Expire_date}}</td>
+                                        <td>No</td>
+                                        {% endif %}
+                                        <td>{% if not med.is_expired %}{{ med.days_until_expiry }}{% endif %}</td>
+                                        <td>{{med.supplier_price}}</td>
+                                       
+                                        <td>{{med.date}}</td>
+                                          
+                                        </tr>
+                                       
+                                        {% endif %}
+                                        {%endfor%}
+                                        
+                                       
+                                      </tbody>
+                                    </table>
+                                    <!-- <script>
+                                      window.print();
+                                    </script> -->
+                      </div>
+                      <div class="tab-pane" id="outstore" role="tabpanel">
+                          <br>
+                          <br>
+                          <h2 style="align-items: self-end; color: rgba(2, 2, 8, 0.466);"></h2> 
+                                  <table id="transactiontable3" class="table table-bordered solid">
+                                      <thead>
+                                        <tr>
+                                         
+                                          <th scope="col">ID </th>
+                                          <th scope="col">Type </th>
+                                          <th scope="col">Bach_no</th>
+                                          <th scope="col">Dispensed qty </th>
+                                          <th scope="col">Qty</th>
+                                          <th scope="col">Manufacturing date</th>
+                                          <th scope="col">ExpireDate </th>
+                                          <th scope="col">Expire </th>
+                                          <th scope="col">Days untill</th>
+                                          <th scope="col">Sulplier price </th>
+                                          <th scope="col">Date</th>
+                                        
+                                        </tr>
+                                      </thead>
+                                      <tbody id="tbody">
+                                      
+                                          {% for med in transection %}
+                                          {% if med.Type == "paid" %}
+                                          <tr>
+                                          
+                                          <td>{{med.id}}</td>
+                                          <td>{{med.Type}}</td>
+                                          <td>{{med.BatchNO}}</td>
+                                          <td>{{med.box}}</td>
+                                          <td>{{med.qty}}</td>
+                                          <td>{{med.manufacturing_date}}</td>
+                                         {% if med.is_expired %}
+                                        <td style="color: red;">{{med.Expire_date}}</td>
+                                        <td style="color: red;">Yes</td>
+                                        {% else %}
+                                        <td>{{med.Expire_date}}</td>
+                                        <td>No</td>
+                                        {% endif %}
+                                        <td>{% if not med.is_expired %}{{ med.days_until_expiry }}{% endif %}</td>
+                                          <td>{{med.supplier_price}}</td>
+                                         
+                                          <td>{{med.date}}</td>
+                                            
+                                          </tr>
+                                         
+                                         
+                                          {% endif %}
+                                          {%endfor%}
+                                        
+                                       
+                                      </tbody>
+                                    </table>
+                                   
+                      </div>
+                     
+                  </div>
+                </div>
+            </div><!-- end card body -->
+        </div><!-- end card -->
+  
+    </div>
+    <!--end col-->
+  </div>
+{% endblock content %}

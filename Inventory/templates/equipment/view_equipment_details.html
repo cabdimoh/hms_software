@@ -1,0 +1,268 @@
+{% extends 'base/index.html' %}
+{% load static%}
+{% block content %}
+
+<!-- /.modal -->
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Equipment Details</h4>
+        </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-xxl-3">
+        <div class="card">
+            <div class="card-body p-4">
+                <div>
+                    <div class="flex-shrink-0 avatar-md mx-auto">
+                        <div class="avatar-title bg-light rounded">
+                            <img src="{% static "assets/images/qlab.png" %}" style="width: 200%;" alt="" height="100" />
+                        </div>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <h5 class="mb-1"> Equipment </h5>
+                       <br>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table mb-0 table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th><span class="fw-medium">ID</span></th>
+                                    <td>{{equipment.id}}</td>
+                                </tr>
+                                <tr>
+                                    <th><span class="fw-medium">Equipment name</span></th>
+                                    <td>{{equipment.item_name}}</td>
+                                </tr>
+                                <tr>
+                                    <th><span class="fw-medium">Category</span></th>
+                                    <td>{{equipment.category}}</td>
+                                </tr>
+                                <tr>
+                                    <th><span class="fw-medium">Quantity</span></th>
+                                    <td>{{equipment.quantity}}</td>
+                                </tr>
+                                <tr>
+                                  <th><span class="fw-medium">supplier_price</span></th>
+                                  <td>{{equipment.supplier_price}}</td>
+                              </tr>
+                              <tr>
+                                <th><span class="fw-medium">lost_and_damaged</span></th>
+                                <td>{{equipment.lost_and_damaged}}</td>
+                            </tr>
+                            <tr>
+                              <th><span class="fw-medium">manufacturing</span></th>
+                              <td>{{equipment.manufacturing}}</td>
+                          </tr>
+                          
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--end card-body-->
+            
+            <!--end card-body-->
+            
+            <!--end card-body-->
+        </div>
+        <!--end card-->
+    </div>
+    <!--end col-->
+  
+    <div class="col-xxl-9">
+        <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Equipment</h4>
+            </div><!-- end card header -->
+           <!-- end card header -->
+            <div class="card-body p-0 pb-2">
+                <div>
+                    <ul class="nav nav-tabs nav-justified mb-3" role="tablist" style="color: rgb(202, 34, 34);">
+                        <li class="nav-item" style="color: blue;">
+                            <a class="nav-link" data-bs-toggle="tab" href="#home1" role="tab" aria-selected="false" style="color: blue;">
+                             Purcase Equipment
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#settings1" role="tab" aria-selected="false" style="color: blue;">
+                                REFILL
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link " data-bs-toggle="tab" href="#outstore" role="tab" aria-selected="false" style="color: blue;">
+                             Paid Equipment
+                          </a>
+                      </li>
+                        
+                    </ul>
+                    
+                    <div class="tab-content p-3 text-muted">
+                      <div class="tab-pane active" id="home1" role="tabpanel">
+                          <br>
+                          <br>
+                          
+                          <!-- <h2 style="align-items: self-end; color: rgba(2, 2, 8, 0.466);">Purcase Transection </h2>  -->
+                                  <table id="transactiontable" class="table table-bordered nowrap table-striped align-middle" style="width:100%">
+                                      <thead >
+                                        <tr>
+                                         
+                                            <th scope="col">ID </th>
+                                            <th scope="col">Type </th>
+                                            <th scope="col">Transectno</th>
+                                            <th scope="col">quantity</th>
+                                            <th scope="col">lost_and_damaged</th>
+                                            <th scope="col">Manufacturing </th>
+                                            
+                                            <th scope="col">Sulplier price </th>
+                                            <th scope="col">status </th>
+                                            <th scope="col">date</th>
+                                        
+                                        </tr>
+                                      </thead>
+                                      <tbody id="tbody">
+                                       
+                                        {% for med in transections %}
+                                        {% if med.Type == "purchase" %}
+                                        <tr>
+                                        
+                                        <td>{{med.id}}</td>
+                                        <td>{{med.Type}}</td>
+                                        <td>{{med.Transectno}}</td>
+                                        <td>{{med.quantity}}</td>
+                                        <td>{{med.lost_and_damaged}}</td>
+                                        <td>{{med.manufacturing}}</td>
+                                      
+                                        <td>{{med.supplier_price}}</td>
+                                        <td>{{med.status}}</td>
+                                       
+                                        <td>{{med.date}}</td>
+                                        </tr>
+                                        
+                                        {% endif %}
+                                        {%endfor%}
+                                       
+                                       
+                                      </tbody>
+                                    </table>
+                      </div>
+                      
+                      
+                      <div class="tab-pane" id="settings1" role="tabpanel">
+                          <br>
+                          <br>
+                          <!-- <h2 style="align-items: self-end; color: rgba(2, 2, 8, 0.466);">Refill Transection</h2>  -->
+                                  <table id="transactiontable2" class="table table-bordered solid">
+                                      <thead>
+                                        <tr>
+                                         
+                                            <th scope="col">ID </th>
+                                            <th scope="col">Type </th>
+                                            <th scope="col">Transectno</th>
+                                            <th scope="col">quantity</th>
+                                            <th scope="col">lost_and_damaged</th>
+                                            <th scope="col">Manufacturing </th>
+                                            
+                                            <th scope="col">Sulplier price </th>
+                                            <th scope="col">status </th>
+                                            <th scope="col">date</th>
+                                        
+                                        </tr>
+                                      </thead>
+                                      <tbody id="tbody">
+                                      
+                                        {% for med in transections %}
+                                        {% if med.Type == "Refill" %}
+                                        <tr>
+                                        
+                                        <td>{{med.id}}</td>
+                                        <td>{{med.Type}}</td>
+                                        <td>{{med.Transectno}}</td>
+                                        <td>{{med.quantity}}</td>
+                                        <td>{{med.lost_and_damaged}}</td>
+                                        <td>{{med.manufacturing}}</td>
+                                        
+                                        <td>{{med.supplier_price}}</td>
+                                        <td>{{med.status}}</td>
+                                       
+                                        <td>{{med.date}}</td>
+                                        </tr>
+                                        
+                                        {% endif %}
+                                        {%endfor%}
+                                        
+                                       
+                                      </tbody>
+                                    </table>
+                                    <!-- <script>
+                                      window.print();
+                                    </script> -->
+                      </div>
+                      <div class="tab-pane" id="outstore" role="tabpanel">
+                          <br>
+                          <br>
+                          <h2 style="align-items: self-end; color: rgba(2, 2, 8, 0.466);"></h2> 
+                                  <table id="transactiontable3" class="table table-bordered solid">
+                                      <thead>
+                                        <tr>
+          
+                                        <th scope="col">ID </th>
+                                        <th scope="col">Type </th>
+                                        <th scope="col">Transectno</th>
+                                        <th scope="col">quantity</th>
+                                        <!-- <th scope="col">lost_and_damaged</th> -->
+                                        <th scope="col">Manufacturing </th>
+                                        <th scope="col">Sulplier price </th>
+                                        <th scope="col">status </th>
+                                        <th scope="col">date</th>
+                                        
+                                        </tr>
+                                      </thead>
+                                      <tbody id="tbody">
+                                      
+                                        {% for med in transections %}
+                                        {% if med.Type == "paid" %}
+                                        <tr>
+                                        
+                                        <td>{{med.id}}</td>
+                                        <td>{{med.Type}}</td>
+                                        <td>{{med.Transectno}}</td>
+                                        <td>{{med.quantity}}</td>
+                                      
+                                        <td>{{med.manufacturing}}</td>
+                                        
+                                        <td>{{med.supplier_price}}</td>
+                                        <td>{{med.status}}</td>
+                                       
+                                        <td>{{med.date}}</td>
+                                        </tr>
+                                        
+                                        {% endif %}
+                                        {%endfor%}
+                                      
+                                        
+                                       
+                                      </tbody>
+                                    </table>
+                                   
+                      </div>
+                     
+                  </div>
+                </div>
+            </div><!-- end card body -->
+        </div><!-- end card -->
+  
+    </div>
+    <!--end col-->
+  </div>
+
+{% endblock content %}
+{% block scripts %}
+<!-- <script src={% static "scripts/Inventory/store_cate.js" %}></script> -->
+<script src={% static "scripts/Inventory/view_medicine_print.js" %}></script>
+<script src={% static "scripts/Inventory/maincanva.js" %}></script>
+{% endblock scripts %}

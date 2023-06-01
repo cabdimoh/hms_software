@@ -1,0 +1,620 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block content %}
+{%csrf_token%}
+<form id="AddResultform">
+<div class="row">
+    <div class="col-xxl-3">
+        <h5 class="mb-3"></h5>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="text-center">
+                    {% if LabOrders.Admission %}
+                    {% if LabOrders.Admission.Admission_order.Visit %}
+                        <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                            {% if LabOrders.Admission.Admission_order.Visit.Patient.PatientGender == "Female"%}
+                            <img src="{% static 'assets/images/femalehijabipat.jpg' %}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+
+                            {%else%}
+                            <img src="{% static 'assets/images/malepatient.jpg' %}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+
+                            {%endif%}
+                        </div>
+                        <h5 class="fs-16 mb-1">{{ LabOrders.Admission.Admission_order.Visit.Patient.PatientFirstName }} {{ LabOrders.Admission.Admission_order.Visit.Patient.PatientMiddleName }}</h5>
+                    {% else %}
+                        <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                            {% if LabOrders.Admission.Admission_order.Appointment.Patient.PatientGender == "Female"%}
+                            <img src="{% static 'assets/images/femalehijabipat.jpg' %}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+
+                            {%else%}
+                            <img src="{% static 'assets/images/malepatient.jpg' %}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+
+                            {%endif%}
+                        </div>
+                        <h5 class="fs-16 mb-1">{{ LabOrders.Admission.Admission_order.Appointment.Patient.PatientFirstName }} {{ LabOrders.Admission.Admission_order.Appointment.Patient.PatientMiddleName }}</h5>
+                    {% endif %}
+                    {% elif  LabOrders.Appointment  %}
+                        <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                            {% if LabOrders.Appointment.Patient.PatientGender == "Female"%}
+                            <img src="{% static 'assets/images/femalehijabipat.jpg' %}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+
+                            {%else%}
+                            <img src="{% static 'assets/images/malepatient.jpg' %}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+
+                            {%endif%}
+                        </div>
+                        <h5 class="fs-16 mb-1">{{ LabOrders.Appointment.Patient.PatientFirstName }} {{ LabOrders.Appointment.Patient.PatientMiddleName }}</h5>
+
+                    {%else%}
+                        <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                            {% if LabOrders.Visit.Patient.PatientGender == "Female"%}
+                            <img src="{% static 'assets/images/femalehijabipat.jpg' %}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+
+                            {%else%}
+                            <img src="{% static 'assets/images/malepatient.jpg' %}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+
+                            {%endif%}
+                        </div>
+                        <h5 class="fs-16 mb-1">{{ LabOrders.Visit.Patient.PatientFirstName }} {{ LabOrders.Visit.Patient.PatientMiddleName }}</h5>
+                    {%endif%}
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-borderless mb-0">
+
+                        <tbody>
+                            {% if LabOrders.Admission %}
+                            {% if LabOrders.Admission.Admission_order.Visit %}
+                            <tr>
+                                <th class="ps-0" scope="row"> Full Name :</th>
+                                <td class="text-muted">{{ LabOrders.Admission.Admission_order.Visit.Patient.get_fullName }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Admission No :</th>
+                                <td class="text-muted">{{ LabOrders.Admission.AddmissionNumber }}</td>
+                            </tr>
+
+                            <tr>
+                                <th class="ps-0" scope="row">Age :</th>
+                                <td class="text-muted">{{LabOrders.Admission.Admission_order.Visit.Patient.PatientAge }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Gender :</th>
+                                <td class="text-muted">{{LabOrders.Admission.Admission_order.Visit.Patient.PatientGender }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">MobileNo :</th>
+                                <td class="text-muted">{{LabOrders.Admission.Admission_order.Visit.Patient.PatientMobileNo }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Doctor :</th>
+                                <td class="text-muted">{{ LabOrders.Admission.Admission_order.Visit.Doctor.get_full_name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Address</th>
+                                <td class="text-muted">{{ LabOrders.Admission.Admission_order.Visit.Patient.PatientVillage }}, {{ LabOrders.Admission.Admission_order.Visit.Patient.PatientDistrict }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Ordered By :</th>
+                                <td class="text-muted">{{ LabOrders.Ordered_by }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <th class="ps-0" scope="row"> Full Name :</th>
+                                <td class="text-muted">{{ LabOrders.Admission.Admission_order.Appointment.Patient.get_fullName }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Admission No :</th>
+                                <td class="text-muted">{{ LabOrders.Admission.AddmissionNumber }}</td>
+                            </tr>
+
+                            <tr>
+                                <th class="ps-0" scope="row">Age :</th>
+                                <td class="text-muted">{{LabOrders.Admission.Admission_order.Appointment.Patient.PatientAge }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Gender :</th>
+                                <td class="text-muted">{{LabOrders.Admission.Admission_order.Appointment.Patient.PatientGender }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">MobileNo :</th>
+                                <td class="text-muted">{{LabOrders.Admission.Admission_order.Appointment.Patient.PatientMobileNo }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Doctor :</th>
+                                <td class="text-muted">{{ LabOrders.Admission.Admission_order.Appointment.Doctor.get_full_name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Address</th>
+                                <td class="text-muted">{{ LabOrders.Admission.Admission_order.Appointment.Patient.PatientVillage }}, {{ LabOrders.Admission.Admission_order.Appointment.Patient.PatientDistrict }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Ordered By :</th>
+                                <td class="text-muted">{{ LabOrders.Ordered_by }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Ordered By :</th>
+                                <td class="text-muted">{{ LabOrders.Ordered_by }}</td>
+                            </tr>
+                            {% endif %}
+                            {% elif  LabOrders.Appointment  %}
+                            <tr>
+                                <th class="ps-0" scope="row"> Full Name :</th>
+                                <td class="text-muted">{{ LabOrders.Appointment.Patient.get_fullName }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Appoint No :</th>
+                                <td class="text-muted">{{ LabOrders.Appointment.AppointmentNumber }}</td>
+                            </tr>
+
+                            <tr>
+                                <th class="ps-0" scope="row">Age :</th>
+                                <td class="text-muted">{{LabOrders.Appointment.Patient.PatientAge }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Gender :</th>
+                                <td class="text-muted">{{LabOrders.Appointment.Patient.PatientGender }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">MobileNo :</th>
+                                <td class="text-muted">{{LabOrders.Appointment.Patient.PatientMobileNo }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Doctor :</th>
+                                <td class="text-muted">{{ LabOrders.Appointment.Doctor.get_full_name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Address</th>
+                                <td class="text-muted">{{ LabOrders.Appointment.Patient.PatientVillage }}, {{ LabOrders.Appointment.Patient.PatientDistrict }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Ordered By :</th>
+                                <td class="text-muted">{{ LabOrders.Ordered_by }}</td>
+                            </tr>
+                            {%else%}
+                            <tr>
+                                <th class="ps-0" scope="row"> Full Name :</th>
+                                <td class="text-muted">{{ LabOrders.Visit.Patient.get_fullName }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Visit No :</th>
+                                <td class="text-muted">{{ LabOrders.Visit.VisitNumber }}</td>
+                            </tr>
+
+                            <tr>
+                                <th class="ps-0" scope="row">Age :</th>
+                                <td class="text-muted">{{LabOrders.Visit.Patient.PatientAge }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Gender :</th>
+                                <td class="text-muted">{{LabOrders.Visit.Patient.PatientGender }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">MobileNo :</th>
+                                <td class="text-muted">{{LabOrders.Visit.Patient.PatientMobileNo }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Doctor :</th>
+                                <td class="text-muted">{{ LabOrders.Visit.emergencytriage_set.first.Doctor.get_full_name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Address</th>
+                                <td class="text-muted">{{ LabOrders.Visit.Patient.PatientVillage }}, {{ LabOrders.Visit.Patient.PatientDistrict }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0" scope="row">Ordered By :</th>
+                                <td class="text-muted">{{ LabOrders.Ordered_by }}</td>
+                            </tr> 
+                            {%endif%}
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- end card-body -->
+        </div><!-- end card -->
+    </div>
+    <div class="col-xxl-9">
+        <h5 class="mb-3"></h5>
+        <div class="card shadow-sm " style="width: 1100px; height: 636px;">
+            <div class="card-body" style="overflow-y: auto;">
+                <!-- Nav tabs -->
+                
+
+                <ul class="nav nav-tabs nav-justified nav-border-top nav-border-top-success mb-3" role="tablist">
+                    {% for category in unique_categories %}
+                      <li class="nav-item">
+                        <a class="nav-link {% if forloop.first %}active{% endif %}" data-bs-toggle="tab" href="#nav-border-justified-{{ category }}" role="tab" aria-selected="false">
+                          <i class="las la-microscope align-middle me-1"></i>{{ category }}
+                        </a>
+                      </li>
+                      {%endfor%}
+                  </ul>
+                <div class="tab-content text-muted">
+                    {% for category in unique_categories %}
+                    {%if category == "Blood"%}
+                    <div class="tab-pane {% if forloop.first %}active{% endif %}" id="nav-border-justified-{{ category }}" role="tabpanel">
+          
+                            <ul class=" nav nav-pills arrow-navtabs nav-success bg-light  mb-3 mt-3 mx-3 my-3" role="tablist">
+                                {%for unique_group in unique_groups%}
+                                <li class="nav-item">
+                                    <a class="nav-link {% if forloop.first %}active{% endif %}" data-bs-toggle="tab" href="#group{{unique_group.id}}" role="tab">
+                                        <span class="d-block d-sm-none"><i class="mdi mdi-home-variant"></i></span>
+                                        <span class="d-none d-sm-block">{{unique_group.GroupName}}</span>
+                                    </a>
+                                </li>
+                              {%endfor%}
+                                
+                            </ul>
+                            <div class="card-body">
+                                <div class="tab-content text-muted">
+                                    {%for unique_group in unique_groups%}
+
+                                    <div class="tab-pane {% if forloop.first %}active{% endif %}" id="group{{unique_group.id}}" role="tabpanel">
+                                        <div class="profile-timeline">
+                                            <div class="accordion accordion-flush" id="todayExample">
+                                               
+                                                {%if lab_blood_properties%}
+                                              
+                                                           
+                                                    <table class="table m-0 table-bordered table">
+                                                    
+                                                            <thead>
+                                                                
+                                                                <tr>
+                                                                    <th >Test Name</th>
+                                                                    <th >Report Value</th>
+                                                                    <th >Flag</th>
+                                                                    <th>Normal Range</th>
+                                                                    <th>Test Unit</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {%for lab_subgroup in unique_subgroups%}
+                                                            
+                                                                {% if lab_subgroup.Group.id == unique_group.id%}
+                                                             
+                                                                {%for lab_blood in lab_blood_properties%}
+
+                                                                {% if lab_subgroup.id == lab_blood.SubGroup.id%}
+                                                                <tr>
+                                                                    <input type="hidden" id="TestNumber{{lab_blood.id}}" style="border:0;outline:0;"   value="{{lab_blood.TestID.TestNumber}}">
+                                                                    <td><input type="text"  style="border:0;outline:0;"  placeholder="Enter Report Value" value="{{lab_blood.TestID.TestName}}-{{lab_blood.TestID.ShortName}}"></td>
+                                                                    <td><input type="text" resultFlag = 'resultFlag' id="ResultValue{{lab_blood.id}}" style="border:0;outline:0;" class="bg-soft-light" placeholder="Enter Report Value" ></td>
+                                                                    <td><input type="text"  id="flagvalue{{lab_blood.id}}" style="border:0;outline:0;" class="bg-soft-light" placeholder="Enter Report Value" ></td>
+                                                                    <td><input type="text" style="border:0;outline:0;"  placeholder="Enter Report Value" value="{{lab_blood.NormalRange}}"></td>
+                                                                    <td><input type="text"  style="border:0;outline:0;"  placeholder="Enter Report Value" value="{{lab_blood.TestUnit}}"></td>
+                                                                </tr>
+                                                                {%endif%}
+                                                                {%endfor%}
+                                                                {%endif%}
+                                                                {%endfor%}
+                                                                
+                                                                
+                                                            </tbody>
+                                                    </table>
+
+                                                      
+                                                {%endif%}
+                                                
+                                            </div>
+                                            <!--end accordion-->
+                                        </div>
+                                    </div>
+                                  {%endfor%}
+                                </div>
+                            </div><!-- end card body -->
+                      
+                    </div>
+                    {%elif category == "Urine"%}
+                    <div class="tab-pane {% if forloop.first %}active{% endif %}" id="nav-border-justified-{{ category }}" role="tabpanel">
+          
+                        <ul class=" nav nav-pills arrow-navtabs nav-success bg-light  mb-3 mt-3 mx-3 my-3" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#urinalysis" role="tab">
+                                    <span class="d-block d-sm-none"><i class="mdi mdi-home-variant"></i></span>
+                                    <span class="d-none d-sm-block">Urinalysis</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " data-bs-toggle="tab" href="#othertests" role="tab">
+                                    <span class="d-block d-sm-none"><i class="mdi mdi-home-variant"></i></span>
+                                    <span class="d-none d-sm-block">Other Urine Tests</span>
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="card-body">
+                            <div class="tab-content text-muted">                                
+                                <div class="tab-pane active" id="urinalysis" role="tabpanel">
+                                    <div class="profile-timeline">
+                                        <div class="accordion accordion-flush" id="todayExample">
+                                           
+                                            
+                                          
+                                            <div class="table-responsive">
+                                                {%for test in unique_tests%}
+                                               
+                                                {% if test.SampleType == category%}
+                                                   <table class="table table-bordered">
+                                                        {%if test.labexaminationparameters_set.first.Type != "-" %}
+                                                            <thead>
+                                                                
+                                                                <tr>
+                                                                    <th> #ID</th>
+                                                                    <th >Parameter Name</th>
+                                                                    <th >Report Value</th>
+                                                                
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                        
+                                                                {%for type in unique_types%}
+                                                                {%if type != "-"%}
+                                                                <tr>
+                                                                    <td  colspan='8'><span style="font-weight:600;">{{type}} Examination</span> </td>
+                                                                </tr>
+                                                                {%for lab_parameter in lab_examination_parameters%}
+                                                                {% if lab_parameter.Type == type and lab_parameter.Test.TestName == test.TestName%}
+                                                                <tr>
+                                                                    <td><input type="text" style="border:0;outline:0;"   value="{{lab_parameter.id}}"></td>
+                                                                    <td><input type="text"  style="border:0;outline:0;"  placeholder="Enter Report Value" value="{{lab_parameter.ParameterName}}"></td>
+                                                                    <td>
+                                                                        <input type="text" {{type}}_{{category}} = '{{type}}_{{category}}' id="{{type}}_{{category}}{{lab_parameter.id}}" style="border:0;outline:0;" class="bg-soft-light" placeholder="Enter Report Value" >
+                                                                        <input type="hidden" id="{{type}}_{{category}}_id{{lab_parameter.id}}" style="border:0;outline:0;" class="bg-soft-light" Value="{{lab_parameter.id}}" >
+                                                                    </td>
+                                                                </tr>
+
+                                                                {%endif%}
+                                                                {%endfor%}
+                                                            {%endif%}
+                                                                {%endfor%}
+                                                                
+                                                            </tbody>
+                                                        
+                                                        {%endif%}
+                                                    </table>
+                                                {%endif%}
+                                                {%endfor%}
+                                            </div>
+                                            
+                                        </div>
+                                        <!--end accordion-->
+                                    </div>
+                                </div>
+                                <div class="tab-pane " id="othertests" role="tabpanel">
+                                    <div class="profile-timeline">
+                                        <div class="accordion accordion-flush" id="todayExample">
+                                           
+                                            <div class="table-responsive">
+                                                {%for test in unique_tests%}
+                                               
+                                                {% if test.SampleType == category%}
+                                                   <table class="table table-bordered">
+                                                    {% if test.labexaminationparameters_set.first.Type == "-" %}
+                                                       
+                                                        <thead>
+                                                            
+                                                            <tr>
+                                                                <th> #ID</th>
+                                                                <th >Test Name</th>
+                                                                <th >Report Value</th>
+                                                               
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><input type="text" style="border:0;outline:0;"   value="{{test.TestNumber}}"></td>
+                                                                <td><input type="text"  style="border:0;outline:0;"  value="{{test.TestName}}"></td>
+                                                                <td>
+                                                                    <input type="text" urine_test = 'urine_test' id="urine_test{{test.id}}" style="border:0;outline:0;" class="bg-soft-light" placeholder="Enter Report Value" >
+                                                                    <input type="hidden" id="urine_test_id{{test.id}}" style="border:0;outline:0;" class="bg-soft-light" Value="{{test.id}}" >
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                            {%endif%}
+                                                </table>
+                                                {%endif%}
+                                                {%endfor%}
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                        <!--end accordion-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- end card body -->
+                  
+                    </div>
+                    {%elif category == "Stool"%}
+                    <div class="tab-pane {% if forloop.first %}active{% endif %}" id="nav-border-justified-{{ category }}" role="tabpanel">
+          
+                        <ul class=" nav nav-pills arrow-navtabs nav-success bg-light  mb-3 mt-3 mx-3 my-3" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#stoolexamination" role="tab">
+                                    <span class="d-block d-sm-none"><i class="mdi mdi-home-variant"></i></span>
+                                    <span class="d-none d-sm-block">Stool Examination</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " data-bs-toggle="tab" href="#otherteststool" role="tab">
+                                    <span class="d-block d-sm-none"><i class="mdi mdi-home-variant"></i></span>
+                                    <span class="d-none d-sm-block">Other Stool Tests</span>
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="card-body">
+                            <div class="tab-content text-muted">                                
+                                <div class="tab-pane active" id="stoolexamination" role="tabpanel">
+                                    <div class="profile-timeline">
+                                        <div class="accordion accordion-flush" id="todayExample">
+                                           
+                                            
+                                          
+                                            <div class="table-responsive">
+                                                {%for test in unique_tests%}
+                                               
+                                                {% if test.SampleType == category%}
+                                                   <table class="table table-bordered">
+                                                    {%if test.labexaminationparameters_set.first.Type != "-"  %}
+                                                        <thead>
+                                                            
+                                                            <tr>
+                                                                <th> #ID</th>
+                                                                <th >Parameter Name</th>
+                                                                <th >Report Value</th>
+                                                               
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                      
+                                                            <tbody>
+                                                                {%for type in unique_types%}
+                                                                {%if type != "-"%}
+
+                                                                <tr>
+                                                                    <td  colspan='8'><span style="font-weight:600;">{{type}} Examination</span> </td>
+                                                                </tr>
+                                                                {%for lab_parameter in lab_examination_parameters%}
+                                                                {% if lab_parameter.Type == type and lab_parameter.Test.TestName == test.TestName%}
+                                                                <tr>
+                                                                    <td><input type="text" style="border:0;outline:0;"   value="{{lab_parameter.id}}"></td>
+                                                                    <td><input type="text"  style="border:0;outline:0;"  placeholder="Enter Report Value" value="{{lab_parameter.ParameterName}}"></td>
+                                                                    <td>
+                                                                        <input type="text" {{type}}_{{category}} = '{{type}}_{{category}}' id="{{type}}_{{category}}{{lab_parameter.id}}" style="border:0;outline:0;" class="bg-soft-light" placeholder="Enter Report Value" >
+                                                                        <input type="hidden" id="{{type}}_{{category}}_id{{lab_parameter.id}}" style="border:0;outline:0;" class="bg-soft-light" Value="{{lab_parameter.id}}" >
+                                                                    </td>
+                                                                </tr>
+    
+                                                                {%endif%}
+                                                                {%endfor%}
+                                                               {%endif%}
+                                                                {%endfor%}
+                                                               
+                                                            </tbody>
+                                                            
+                                                        </tbody>
+                                                       
+                                                            {%endif%}
+                                                </table>
+                                                {%endif%}
+                                                {%endfor%}
+                                            </div>
+                                            
+                                        </div>
+                                        <!--end accordion-->
+                                    </div>
+                                </div>
+                                <div class="tab-pane " id="otherteststool" role="tabpanel">
+                                    <div class="profile-timeline">
+                                        <div class="accordion accordion-flush" id="todayExample">
+                                           
+                                            <div class="table-responsive">
+                                                {%for test in unique_tests%}
+                                               
+                                                {% if test.SampleType == category%}
+                                                   <table class="table table-bordered">
+                                                    {%if test.labexaminationparameters_set.first.Type == "-" %}
+                                                       
+                                                    <thead>
+                                                                
+                                                        <tr>
+                                                            <th> #ID</th>
+                                                            <th >Test Name</th>
+                                                            <th >Report Value</th>
+                                                           
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><input type="text" style="border:0;outline:0;"   value="{{test.TestNumber}}"></td>
+                                                            <td><input type="text"  style="border:0;outline:0;"  value="{{test.TestName}}"></td>
+                                                            <td>
+                                                                <input type="text" stool_test = 'stool_test' id="stool_test{{test.id}}" style="border:0;outline:0;" class="bg-soft-light" placeholder="Enter Report Value" >
+                                                                <input type="hidden" id="stool_test_id{{test.id}}" style="border:0;outline:0;" class="bg-soft-light" Value="{{test.id}}" >
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                            {%endif%}
+                                                </table>
+                                                {%endif%}
+                                                {%endfor%}
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                        <!--end accordion-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- end card body -->
+                  
+                    </div>
+                    {%endif%}
+                    {%endfor%}
+
+                </div>
+
+            </div><!-- end card-body -->
+        </div>
+    </div>
+   
+</div>
+
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <div class="row">
+                    <div class="mt-3 mt-lg-0">
+                        <div class="mb-4">
+                            <label class="form-label" for="CollectionDate">Comments</label>
+                            <textarea class="form-control" id="lab_comment" placeholder="Add Comment...."></textarea>
+                        </div> 
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div>
+                            <div class="mb-3">
+                                <label class="form-label">Collected By</label>
+                                <select class="form-select" id="Collected_by">
+                                    <option value="" selected>Select</option>
+                                    {% for emp in collected_by %}
+                                    <option value="{{emp.id}}">{{emp.get_full_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="mt-3 mt-lg-0">
+                            <div class="mb-4">
+                                <label class="form-label" for="CollectionDate">Collection Date</label>
+                                <input class="form-control" type="date" id="CollectionDate" placeholder="Collection Date">
+                                <input class="form-control" type="hidden" id="order_id" value="{{LabOrders.id}}">
+                                <input class="form-control" type="hidden" id="labResultId" value="{{lab_result.id}}">
+
+                            </div> 
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-2">
+                        <button type="button" id="SubmitLabbTest" class="btn btn-primary ">Save changes</button>
+                    </div>
+                    <div class="col-lg-10">
+                    </div>
+                </div>
+            </div>
+        </div>
+</form>
+
+    
+{% endblock content %}
+
+{% block scripts %}
+<script src='{% static "scripts/APEN/Appointments/Add-Appointment.js" %}'></script>
+<script src={% static "scripts/LRPD/LabTests/Addlabresult.js" %}></script>
+
+{% endblock scripts %}

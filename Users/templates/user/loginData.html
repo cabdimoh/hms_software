@@ -1,0 +1,128 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Login | Nisa hospital</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href= {% static  "assets/images/nisa.png" %}>
+    <link rel="stylesheet"  href="{% static "assets/libs/dragula/dragula.min.css" %}"/>
+    <!-- jsvectormap css -->
+    <link href="{% static "assets/libs/jsvectormap/css/jsvectormap.min.css" %}" rel="stylesheet"   type="text/css"/>
+    <!--Swiper slider css-->
+    <link href="{% static "assets/libs/swiper/swiper-bundle.min.css" %}"  rel="stylesheet"    type="text/css"/>
+    <!-- Layout config Js -->
+    <script src={% static "assets/js/layout.js"%}></script>
+    <!-- Bootstrap Css -->
+    <link href="{% static "assets/css/bootstrap.min.css" %}"  rel="stylesheet"   type="text/css"/>
+    <!-- Icons Css -->
+    <link href="{% static "assets/css/icons.min.css" %}"  rel="stylesheet"  type="text/css"/>
+    <!-- App Css-->
+    <link href="{% static "assets/css/app.min.css" %}"  rel="stylesheet"  type="text/css"/>
+    <!-- custom Css-->
+    <link href="{% static 'assets/css/ui-css.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/css/ui.css' %}" rel="stylesheet" type="text/css" />
+
+    <link href="{% static "assets/css/custom.min.css" %}"  rel="stylesheet"   type="text/css"/>
+    <!-- Data table css -->
+    <link href="{% static "assets/scripts/datatable/dataTables.bootstrap4.min.css" %}" rel="stylesheet"/>
+    <link href="{% static "assets/scripts/datatable/responsivebootstrap4.min.css" %}"  rel="stylesheet"/>
+    <!-- Sweet Alert css-->
+    <link href="{% static "assets/libs/sweetalert2/sweetalert2.min.css" %}"  rel="stylesheet"   type="text/css"/>
+    <link href="{% static "assets/css/select2.css" %}"   rel="stylesheet"      type="text/css"/>
+
+    <style>
+
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        }
+
+        input[type=number] {
+        -moz-appearance: textfield;
+        }
+        </style>
+</head>
+
+
+    <body>
+        {% block modal %}
+        
+        {% endblock %}
+
+    <!-- <body data-layout="horizontal"> -->
+{% block content %}
+
+{% endblock content %}
+        <!-- Begin page -->
+
+
+    <!-- JAVASCRIPT -->
+    <script src={% static "assets/libs/bootstrap/js/bootstrap.bundle.min.js"%}></script>
+    <script src={% static "assets/libs/simplebar/simplebar.min.js"%}></script>
+    <script src={% static "assets/libs/node-waves/waves.min.js"%}></script>
+    <script src={% static "assets/libs/feather-icons/feather.min.js"%}></script>
+    <script src={% static "assets/js/pages/plugins/lord-icon-2.1.0.js"%}></script>
+    <script src={% static "assets/js/plugins.js"%}></script>
+    <!-- apexcharts -->
+    <script src={% static "assets/libs/apexcharts/apexcharts.min.js"%}></script>
+    <!-- Vector map-->
+    <script src={% static "assets/libs/jsvectormap/js/jsvectormap.min.js"%}></script>
+    <script src={% static "assets/libs/jsvectormap/maps/world-merc.js"%}></script>
+    <!--Swiper slider js-->
+    <script src={% static "assets/libs/swiper/swiper-bundle.min.js"%}></script>
+    <!-- Dashboard init -->
+    <script src={% static "assets/js/pages/dashboard-ecommerce.init.js"%}></script>
+    <!-- Sweet Alert css-->
+    <script src={% static "assets/libs/sweetalert2/sweetalert2.min.js"%}></script>
+    <!-- Sweet alert init js-->
+    <script src={% static "assets/js/pages/sweetalerts.init.js"%}></script>
+    <script src={% static "assets/scripts/jquery/jquery.min.js" %}></script>
+    <!-- echarts js -->
+    <script src={% static "assets/libs/echarts/echarts.min.js" %}></script>
+    <!-- Data tables js-->
+    <script src={% static "assets/scripts/datatable/jquery.dataTables.min.js"%}></script>
+    <script src="{% static "assets/scripts/datatable/dataTables.bootstrap4.min.js"%}"></script>
+    {% comment %} <script src={% static "assets/scripts/datatable/datatable.js"%}></script> {% endcomment %}
+    {% comment %} <script src={% static "assets/scripts/datatable/datatable-2.js"%}></script> {% endcomment %}
+    <script src="{% static "assets/scripts/datatable/dataTables.responsive.min.js"%}"></script>
+    <!-- notifications init -->
+    <script src={% static "assets/js/pages/notifications.init.js" %}></script>
+    <!-- App js -->
+    <script src={% static "assets/js/app.js"%}></script>
+    <!-- dragula init js -->
+    <script src={% static  "assets/libs/dragula/dragula.min.js"%}></script>
+    <script src="{% static "assets/libs/dom-autoscroller/dom-autoscroller.min.js"%}"></script>
+    <script src={% static "assets/js/select2.js" %}></script>
+    <script src={% static "assets/js/pages/materialdesign.list.js" %}></script>
+    <script src='{% static "assets/js/uijquery.js" %}'></script>
+          
+    <script>
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    </script>
+             
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {           
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
+
+    </script>
+
+
+
+        {% block scripts %}
+        <script src={% static "scripts/users/login.js" %}></script>
+        {% endblock %}
+
+
+    </body>
+
+</html>
